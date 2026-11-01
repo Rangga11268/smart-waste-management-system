@@ -1,0 +1,14 @@
+# Machine Learning Pipeline Requirements
+# Smart Waste Management System (SWMS) - PyTorch MobileNetV2 Transfer Learning
+
+--extra-index-url https://download.pytorch.org/whl/cpu
+
+torch>=2.0.0
+torchvision>=0.15.0
+numpy>=1.24.0
+pillow>=9.5.0
+scikit-learn>=1.2.0
+matplotlib>=3.7.0
+seaborn>=0.12.0
+scipy>=1.10.0
+tqdm>=4.65.0

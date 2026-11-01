@@ -1,0 +1,530 @@
+Delivered-To: darrelrangga@gmail.com
+Received: by 2002:a05:6a20:258a:b0:3e6:ca6d:739b with SMTP id k10csp4387320pzd;
+        Sun, 1 Nov 2026 01:51:14 -0800 (PST)
+X-Received: by 2002:a5d:5d06:0:b0:48d:ff71:dd87 with SMTP id ffacd0b85a97d-48e6e303f29mr16004092f8f.17.1793526674197;
+        Sun, 01 Nov 2026 01:51:14 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793526674; cv=none;
+        d=google.com; s=arc-20260327;
+        b=gxBZ0XO2+LeRy5d8q5DKRSQ5bmN0dGw4aZoC9clQVj9xv3XB9IjaqB40An8L/9T6IZ
+         t6cWDGKJ87m49eE898YrkXN/o++5WfjUbobU9lR5UzGWd6b9Rq2b3dJ+Nf4N3xBpouj2
+         XOdYyh5wr7pwjyPmuiu5cOTIasZ4RBaLm2OFULvAIsyeBU1XpdTdEaKpYGtkqzbNQl1i
+         WZNui8lmE7072i7z9jiE05eoWgUu8UDnQXiItqu14W77RxAuJiMJVepWRs6pv/mVI7Se
+         tgkJTvIeL7VjN9QryDg17wfN5GVLEPpbJxGC7m9auiVDFpH7xUb4cCRAxEutvndcHrId
+         bS5Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=date:to:subject:references:mime-version:message-id:in-reply-to:from
+         :content-transfer-encoding:dkim-signature:feedback-id:dkim-signature;
+        bh=mUSbe4s0VleIUL+bDnAJ5VdwcBefoXZOvy+Y0g+6/Ps=;
+        fh=UFPiWxUk8MOIzKkLoqlURVBytNc1bBORWSNL6ukJCto=;
+        b=H/3R4uJmD5myXyKeS4jJ2rOnXRCr+PKiaCbq9bDM8Lrzx7JmAQfUZScZkCG173Lav0
+         6R2BU4894+5siaQmIr0Blpj8OI9mur+cUPPzFvQuKYaMdHxt2z9zSbEmYZUhvmLw2UGe
+         QbdUVLtJFQnHuFkJMCswrPg0OIVRe0HRb/Juy8CK/vcQYxr7cbKqTWjMagk3I5mQgMkd
+         /7atCOQqiPFs8N0BbZFFAjBt5xw9/B99GbWGkYkHZfPdlZhMJDs0CDWXSVjYnEYMCM7f
+         +YPeqxjFul2VSJVTMhkhNxYPFp6xAYX150TeJlPaCqoe/+49lKhnwIjxoejRzwK6Qkz3
+         RBJw==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@relay.mail.hostinger.com header.s=oak202607 header.b=SGtZWKyQ;
+       dkim=pass header.i=@bilcode.id header.s=hostingermail-a header.b="fotQ/uAV";
+       spf=pass (google.com: domain of hiring@bilcode.id designates 189.12.192.3 as permitted sender) smtp.mailfrom=hiring@bilcode.id;
+       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=bilcode.id
+Return-Path: <hiring@bilcode.id>
+Received: from oak2.relay.mail.hostinger.com (oak2.relay.mail.hostinger.com. [189.12.192.3])
+        by mx.google.com with ESMTPS id ffacd0b85a97d-48e71bc7e3dsi13002893f8f.349.2026.11.01.01.51.13
+        for <darrelrangga@gmail.com>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 01 Nov 2026 01:51:14 -0800 (PST)
+Received-SPF: pass (google.com: domain of hiring@bilcode.id designates 189.12.192.3 as permitted sender) client-ip=189.12.192.3;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@relay.mail.hostinger.com header.s=oak202607 header.b=SGtZWKyQ;
+       dkim=pass header.i=@bilcode.id header.s=hostingermail-a header.b="fotQ/uAV";
+       spf=pass (google.com: domain of hiring@bilcode.id designates 189.12.192.3 as permitted sender) smtp.mailfrom=hiring@bilcode.id;
+       dmarc=pass (p=NONE sp=NONE dis=NONE) header.from=bilcode.id
+X-Hostinger-Mail-Ref: eyJfQF8iOiJcXF8vIiwicmVjaXBpZW50IjoiZGFycmVscmFuZ2dhQGdtYWlsLmNvbSIsInRlbmF
+	udCI6ImhhbG89YmlsY29kZS5pZCIsInhfY3VzdG9tZXIiOiJoYWxvQGJpbGNvZGUuaWQifQ==
+DKIM-Signature: v=1; a=rsa-sha256; d=relay.mail.hostinger.com; s=oak202607;
+	c=relaxed/relaxed; bh=mUSbe4s0VleIUL+bDnAJ5VdwcBefoXZOvy+Y0g+6/Ps=;
+	h=cc:content-transfer-encoding:content-transfer-encoding:content-type:
+		content-type:date:date:feedback-id:feedback-id:from:from:in-reply-to:
+		in-reply-to:list-id:list-unsubscribe:list-unsubscribe-post:message-id:
+		message-id:mime-version:mime-version:references:references:reply-to:
+		subject:subject:to:to:x-hostinger-mail-id:x-hostinger-mail-id;
+	t=1793526673;
+	b=SGtZWKyQNRDrrfNp6o4h4Ie+XqcnUUaSWTSqOb6SQl4akLJeLdz7K3BgJjK3cZZxVyQKVpvNY
+	bh31Vq9cCU6ov4gLJEJ2y2nd3kzqCuiWNNY7glgebRJQ7HLaNmmM5vBx6tYV3VNyAd8KnikPMl4
+	LRg2xis/HPsJVcGqmZlhbmvljEjnc4vz7bj+nAFzb0ttlAmWwH+tO13HufNlSTStDhm0/X4+Tnx
+	wnJqVtPOfHrVFhbrGwcMsF8y3fEGzD80KyYBQV3fB6dpNN47dJGU5ruucU6UCd+pg/SYq75PEeW
+	D8+obLhQ/bf7EZOqA6PAZv/mIv7AL0UpssYSsRQg1M2Q==;
+Feedback-ID: oak202607:bilcode.id:hmail
+X-Hostinger-Mail-Id: c65a934fd5d911f187a3bc24115bb549
+Received: from fr-int-smtpout30.hostinger.io (::ffff:148.222.54.7)
+  by fr-int-hmail-krelay2.hostinger.io (KumoMTA ::ffff:148.222.54.54) 
+  with ESMTPS (TLSv1_3:TLS13_AES_256_GCM_SHA384)  id c65a934fd5d911f187a3bc24115bb549 for <darrelrangga@gmail.com>;
+  Sun, 1 Nov 2026 09:51:13 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bilcode.id;
+	s=hostingermail-a; t=1793526673;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mUSbe4s0VleIUL+bDnAJ5VdwcBefoXZOvy+Y0g+6/Ps=;
+	b=fotQ/uAV7kBp1Q3q80Z0KbA8v4/eRoTqMIFXZxHc+YiCi29D5afStohILAbQTvTzrLekiC
+	2jl3ido1TtQwdn8yd16YYN6hApA3PwcqzyUVO5ugYuZU33D545YBGFUB9jylNX1xaZbTdt
+	+eh3qMeRsXRwHQiEk9Am42M4MeBXP9oLNscrSN9z6f4QhO2fS6dIicAVLAEp0zw5FmRXxy
+	4BApLKUDxxNVOLLATN33wNS/EYAEqU9ulb5ldfpvsDz7qtTIxrEer/Jsxyw3qu/RCAzQbn
+	n4Is9o0XqLmRKBb7tmrJDW7QeIl1+4IUV/tOhzBA26WdFsm79j3njTDp6fOAPw==
+Received: from localhost (17.131.242.35.bc.googleusercontent.com [IPv6:2404:c0:ab01:422:4c0e:7bc6:f9ce:3fa4])
+	(Authenticated sender: halo@bilcode.id)
+	by smtp.hostinger.com (smtp.hostinger.com) with ESMTPSA id 4jHVTY3Cd4z2xQN
+	for <darrelrangga@gmail.com>; Sun,  1 Nov 2026 09:51:13 +0000 (UTC)
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset=utf-8
+From: <hiring@bilcode.id>
+In-Reply-To: <CAK2Z-_For=YZh_fWL24DOKiSJr++BPThOxQinQoTaRtCiL9jyw@mail.gmail.com>
+Message-Id: <1793526664655572884.1793526664@bilcode.id>
+Mime-Version: 1.0
+References: <CAK2Z-_For=YZh_fWL24DOKiSJr++BPThOxQinQoTaRtCiL9jyw@mail.gmail.com>
+Subject: =?utf-8?q?Undangan_Technical_Coding_Test_=E2=80=93_Fullstack_Developer_|_?=
+ =?utf-8?q?Bilcode_Technology?=
+To: <darrelrangga@gmail.com>
+Date: Sun,  1 Nov 2026 09:51:13 +0000 (UTC)
+X-CM-Analysis: v=2.4 cv=ZJmFmm7b c=1 sm=1 tr=0 ts=6ae70b91 a=aIHpenU4inAi1Dq42IC8TA==:617 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=5KLPUuaC_9wA:10 a=2dimklydAAAA:8 a=t1MqW1Y-AAAA:8 a=NEAV23lmAAAA:8 a=jU4qhlNgAAAA:8 a=pGLkceISAAAA:8 a=HFtjKsiFer10IgduQsAA:9 a=dqR2PhoN5Ubfa7YOUPf9EdpGrHo=:19 a=XWpc4JPe6-NwUEr4:21 a=lqcHg5cX4UMA:10 a=QEXdDO2ut3YA:10 a=-FEs8UIgK8oA:10 a=oBouXaWP-oLC1V4Py83Y:22 a=7JMqMbbMeBu-CBYb5sy8:22
+X-CM-Envelope: MS4xfCHw34gDY4Z3pfdNrjubgR2TwdSgSKoz8XMCL6LqAZ2thZU+CDMaH6ip1Av9+lpuT83zbaE0oRUzHhkB7hSyameZUKcFiG0EoyTRuTItXzp2Lifa0vjR muMFNEEaM419T1NliVMzcbpS8lm8vKdg2dOXS9qs8uZoJmuKX4CDyqXMk3d3ic4VaJBljxB57JE+3RFlMLm1yTxUnE0UInFo98+E4TRHqq8uFomMNruFkh/a TZ1KAkATmknLIe9V6uMC0w==
+
+<div><p>Halo,</p>
+<p>Terima kasih telah mengikuti proses rekrutmen di Bilcode Technology.</p>
+<p>Sebagai tahap selanjutnya, kami ingin mengundang Anda untuk mengikuti <b=
+>Technical Coding Test =E2=80=93 Fullstack Developer</b> yang mencakup Webs=
+ite Development, Mobile Development, dan Machine Learning.</p>
+<p>Berikut detail pengerjaan tes:</p>
+<p><b>1. Informasi Tes</b></p>
+<ul><li>Posisi: Fullstack Developer</li><li>Jenis Tes: Technical Assessment=
+ / Take Home Project</li><li>Deadline: 5 hari kalender sejak email ini dite=
+rima</li><li>Sistem Pengerjaan: Individual</li></ul>
+<p><b>2. Studi Kasus: Smart Waste Management System</b></p>
+<p>Anda diminta membuat sebuah sistem pengelolaan sampah berbasis teknologi=
+ yang terdiri dari tiga komponen utama:</p>
+<p><b>A. Website Development</b></p>
+<ul><li>Login dan autentikasi berdasarkan role (Admin dan User).</li><li>Da=
+shboard statistik laporan sampah.</li><li>Manajemen laporan (CRUD).</li><li=
+>Filter dan pencarian laporan.</li><li>Manajemen pengguna.</li><li>Update s=
+tatus laporan (Pending, In Progress, Completed, Rejected).</li><li>Responsi=
+ve design.</li></ul>
+<p><b>B. Mobile Application</b></p>
+<ul><li>Register dan login.</li><li>Dashboard pengguna.</li><li>Membuat lap=
+oran sampah dengan foto, lokasi GPS, dan deskripsi.</li><li>Melihat riwayat=
+ dan status laporan.</li><li>Integrasi API untuk mengirim dan mengambil dat=
+a.</li><li>Integrasi fitur AI Image Detection.</li></ul>
+<p><b>C. Machine Learning</b></p>
+<ul><li>Membuat model klasifikasi gambar sampah.</li><li>Minimal 3 kategori=
+ (Organic Waste, Plastic Waste, dan Paper Waste).</li><li>Dataset minimal 1=
+50 gambar.</li><li>Menggunakan Python, TensorFlow/Keras atau PyTorch.</li><=
+li>Melakukan training dan testing model.</li><li>Menampilkan accuracy, conf=
+usion matrix, dan classification report.</li><li>Target akurasi minimal 80%=
+ pada data testing.</li><li>Membuat REST API untuk melakukan prediksi gamba=
+r menggunakan FastAPI atau framework sejenis.</li></ul>
+<p><b>3. Teknologi yang Direkomendasikan</b></p>
+<ul><li>Website: Laravel / React / Next.js</li><li>Mobile: Flutter / React =
+Native</li><li>Backend: Laravel / Node.js / FastAPI</li><li>Database: MySQL=
+ / PostgreSQL</li><li>Machine Learning: Python, TensorFlow / PyTorch</li><l=
+i>Version Control: Git &amp; GitHub</li></ul>
+<p>Anda diperbolehkan menggunakan teknologi lain sesuai keahlian masing-mas=
+ing.</p>
+<p><b>4. Ketentuan Pengumpulan</b></p>
+<p>Mohon kumpulkan hasil pengerjaan berupa:</p>
+<ol><li>GitHub Repository (source code).</li><li>Link demo website.</li><li=
+>APK atau link demo aplikasi mobile.</li><li>Dokumentasi API.</li><li>Datab=
+ase schema atau ERD.</li><li>Source code dan model Machine Learning.</li><l=
+i>Dataset beserta sumbernya.</li><li>Hasil evaluasi model.</li><li>README b=
+erisi panduan instalasi dan penggunaan.</li><li>Video demo maksimal 10 meni=
+t yang menjelaskan hasil pengerjaan.</li></ol>
+<p><b>5. Sistem Penilaian</b></p>
+<p>Penilaian akan dilakukan berdasarkan beberapa aspek:</p>
+<ul><li>Website Development: 25%</li><li>Mobile Development: 20%</li><li>Ma=
+chine Learning: 20%</li><li>Backend &amp; API Integration: 15%</li><li>Data=
+base Design: 5%</li><li>UI/UX: 5%</li><li>Code Quality &amp; Documentation:=
+ 10%</li></ul>
+<p>Nilai minimum kelulusan adalah <b>75/100</b>.</p>
+<p><b>6. Ketentuan Tambahan</b></p>
+<ul><li>Pengerjaan dilakukan secara mandiri.</li><li>Diperbolehkan mengguna=
+kan dokumentasi resmi, library, dan AI coding assistant.</li><li>Kandidat w=
+ajib memahami seluruh kode yang dikumpulkan.</li><li>Kandidat harus dapat m=
+enjelaskan arsitektur dan alur kerja aplikasi saat technical interview.</li=
+><li>Apabila terdapat kendala selama pengerjaan, silakan komunikasikan kepa=
+da tim recruitment kami.</li></ul>
+<p><b>Deadline Pengumpulan: 5 hari kalender sejak email ini diterima.</b></=
+p>
+<p>Hasil pengerjaan dapat dikirimkan dengan membalas email ini dan menyerta=
+kan seluruh link serta dokumen yang diperlukan.</p>
+<p>Terima kasih atas waktu dan partisipasi Anda.</p>
+<p>Selamat mengerjakan dan semoga sukses!</p>
+<p>Best Regards,<br>Recruitment Team<br>Bilcode Technology<br>Website: <a h=
+ref=3D"https://bilcode.id">https://bilcode.id</a><br>Email: <a href=3D"mail=
+to:hiring@bilcode.id">hiring@bilcode.id</a></p></div><br><br>
+      <div class=3D"hmail-quote-container">
+        <div class=3D"hmail-attr" data-qa=3D"message-reply-attribution">Pad=
+a Min, Okt 25, 2026 pukul 17.09, Darell rangga &lt;darrelrangga@gmail.com&g=
+t; membalas:</div>
+       =20
+        <blockquote class=3D"hmail-quote"><div dir=3D"ltr"><p class=3D"gmai=
+l-"><span style=3D"animation: 0.2s ease-out 69ms 1 normal both running fade=
+-in;"><strong>Halo Tim Rekrutmen Bilcode,</strong></span></p><p class=3D"gm=
+ail-"><span style=3D"animation: 0.2s ease-out 139ms 1 normal both running f=
+ade-in;">Saya </span><span style=3D"animation: 0.2s ease-out 156ms 1 normal=
+ both running fade-in;"><strong>Darell Rangga Putra Rachman</strong></span>=
+<span style=3D"animation: 0.2s ease-out 172ms 1 normal both running fade-in=
+;">, </span><span style=3D"animation: 0.2s ease-out 188ms 1 normal both run=
+ning fade-in;">Full </span><span style=3D"animation: 0.2s ease-out 205ms 1 =
+normal both running fade-in;">Stack </span><span style=3D"animation: 0.2s e=
+ase-out 221ms 1 normal both running fade-in;">Software </span><span style=
+=3D"animation: 0.2s ease-out 238ms 1 normal both running fade-in;">Engineer=
+ </span><span style=3D"animation: 0.2s ease-out 254ms 1 normal both running=
+ fade-in;">dengan </span><span style=3D"animation: 0.2s ease-out 270ms 1 no=
+rmal both running fade-in;">pengalaman </span><span style=3D"animation: 0.2=
+s ease-out 287ms 1 normal both running fade-in;">merancang </span><span sty=
+le=3D"animation: 0.2s ease-out 92ms 1 normal both running fade-in;">arsitek=
+tur </span><span style=3D"animation: 0.2s ease-out 104ms 1 normal both runn=
+ing fade-in;">web, </span><span style=3D"animation: 0.2s ease-out 116ms 1 n=
+ormal both running fade-in;">pengembangan </span><span style=3D"animation: =
+0.2s ease-out 128ms 1 normal both running fade-in;">aplikasi </span><span s=
+tyle=3D"animation: 0.2s ease-out 140ms 1 normal both running fade-in;">mobi=
+le, </span><span style=3D"animation: 0.2s ease-out 152ms 1 normal both runn=
+ing fade-in;">serta </span><span style=3D"animation: 0.2s ease-out 164ms 1 =
+normal both running fade-in;">mengintegrasikan </span><span style=3D"animat=
+ion: 0.2s ease-out 176ms 1 normal both running fade-in;">model </span><span=
+ style=3D"animation: 0.2s ease-out 188ms 1 normal both running fade-in;">Ma=
+chine </span><span style=3D"animation: 0.2s ease-out 200ms 1 normal both ru=
+nning fade-in;">Learning </span><span style=3D"animation: 0.2s ease-out 212=
+ms 1 normal both running fade-in;">ke </span><span style=3D"animation: 0.2s=
+ ease-out 225ms 1 normal both running fade-in;">sistem </span><span style=
+=3D"animation: 0.2s ease-out 237ms 1 normal both running fade-in;">produksi=
+. </span><span style=3D"animation: 0.2s ease-out 249ms 1 normal both runnin=
+g fade-in;">Melalui </span><span style=3D"animation: 0.2s ease-out 261ms 1 =
+normal both running fade-in;">email </span><span style=3D"animation: 0.2s e=
+ase-out 273ms 1 normal both running fade-in;">ini, </span><span style=3D"an=
+imation: 0.2s ease-out 285ms 1 normal both running fade-in;">saya </span><s=
+pan style=3D"animation: 0.2s ease-out 162ms 1 normal both running fade-in;"=
+>mengajukan </span><span style=3D"animation: 0.2s ease-out 173ms 1 normal b=
+oth running fade-in;">diri </span><span style=3D"animation: 0.2s ease-out 1=
+84ms 1 normal both running fade-in;">untuk </span><span style=3D"animation:=
+ 0.2s ease-out 195ms 1 normal both running fade-in;">bergabung </span><span=
+ style=3D"animation: 0.2s ease-out 206ms 1 normal both running fade-in;">se=
+bagai </span><span style=3D"animation: 0.2s ease-out 217ms 1 normal both ru=
+nning fade-in;"><strong>Full Stack Developer</strong></span><span style=3D"=
+animation: 0.2s ease-out 228ms 1 normal both running fade-in;"> </span><spa=
+n style=3D"animation: 0.2s ease-out 239ms 1 normal both running fade-in;">d=
+i </span><span style=3D"animation: 0.2s ease-out 250ms 1 normal both runnin=
+g fade-in;">Bilcode.</span></p><p class=3D"gmail-"><span style=3D"animation=
+: 0.2s ease-out 262ms 1 normal both running fade-in;">Berikut </span><span =
+style=3D"animation: 0.2s ease-out 262ms 1 normal both running fade-in;">rin=
+gkasan </span><span style=3D"animation: 0.2s ease-out 262ms 1 normal both r=
+unning fade-in;">keahlian </span><span style=3D"animation: 0.2s ease-out 26=
+2ms 1 normal both running fade-in;">teknis </span><span style=3D"animation:=
+ 0.2s ease-out 262ms 1 normal both running fade-in;">saya </span><span styl=
+e=3D"animation: 0.2s ease-out 262ms 1 normal both running fade-in;">yang </=
+span><span style=3D"animation: 0.2s ease-out 5ms 1 normal both running fade=
+-in;">selaras </span><span style=3D"animation: 0.2s ease-out 75ms 1 normal =
+both running fade-in;">dengan </span><span style=3D"animation: 0.2s ease-ou=
+t 145ms 1 normal both running fade-in;">kualifikasi </span><span style=3D"a=
+nimation: 0.2s ease-out 215ms 1 normal both running fade-in;">Bilcode:</spa=
+n></p><ul> <li style=3D"animation: 0.2s ease-out 285ms 1 normal both runnin=
+g fade-in;"><span style=3D"animation: 0.2s ease-out 286ms 1 normal both run=
+ning fade-in;"><strong>Web Development (Laravel &amp; Next.js/React):</stro=
+ng></span><span style=3D"animation: 0.2s ease-out 117ms 1 normal both runni=
+ng fade-in;"></span><span style=3D"animation: 0.2s ease-out 155ms 1 normal =
+both running fade-in;"> </span><span style=3D"animation: 0.2s ease-out 192m=
+s 1 normal both running fade-in;"></span><span style=3D"animation: 0.2s eas=
+e-out 230ms 1 normal both running fade-in;"> </span><ul> <li style=3D"anima=
+tion: 0.2s ease-out 267ms 1 normal both running fade-in;"><span style=3D"an=
+imation: 0.2s ease-out 267ms 1 normal both running fade-in;">Terbiasa </spa=
+n><span style=3D"animation: 0.2s ease-out 267ms 1 normal both running fade-=
+in;">membangun </span><span style=3D"animation: 0.2s ease-out 267ms 1 norma=
+l both running fade-in;">backend </span><span style=3D"animation: 0.2s ease=
+-out 267ms 1 normal both running fade-in;">yang </span><span style=3D"anima=
+tion: 0.2s ease-out 267ms 1 normal both running fade-in;">tangguh </span><s=
+pan style=3D"animation: 0.2s ease-out 267ms 1 normal both running fade-in;"=
+>menggunakan </span><span style=3D"animation: 0.2s ease-out 267ms 1 normal =
+both running fade-in;"><strong>Laravel</strong></span><span style=3D"animat=
+ion: 0.2s ease-out 267ms 1 normal both running fade-in;"> </span><span styl=
+e=3D"animation: 0.2s ease-out 267ms 1 normal both running fade-in;">dan </s=
+pan><span style=3D"animation: 0.2s ease-out 267ms 1 normal both running fad=
+e-in;"><strong>FastAPI</strong></span><span style=3D"animation: 0.2s ease-o=
+ut 267ms 1 normal both running fade-in;">, </span><span style=3D"animation:=
+ 0.2s ease-out 267ms 1 normal both running fade-in;">perancangan </span><sp=
+an style=3D"animation: 0.2s ease-out 267ms 1 normal both running fade-in;">=
+skema </span><span style=3D"animation: 0.2s ease-out 267ms 1 normal both ru=
+nning fade-in;">database </span><span style=3D"animation: 0.2s ease-out 116=
+ms 1 normal both running fade-in;">relasional </span><span style=3D"animati=
+on: 0.2s ease-out 133ms 1 normal both running fade-in;">(PostgreSQL/MySQL),=
+ </span><span style=3D"animation: 0.2s ease-out 149ms 1 normal both running=
+ fade-in;">serta </span><span style=3D"animation: 0.2s ease-out 166ms 1 nor=
+mal both running fade-in;">implementasi </span><span style=3D"animation: 0.=
+2s ease-out 182ms 1 normal both running fade-in;">komunikasi </span><span s=
+tyle=3D"animation: 0.2s ease-out 198ms 1 normal both running fade-in;">real=
+-time </span><span style=3D"animation: 0.2s ease-out 215ms 1 normal both ru=
+nning fade-in;">berbasis </span><span style=3D"animation: 0.2s ease-out 231=
+ms 1 normal both running fade-in;">WebSockets.</span></li> <li style=3D"ani=
+mation: 0.2s ease-out 248ms 1 normal both running fade-in;"><span style=3D"=
+animation: 0.2s ease-out 248ms 1 normal both running fade-in;">Mahir </span=
+><span style=3D"animation: 0.2s ease-out 248ms 1 normal both running fade-i=
+n;">mengembangkan </span><span style=3D"animation: 0.2s ease-out 6ms 1 norm=
+al both running fade-in;">antarmuka </span><span style=3D"animation: 0.2s e=
+ase-out 23ms 1 normal both running fade-in;">modern </span><span style=3D"a=
+nimation: 0.2s ease-out 41ms 1 normal both running fade-in;">yang </span><s=
+pan style=3D"animation: 0.2s ease-out 58ms 1 normal both running fade-in;">=
+cepat </span><span style=3D"animation: 0.2s ease-out 76ms 1 normal both run=
+ning fade-in;">dan </span><span style=3D"animation: 0.2s ease-out 94ms 1 no=
+rmal both running fade-in;">responsif </span><span style=3D"animation: 0.2s=
+ ease-out 111ms 1 normal both running fade-in;">menggunakan </span><span st=
+yle=3D"animation: 0.2s ease-out 129ms 1 normal both running fade-in;"><stro=
+ng>Next.js</strong></span><span style=3D"animation: 0.2s ease-out 147ms 1 n=
+ormal both running fade-in;"> </span><span style=3D"animation: 0.2s ease-ou=
+t 164ms 1 normal both running fade-in;">dan </span><span style=3D"animation=
+: 0.2s ease-out 182ms 1 normal both running fade-in;"><strong>React</strong=
+></span><span style=3D"animation: 0.2s ease-out 200ms 1 normal both running=
+ fade-in;"> </span><span style=3D"animation: 0.2s ease-out 217ms 1 normal b=
+oth running fade-in;">(TypeScript, </span><span style=3D"animation: 0.2s ea=
+se-out 235ms 1 normal both running fade-in;">Tailwind </span><span style=3D=
+"animation: 0.2s ease-out 253ms 1 normal both running fade-in;">CSS) </span=
+><span style=3D"animation: 0.2s ease-out 99ms 1 normal both running fade-in=
+;">dengan </span><span style=3D"animation: 0.2s ease-out 139ms 1 normal bot=
+h running fade-in;">optimasi </span><span style=3D"animation: 0.2s ease-out=
+ 178ms 1 normal both running fade-in;">performa </span><span style=3D"anima=
+tion: 0.2s ease-out 218ms 1 normal both running fade-in;">tinggi.</span></l=
+i> </ul></li> <li style=3D"animation: 0.2s ease-out 258ms 1 normal both run=
+ning fade-in;"><span style=3D"animation: 0.2s ease-out 258ms 1 normal both =
+running fade-in;"><strong>Mobile Development (Flutter):</strong></span><spa=
+n style=3D"animation: 0.2s ease-out 258ms 1 normal both running fade-in;"><=
+/span><span style=3D"animation: 0.2s ease-out 258ms 1 normal both running f=
+ade-in;"> </span><span style=3D"animation: 0.2s ease-out 258ms 1 normal bot=
+h running fade-in;"></span><span style=3D"animation: 0.2s ease-out 258ms 1 =
+normal both running fade-in;"> </span><ul> <li style=3D"animation: 0.2s eas=
+e-out 258ms 1 normal both running fade-in;"><span style=3D"animation: 0.2s =
+ease-out 258ms 1 normal both running fade-in;">Memahami </span><span style=
+=3D"animation: 0.2s ease-out 258ms 1 normal both running fade-in;">dan </sp=
+an><span style=3D"animation: 0.2s ease-out 258ms 1 normal both running fade=
+-in;">berpengalaman </span><span style=3D"animation: 0.2s ease-out 258ms 1 =
+normal both running fade-in;">membangun </span><span style=3D"animation: 0.=
+2s ease-out 258ms 1 normal both running fade-in;">aplikasi </span><span sty=
+le=3D"animation: 0.2s ease-out 258ms 1 normal both running fade-in;">mobile=
+ </span><span style=3D"animation: 0.2s ease-out 258ms 1 normal both running=
+ fade-in;">multiplatform </span><span style=3D"animation: 0.2s ease-out 90m=
+s 1 normal both running fade-in;">dengan </span><span style=3D"animation: 0=
+.2s ease-out 102ms 1 normal both running fade-in;"><strong>Flutter/Dart</st=
+rong></span><span style=3D"animation: 0.2s ease-out 114ms 1 normal both run=
+ning fade-in;">, </span><span style=3D"animation: 0.2s ease-out 127ms 1 nor=
+mal both running fade-in;">mencakup </span><span style=3D"animation: 0.2s e=
+ase-out 139ms 1 normal both running fade-in;">integrasi </span><span style=
+=3D"animation: 0.2s ease-out 151ms 1 normal both running fade-in;">REST </s=
+pan><span style=3D"animation: 0.2s ease-out 163ms 1 normal both running fad=
+e-in;">API, </span><span style=3D"animation: 0.2s ease-out 175ms 1 normal b=
+oth running fade-in;">penanganan </span><span style=3D"animation: 0.2s ease=
+-out 187ms 1 normal both running fade-in;">state, </span><span style=3D"ani=
+mation: 0.2s ease-out 199ms 1 normal both running fade-in;">dan </span><spa=
+n style=3D"animation: 0.2s ease-out 211ms 1 normal both running fade-in;">n=
+avigasi </span><span style=3D"animation: 0.2s ease-out 223ms 1 normal both =
+running fade-in;">yang </span><span style=3D"animation: 0.2s ease-out 235ms=
+ 1 normal both running fade-in;">adaptif.</span></li> </ul></li> <li style=
+=3D"animation: 0.2s ease-out 247ms 1 normal both running fade-in;"><span st=
+yle=3D"animation: 0.2s ease-out 47ms 1 normal both running fade-in;"><stron=
+g>Integrasi Machine Learning (ML):</strong></span><span style=3D"animation:=
+ 0.2s ease-out 88ms 1 normal both running fade-in;"></span><span style=3D"a=
+nimation: 0.2s ease-out 129ms 1 normal both running fade-in;"> </span><span=
+ style=3D"animation: 0.2s ease-out 171ms 1 normal both running fade-in;"></=
+span><span style=3D"animation: 0.2s ease-out 212ms 1 normal both running fa=
+de-in;"> </span><ul> <li style=3D"animation: 0.2s ease-out 253ms 1 normal b=
+oth running fade-in;"><span style=3D"animation: 0.2s ease-out 253ms 1 norma=
+l both running fade-in;">Mampu </span><span style=3D"animation: 0.2s ease-o=
+ut 253ms 1 normal both running fade-in;">menjembatani </span><span style=3D=
+"animation: 0.2s ease-out 253ms 1 normal both running fade-in;">model </spa=
+n><span style=3D"animation: 0.2s ease-out 253ms 1 normal both running fade-=
+in;">ML </span><span style=3D"animation: 0.2s ease-out 253ms 1 normal both =
+running fade-in;">ke </span><span style=3D"animation: 0.2s ease-out 253ms 1=
+ normal both running fade-in;">sistem </span><span style=3D"animation: 0.2s=
+ ease-out 253ms 1 normal both running fade-in;">aplikasi </span><span style=
+=3D"animation: 0.2s ease-out 253ms 1 normal both running fade-in;">(penyedi=
+aan </span><span style=3D"animation: 0.2s ease-out 253ms 1 normal both runn=
+ing fade-in;">API </span><span style=3D"animation: 0.2s ease-out 253ms 1 no=
+rmal both running fade-in;">inferensi </span><span style=3D"animation: 0.2s=
+ ease-out 253ms 1 normal both running fade-in;">cepat, </span><span style=
+=3D"animation: 0.2s ease-out 20ms 1 normal both running fade-in;">pemrosesa=
+n </span><span style=3D"animation: 0.2s ease-out 43ms 1 normal both running=
+ fade-in;">data </span><span style=3D"animation: 0.2s ease-out 66ms 1 norma=
+l both running fade-in;">berbasis </span><span style=3D"animation: 0.2s eas=
+e-out 89ms 1 normal both running fade-in;">vektor, </span><span style=3D"an=
+imation: 0.2s ease-out 111ms 1 normal both running fade-in;">serta </span><=
+span style=3D"animation: 0.2s ease-out 134ms 1 normal both running fade-in;=
+">deteksi </span><span style=3D"animation: 0.2s ease-out 157ms 1 normal bot=
+h running fade-in;">anomali </span><span style=3D"animation: 0.2s ease-out =
+179ms 1 normal both running fade-in;">pada </span><span style=3D"animation:=
+ 0.2s ease-out 202ms 1 normal both running fade-in;">alur </span><span styl=
+e=3D"animation: 0.2s ease-out 225ms 1 normal both running fade-in;">data </=
+span><span style=3D"animation: 0.2s ease-out 248ms 1 normal both running fa=
+de-in;">real-time).</span></li> </ul></li> <li style=3D"animation: 0.2s eas=
+e-out 270ms 1 normal both running fade-in;"><span style=3D"animation: 0.2s =
+ease-out 93ms 1 normal both running fade-in;"><strong>Git/GitHub &amp; Kola=
+borasi Tim:</strong></span><span style=3D"animation: 0.2s ease-out 127ms 1 =
+normal both running fade-in;"></span><span style=3D"animation: 0.2s ease-ou=
+t 160ms 1 normal both running fade-in;"> </span><span style=3D"animation: 0=
+.2s ease-out 193ms 1 normal both running fade-in;"></span><span style=3D"an=
+imation: 0.2s ease-out 227ms 1 normal both running fade-in;"> </span><ul> <=
+li style=3D"animation: 0.2s ease-out 260ms 1 normal both running fade-in;">=
+<span style=3D"animation: 0.2s ease-out 260ms 1 normal both running fade-in=
+;">Memimpin </span><span style=3D"animation: 0.2s ease-out 260ms 1 normal b=
+oth running fade-in;">11 </span><span style=3D"animation: 0.2s ease-out 260=
+ms 1 normal both running fade-in;">engineer </span><span style=3D"animation=
+: 0.2s ease-out 260ms 1 normal both running fade-in;">meraih </span><span s=
+tyle=3D"animation: 0.2s ease-out 22ms 1 normal both running fade-in;"><stro=
+ng>Juara 1 IT Boot Camp 2026</strong></span><span style=3D"animation: 0.2s =
+ease-out 39ms 1 normal both running fade-in;"> </span><span style=3D"animat=
+ion: 0.2s ease-out 56ms 1 normal both running fade-in;">melalui </span><spa=
+n style=3D"animation: 0.2s ease-out 73ms 1 normal both running fade-in;">pl=
+atform </span><span style=3D"animation: 0.2s ease-out 90ms 1 normal both ru=
+nning fade-in;"><em>TitikAman</em></span><span style=3D"animation: 0.2s eas=
+e-out 107ms 1 normal both running fade-in;"> </span><span style=3D"animatio=
+n: 0.2s ease-out 124ms 1 normal both running fade-in;">(aplikasi </span><sp=
+an style=3D"animation: 0.2s ease-out 141ms 1 normal both running fade-in;">=
+mitigasi </span><span style=3D"animation: 0.2s ease-out 158ms 1 normal both=
+ running fade-in;">bencana </span><span style=3D"animation: 0.2s ease-out 1=
+75ms 1 normal both running fade-in;">real-time </span><span style=3D"animat=
+ion: 0.2s ease-out 192ms 1 normal both running fade-in;">berbasis </span><s=
+pan style=3D"animation: 0.2s ease-out 209ms 1 normal both running fade-in;"=
+>Web </span><span style=3D"animation: 0.2s ease-out 226ms 1 normal both run=
+ning fade-in;">GIS </span><span style=3D"animation: 0.2s ease-out 243ms 1 n=
+ormal both running fade-in;">dan </span><span style=3D"animation: 0.2s ease=
+-out 260ms 1 normal both running fade-in;">WebSockets).</span></li> <li sty=
+le=3D"animation: 0.2s ease-out 277ms 1 normal both running fade-in;"><span =
+style=3D"animation: 0.2s ease-out 96ms 1 normal both running fade-in;">Terb=
+iasa </span><span style=3D"animation: 0.2s ease-out 106ms 1 normal both run=
+ning fade-in;">dengan </span><span style=3D"animation: 0.2s ease-out 116ms =
+1 normal both running fade-in;">alur </span><span style=3D"animation: 0.2s =
+ease-out 126ms 1 normal both running fade-in;">kerja </span><span style=3D"=
+animation: 0.2s ease-out 136ms 1 normal both running fade-in;">Git </span><=
+span style=3D"animation: 0.2s ease-out 146ms 1 normal both running fade-in;=
+">(branching, </span><span style=3D"animation: 0.2s ease-out 156ms 1 normal=
+ both running fade-in;">pull </span><span style=3D"animation: 0.2s ease-out=
+ 166ms 1 normal both running fade-in;">request, </span><span style=3D"anima=
+tion: 0.2s ease-out 176ms 1 normal both running fade-in;">code </span><span=
+ style=3D"animation: 0.2s ease-out 186ms 1 normal both running fade-in;">re=
+view), </span><span style=3D"animation: 0.2s ease-out 196ms 1 normal both r=
+unning fade-in;">automated </span><span style=3D"animation: 0.2s ease-out 2=
+06ms 1 normal both running fade-in;">testing, </span><span style=3D"animati=
+on: 0.2s ease-out 216ms 1 normal both running fade-in;">serta </span><span =
+style=3D"animation: 0.2s ease-out 226ms 1 normal both running fade-in;">pen=
+ulisan </span><span style=3D"animation: 0.2s ease-out 237ms 1 normal both r=
+unning fade-in;">dokumentasi </span><span style=3D"animation: 0.2s ease-out=
+ 247ms 1 normal both running fade-in;">API </span><span style=3D"animation:=
+ 0.2s ease-out 257ms 1 normal both running fade-in;">yang </span><span styl=
+e=3D"animation: 0.2s ease-out 54ms 1 normal both running fade-in;">rapi.</s=
+pan></li> </ul></li> </ul><p class=3D"gmail-"><span style=3D"animation: 0.2=
+s ease-out 124ms 1 normal both running fade-in;"><strong>Tautan Portofolio =
+&amp; Kode Sumber:</strong></span></p><ul> <li style=3D"animation: 0.2s eas=
+e-out 194ms 1 normal both running fade-in;"><span style=3D"animation: 0.2s =
+ease-out 264ms 1 normal both running fade-in;"><strong>Portfolio Website:</=
+strong></span><span style=3D"animation: 0.2s ease-out 267ms 1 normal both r=
+unning fade-in;"> </span><span style=3D"animation: 0.2s ease-out 135ms 1 no=
+rmal both running fade-in;"><span class=3D"gmail-inline"><a class=3D"gmail-=
+text-link" href=3D"https://darellrangga.me" target=3D"_blank" rel=3D"norefe=
+rrer nofollow noopener">darellrangga.me<span aria-label=3D"Opens external l=
+ink: https://darellrangga.me" class=3D"gmail-inline-flex gmail-items-baseli=
+ne gmail-ml-0.5 gmail-align-baseline gmail-shrink-0"><span class=3D"gmail-i=
+nline-flex gmail-self-center gmail-shrink-0 gmail-items-center gmail-justif=
+y-center"></span></span></a></span></span></li> <li style=3D"animation: 0.2=
+s ease-out 205ms 1 normal both running fade-in;"><span style=3D"animation: =
+0.2s ease-out 245ms 1 normal both running fade-in;"><strong>GitHub (Active =
+Projects &amp; Tests):</strong></span><span style=3D"animation: 0.2s ease-o=
+ut 245ms 1 normal both running fade-in;"> </span><span style=3D"animation: =
+0.2s ease-out 99ms 1 normal both running fade-in;"><span class=3D"gmail-inl=
+ine"><a class=3D"gmail-text-link" href=3D"https://github.com/Rangga11268" t=
+arget=3D"_blank" rel=3D"noreferrer nofollow noopener">github.com/Rangga1126=
+8<span aria-label=3D"Opens external link: https://github.com/Rangga11268" c=
+lass=3D"gmail-inline-flex gmail-items-baseline gmail-ml-0.5 gmail-align-bas=
+eline gmail-shrink-0"><span class=3D"gmail-inline-flex gmail-self-center gm=
+ail-shrink-0 gmail-items-center gmail-justify-center"></span></span></a></s=
+pan></span></li> <li style=3D"animation: 0.2s ease-out 169ms 1 normal both =
+running fade-in;"><span style=3D"animation: 0.2s ease-out 79ms 1 normal bot=
+h running fade-in;"><strong>LinkedIn:</strong></span><span style=3D"animati=
+on: 0.2s ease-out 115ms 1 normal both running fade-in;"> </span><span style=
+=3D"animation: 0.2s ease-out 185ms 1 normal both running fade-in;"><span cl=
+ass=3D"gmail-inline"><a class=3D"gmail-text-link" href=3D"https://linkedin.=
+com/in/darellrangga" target=3D"_blank" rel=3D"noreferrer nofollow noopener"=
+>linkedin.com/in/darellrangga<span aria-label=3D"Opens external link: https=
+://linkedin.com/in/darellrangga" class=3D"gmail-inline-flex gmail-items-bas=
+eline gmail-ml-0.5 gmail-align-baseline gmail-shrink-0"><span class=3D"gmai=
+l-inline-flex gmail-self-center gmail-shrink-0 gmail-items-center gmail-jus=
+tify-center"></span></span></a></span></span></li> </ul><p class=3D"gmail-"=
+><span style=3D"animation: 0.2s ease-out 32ms 1 normal both running fade-in=
+;">Sebagai </span><span style=3D"animation: 0.2s ease-out 46ms 1 normal bot=
+h running fade-in;">bahan </span><span style=3D"animation: 0.2s ease-out 60=
+ms 1 normal both running fade-in;">pertimbangan, </span><span style=3D"anim=
+ation: 0.2s ease-out 75ms 1 normal both running fade-in;">saya </span><span=
+ style=3D"animation: 0.2s ease-out 89ms 1 normal both running fade-in;">lam=
+pirkan </span><span style=3D"animation: 0.2s ease-out 103ms 1 normal both r=
+unning fade-in;">berkas </span><span style=3D"animation: 0.2s ease-out 117m=
+s 1 normal both running fade-in;"><strong>CV (PDF)</strong></span><span sty=
+le=3D"animation: 0.2s ease-out 131ms 1 normal both running fade-in;"> </spa=
+n><span style=3D"animation: 0.2s ease-out 145ms 1 normal both running fade-=
+in;">terbaru. </span><span style=3D"animation: 0.2s ease-out 159ms 1 normal=
+ both running fade-in;">Saya </span><span style=3D"animation: 0.2s ease-out=
+ 173ms 1 normal both running fade-in;">siap </span><span style=3D"animation=
+: 0.2s ease-out 188ms 1 normal both running fade-in;">untuk </span><span st=
+yle=3D"animation: 0.2s ease-out 202ms 1 normal both running fade-in;">mendi=
+skusikan </span><span style=3D"animation: 0.2s ease-out 216ms 1 normal both=
+ running fade-in;">lebih </span><span style=3D"animation: 0.2s ease-out 42m=
+s 1 normal both running fade-in;">lanjut </span><span style=3D"animation: 0=
+.2s ease-out 55ms 1 normal both running fade-in;">bagaimana </span><span st=
+yle=3D"animation: 0.2s ease-out 68ms 1 normal both running fade-in;">kemamp=
+uan </span><span style=3D"animation: 0.2s ease-out 81ms 1 normal both runni=
+ng fade-in;">teknis </span><span style=3D"animation: 0.2s ease-out 94ms 1 n=
+ormal both running fade-in;">dan </span><span style=3D"animation: 0.2s ease=
+-out 107ms 1 normal both running fade-in;">fleksibilitas </span><span style=
+=3D"animation: 0.2s ease-out 120ms 1 normal both running fade-in;">adaptasi=
+ </span><span style=3D"animation: 0.2s ease-out 133ms 1 normal both running=
+ fade-in;">saya </span><span style=3D"animation: 0.2s ease-out 146ms 1 norm=
+al both running fade-in;">dapat </span><span style=3D"animation: 0.2s ease-=
+out 159ms 1 normal both running fade-in;">membantu </span><span style=3D"an=
+imation: 0.2s ease-out 171ms 1 normal both running fade-in;">pengerjaan </s=
+pan><span style=3D"animation: 0.2s ease-out 184ms 1 normal both running fad=
+e-in;">proyek-proyek </span><span style=3D"animation: 0.2s ease-out 197ms 1=
+ normal both running fade-in;">klien </span><span style=3D"animation: 0.2s =
+ease-out 210ms 1 normal both running fade-in;">di </span><span style=3D"ani=
+mation: 0.2s ease-out 223ms 1 normal both running fade-in;">Bilcode.</span>=
+</p><p class=3D"gmail-"><span style=3D"animation: 0.2s ease-out 236ms 1 nor=
+mal both running fade-in;">Terima </span><span style=3D"animation: 0.2s eas=
+e-out 112ms 1 normal both running fade-in;">kasih </span><span style=3D"ani=
+mation: 0.2s ease-out 127ms 1 normal both running fade-in;">atas </span><sp=
+an style=3D"animation: 0.2s ease-out 142ms 1 normal both running fade-in;">=
+waktu </span><span style=3D"animation: 0.2s ease-out 156ms 1 normal both ru=
+nning fade-in;">dan </span><span style=3D"animation: 0.2s ease-out 171ms 1 =
+normal both running fade-in;">kesempatan </span><span style=3D"animation: 0=
+.2s ease-out 186ms 1 normal both running fade-in;">yang </span><span style=
+=3D"animation: 0.2s ease-out 200ms 1 normal both running fade-in;">diberika=
+n.</span></p><p class=3D"gmail-"><span style=3D"animation: 0.2s ease-out 21=
+5ms 1 normal both running fade-in;">Salam,</span></p><p class=3D"gmail-">  =
+       </p><p class=3D"gmail-"><span style=3D"animation: 0.2s ease-out 215m=
+s 1 normal both running fade-in;"><strong>Darell Rangga Putra Rachman</stro=
+ng></span><span style=3D"animation: 0.2s ease-out 215ms 1 normal both runni=
+ng fade-in;"><br></span><span style=3D"animation: 0.2s ease-out 215ms 1 nor=
+mal both running fade-in;"></span><span style=3D"animation: 0.2s ease-out 2=
+15ms 1 normal both running fade-in;"> </span><span style=3D"animation: 0.2s=
+ ease-out 215ms 1 normal both running fade-in;">Bekasi, </span><span style=
+=3D"animation: 0.2s ease-out 215ms 1 normal both running fade-in;">Indonesi=
+a</span><span style=3D"animation: 0.2s ease-out 38ms 1 normal both running =
+fade-in;"><br></span><span style=3D"animation: 0.2s ease-out 61ms 1 normal =
+both running fade-in;"></span><span style=3D"animation: 0.2s ease-out 84ms =
+1 normal both running fade-in;"> </span><span style=3D"animation: 0.2s ease=
+-out 107ms 1 normal both running fade-in;">WhatsApp </span><span style=3D"a=
+nimation: 0.2s ease-out 130ms 1 normal both running fade-in;">/ </span><spa=
+n style=3D"animation: 0.2s ease-out 153ms 1 normal both running fade-in;">T=
+elepon: </span><span style=3D"animation: 0.2s ease-out 176ms 1 normal both =
+running fade-in;">+62 </span><span style=3D"animation: 0.2s ease-out 198ms =
+1 normal both running fade-in;">897-8638-973</span><span style=3D"animation=
+: 0.2s ease-out 105ms 1 normal both running fade-in;"><br></span><span styl=
+e=3D"animation: 0.2s ease-out 124ms 1 normal both running fade-in;"></span>=
+<span style=3D"animation: 0.2s ease-out 143ms 1 normal both running fade-in=
+;"> </span><span style=3D"animation: 0.2s ease-out 163ms 1 normal both runn=
+ing fade-in;">Email: </span><span style=3D"animation: 0.2s ease-out 182ms 1=
+ normal both running fade-in;"><span class=3D"gmail-context-scope-mention">=
+<a href=3D"mailto:darrelrangga@gmail.com" rel=3D"noreferrer nofollow noopen=
+er">darrelrangga@gmail.com</a></span></span></p></div> </blockquote>
+      </div>
