@@ -1,83 +1,64 @@
-## 2026-11-02T08:57:38Z
+## 2026-11-02T12:49:12Z
 You are worker_m1, a teamwork_worker subagent.
-Your working directory: D:\Ngoding\interviewWeb\BillcodeTech\.agents\teamwork\worker_m1\
-Project root: D:\Ngoding\interviewWeb\BillcodeTech
-
-MANDATORY FIRST STEP:
-Read:
-1. D:\Ngoding\interviewWeb\BillcodeTech\.agents\teamwork\ORIGINAL_REQUEST.md (Day 2 requirements R1, R2)
-2. D:\Ngoding\interviewWeb\BillcodeTech\.agents\teamwork\orchestrator_2\PROJECT.md
-3. D:\Ngoding\interviewWeb\BillcodeTech\.agents\teamwork\spec_miner_day2\handoff.md
-4. D:\Ngoding\interviewWeb\BillcodeTech\.agents\teamwork\explorer_db_test\handoff.md
-5. docs/ERD.md, docs/RUNBOOK.md
+Working Directory: D:\Ngoding\interviewWeb\BillcodeTech\.agents\teamwork\worker_m1/
+Parent Orchestrator ID: 43d63726-8e7d-4ce8-9507-d98d72d21885
 
 MANDATORY INTEGRITY WARNING:
 DO NOT CHEAT. All implementations must be genuine. DO NOT hardcode test results, create dummy/facade implementations, or circumvent the intended task. A teamwork_auditor will independently verify your work. Integrity violations WILL be detected and your work WILL be rejected.
 
-Your Milestone Scope (M1: Database Core, Relational Models, Seeding & Alembic):
-You exclusively own and will implement the following files in `backend/`:
+MANDATORY INPUT:
+Read D:\Ngoding\interviewWeb\BillcodeTech\.agents\teamwork\ORIGINAL_REQUEST.md.
+Also inspect:
+- D:\Ngoding\interviewWeb\BillcodeTech\PROJECT.md
+- D:\Ngoding\interviewWeb\BillcodeTech\docs\STYLING_GUIDE.md
+- D:\Ngoding\interviewWeb\BillcodeTech\.agents\teamwork\spec_miner_day3_1\report.md
+- D:\Ngoding\interviewWeb\BillcodeTech\.agents\teamwork\explorer_web_env_1\report.md
+- D:\Ngoding\interviewWeb\BillcodeTech\.agents\teamwork\explorer_backend_api_1\report.md
 
-1. `backend/app/core/config.py`:
-   - Pydantic Settings class loading from `.env` or defaults:
-     - `PROJECT_NAME`: "Smart Waste Management System API"
-     - `VERSION`: "1.0.0"
-     - `API_V1_STR`: "/api/v1"
-     - `DATABASE_URL`: `postgresql+psycopg2://postgres:postgres@localhost:5432/swms_db`
-     - `SQLITE_FALLBACK_URL`: `sqlite:///./swms_dev.db`
-     - `JWT_SECRET`: default secure key (e.g. "bilcode-swms-super-secret-jwt-key-2026")
-     - `ALGORITHM`: "HS256"
-     - `ACCESS_TOKEN_EXPIRE_MINUTES`: 60 * 24 (1440 mins)
-     - `UPLOAD_DIR`: "backend/uploads/reports"
+OBJECTIVE:
+Implement Milestone 1 (M1): Next.js 14 App Router Setup & Eco-Tech Design System Scaffolding in `web/`:
+1. Dependencies & Scripts:
+   - Run `npm install` inside `web/` to install all dependencies cleanly.
+   - Verify/update `web/package.json` scripts (`"typecheck": "tsc --noEmit"`).
+2. Configuration Files:
+   - Create `web/tsconfig.json` with strict TypeScript configuration and path aliases (`@/*` -> `./src/*`).
+   - Create `web/next.config.mjs` configured with `images.unoptimized: true` (or remotePatterns allowing `localhost:8000`).
+   - Create `web/postcss.config.js` with `tailwindcss` and `autoprefixer`.
+   - Create `web/tailwind.config.ts` adhering strictly to `docs/STYLING_GUIDE.md`:
+     - Font families: `sans: ['var(--font-inter)', 'Inter', 'sans-serif']`, `heading: ['var(--font-space-grotesk)', 'Space Grotesk', 'sans-serif']`, `mono: ['var(--font-jetbrains-mono)', 'JetBrains Mono', 'monospace']`.
+     - Brand colors: `primary-50` (`#ecfdf5`), `primary-500` (`#10b981`), `primary-600` (`#059669` Brand Primary), `primary-700` (`#047857`), `primary-900` (`#064e3b`).
+     - Neutrals: `surface-ground` (`#f8fafc`), `surface-card` (`#ffffff`), `border-subtle` (`#e2e8f0`), `text-muted` (`#64748b`), `text-body` (`#334155`), `text-heading` (`#0f172a`).
+   - Create `web/.env.local` with `NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1`.
+3. Root Layout & Typography:
+   - Create `web/src/app/layout.tsx` importing `Inter`, `Space_Grotesk`, and `JetBrains_Mono` via `next/font/google` with CSS variables `--font-inter`, `--font-space-grotesk`, `--font-jetbrains-mono`.
+   - Create `web/src/app/globals.css` with `@tailwind base; @tailwind components; @tailwind utilities;` and base body styles.
+   - Create `web/src/app/page.tsx` redirecting to `/dashboard` or `/login`.
+4. Shared Utilities & TypeScript Models:
+   - Create `web/src/lib/utils.ts` with `cn` helper (`clsx` + `twMerge`).
+   - Create `web/src/types/api.ts` with full TypeScript interfaces for UserProfile, Report, DashboardStats, Category, and ApiResponse (as documented in `explorer_backend_api_1/report.md`).
+5. Eco-Tech Reusable UI Components:
+   - Create `web/src/components/StatusBadge.tsx`:
+     - `Pending`: `bg-amber-50 text-amber-700 border-amber-200`
+     - `In Progress`: `bg-blue-50 text-blue-700 border-blue-200`
+     - `Completed`: `bg-emerald-50 text-emerald-700 border-emerald-200`
+     - `Rejected`: `bg-rose-50 text-rose-700 border-rose-200`
+     - With circular status dot indicator.
+   - Create `web/src/components/CategoryBadge.tsx`:
+     - `Organic Waste`: `#16a34a` (green)
+     - `Plastic Waste`: `#0284c7` (sky/blue)
+     - `Paper Waste`: `#d97706` (amber)
+6. Responsive App Shell Components:
+   - Create `web/src/components/Sidebar.tsx` (Desktop fixed `w-64`, mobile slide-out drawer with hamburger toggle, Eco-Tech logo, navigation items `/dashboard`, `/reports`, `/users`, API Docs link to `http://localhost:8000/docs`).
+   - Create `web/src/components/Header.tsx` (Breadcrumb navigation, live backend health indicator pinging `/health`, user profile summary, logout trigger).
+7. Verification:
+   - Run `npm run typecheck` (`tsc --noEmit`) and `npm run build` inside `web/` to verify that the project compiles with zero TypeScript or build errors.
 
-2. `backend/app/core/database.py`:
-   - Implement `create_app_engine()` with automatic SQLite fallback:
-     - Check `DATABASE_URL`. If PostgreSQL or non-sqlite, attempt active TCP handshake probe with `connect_timeout=2` and `pool_pre_ping=True`.
-     - If connection raises `OperationalError` or fails, log warning: `"Primary database connection failed. Falling back to local SQLite: ..."`, dispose failed engine, and return SQLite engine pointing to `SQLITE_FALLBACK_URL`.
-     - SQLite engine MUST configure:
-       - `connect_args={"check_same_thread": False}`
-       - `@event.listens_for(engine, "connect")` executing `PRAGMA foreign_keys=ON;`
-     - Declarative `Base = declarative_base()` (or `class Base(DeclarativeBase): pass` in SQLAlchemy 2.0).
-     - `SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)`
-     - `get_db()` generator yielding `db` session and closing in `finally`.
+WRITE OWNERSHIP:
+You own `web/package.json`, `web/tsconfig.json`, `web/next.config.mjs`, `web/tailwind.config.ts`, `web/postcss.config.js`, `web/.env.local`, `web/src/`. DO NOT modify `backend/` or `tests/`.
 
-3. Relational Models (`backend/app/models/`):
-   - `backend/app/models/base.py`: Shared `Base`.
-   - `backend/app/models/user.py`:
-     - `User`: `id` (`sa.Uuid(as_uuid=True)`, pk, default `uuid.uuid4`), `email` (`sa.String(255)`, unique, not null, indexed), `password_hash` (`sa.String(255)`, not null), `full_name` (`sa.String(150)`, not null), `role` (`sa.String(20)`, not null, default `"user"`, indexed, check constraint in ('admin', 'user')), `phone_number` (`sa.String(30)`, nullable), `is_active` (`sa.Boolean`, default True), `created_at` (`sa.DateTime(timezone=True)`, server_default=func.now()), `updated_at` (`sa.DateTime(timezone=True)`, server_default=func.now(), onupdate=func.now()).
-     - Relationship to `waste_reports` (`cascade="all, delete-orphan"`).
-   - `backend/app/models/category.py`:
-     - `Category`: `id` (`sa.Integer`, pk, autoincrement=True), `slug` (`sa.String(50)`, unique, not null), `name` (`sa.String(100)`, not null), `description` (`sa.Text`, nullable), `badge_color` (`sa.String(20)`, default="#059669"), `created_at` (`sa.DateTime(timezone=True)`, server_default=func.now()).
-     - Relationship to `waste_reports`.
-   - `backend/app/models/report.py`:
-     - `WasteReport`: `id` (`sa.Uuid(as_uuid=True)`, pk, default `uuid.uuid4`), `user_id` (`sa.Uuid(as_uuid=True)`, ForeignKey("users.id", ondelete="CASCADE"), not null, indexed), `category_id` (`sa.Integer`, ForeignKey("categories.id", ondelete="RESTRICT"), not null, indexed), `title` (`sa.String(200)`, not null), `description` (`sa.Text`, nullable), `image_url` (`sa.String(500)`, not null), `detected_category` (`sa.String(100)`, nullable), `ai_confidence` (`sa.Float`, default=0.0), `latitude` (`sa.Float`, not null), `longitude` (`sa.Float`, not null), `address_note` (`sa.String(255)`, nullable), `status` (`sa.String(30)`, default="Pending", not null, indexed, check constraint in ('Pending', 'In Progress', 'Completed', 'Rejected')), `admin_notes` (`sa.Text`, nullable), `resolved_at` (`sa.DateTime(timezone=True)`, nullable), `created_at` (`sa.DateTime(timezone=True)`, server_default=func.now(), index=True), `updated_at` (`sa.DateTime(timezone=True)`, server_default=func.now(), onupdate=func.now()).
-     - Relationships: `reporter` (`User`), `category` (`Category`), `logs` (`ReportLog`, `cascade="all, delete-orphan"`).
-   - `backend/app/models/log.py`:
-     - `ReportLog`: `id` (`sa.Uuid(as_uuid=True)`, pk, default `uuid.uuid4`), `report_id` (`sa.Uuid(as_uuid=True)`, ForeignKey("waste_reports.id", ondelete="CASCADE"), not null, indexed), `actor_id` (`sa.Uuid(as_uuid=True)`, ForeignKey("users.id", ondelete="SET NULL"), nullable), `previous_status` (`sa.String(30)`, nullable), `new_status` (`sa.String(30)`, not null), `remarks` (`sa.Text`, nullable), `created_at` (`sa.DateTime(timezone=True)`, server_default=func.now()).
-     - Relationships: `report` (`WasteReport`), `actor` (`User`).
-   - `backend/app/models/__init__.py`: Import all models (`User`, `Category`, `WasteReport`, `ReportLog`, `Base`) so they are exposed for Alembic metadata.
+OUTPUT REQUIREMENTS:
+Write your implementation details and build verification results to:
+`D:\Ngoding\interviewWeb\BillcodeTech\.agents\teamwork\worker_m1\report.md` and `handoff.md`.
 
-4. `backend/app/core/seed.py`:
-   - Implement `seed_database(db: Session)`:
-     - Initial categories:
-       1. Organic Waste: `slug="organic"`, `name="Organic Waste"`, `description="Sisa makanan, dedaunan, sayuran, dan bahan mudah terurai"`, `badge_color="#16a34a"`
-       2. Plastic Waste: `slug="plastic"`, `name="Plastic Waste"`, `description="Botol plastik, kantong kresek, kemasan sachet, sedotan"`, `badge_color="#0284c7"`
-       3. Paper Waste: `slug="paper"`, `name="Paper Waste"`, `description="Kertas karton, kardus, koran bekas, dokumen kertas"`, `badge_color="#d97706"`
-     - Default test credentials:
-       1. Super Admin: `email="admin@bilcode.id"`, `password="Admin123!"`, `role="admin"`, `full_name="Super Admin"`, `phone_number="081234567890"`
-       2. Citizen: `email="user@bilcode.id"`, `password="User123!"`, `role="user"`, `full_name="Warga Pelapor"`, `phone_number="08123456789"`
-     - Password hashing MUST use native `bcrypt` (`bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')`) directly (do NOT use passlib due to Python 3.12 compatibility bug).
-     - Must be completely idempotent (skip insert if category slug or user email already exists).
-
-5. `backend/seed.py`:
-   - Standalone CLI executable: initializes DB, seeds categories and users, prints status.
-
-6. `backend/alembic/` & `backend/alembic.ini`:
-   - Configure Alembic to use `backend.app.models.Base.metadata` and shared engine.
-   - Configure `render_as_batch=True` in `env.py` for SQLite DDL compatibility.
-   - Generate initial migration revision covering all 4 tables.
-
-7. Update `backend/app/main.py`:
-   - Add async `lifespan(app)` context manager:
-     - Run `Base.metadata.create_all(bind=engine)`
-     - With `SessionLocal()` as db: `seed_database(db)`
-   - Ensure health routes (`/`, `/health`, `/api/v1/health`) return 200 OK.
+COMPLETION CRITERIA:
+When finished, send a message back to parent orchestrator with a summary of changes, build output, and the path to handoff.md.
