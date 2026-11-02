@@ -73,6 +73,11 @@ ephemeral/
 *.pem
 *.key
 
+# SQLite Databases
+*.db
+*.sqlite
+*.sqlite3
+
 # IDEs & Editors
 .idea/
 .vscode/

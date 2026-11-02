@@ -275,6 +275,10 @@ class WastePredictor:
         """Make class instance directly callable."""
         return self.predict(image_input)
 
+    def predict_image(self, image_input: Union[str, Path, bytes, io.BytesIO, Image.Image]) -> Dict:
+        """Alias for predict method."""
+        return self.predict(image_input)
+
 
 # Module-level convenience functions
 _default_predictor = None
