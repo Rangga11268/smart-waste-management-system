@@ -1,17 +1,12 @@
 import type { Metadata } from 'next';
-import { Inter, Space_Grotesk, JetBrains_Mono } from 'next/font/google';
+import { Plus_Jakarta_Sans, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 
-const inter = Inter({
+const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
-  variable: '--font-inter',
+  variable: '--font-sans',
   display: 'swap',
-});
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ['latin'],
-  variable: '--font-space-grotesk',
-  display: 'swap',
+  weight: ['400', '500', '600', '700', '800'],
 });
 
 const jetbrainsMono = JetBrains_Mono({
@@ -33,9 +28,9 @@ export default function RootLayout({
   return (
     <html
       lang="id"
-      className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
+      className={`${plusJakartaSans.variable} ${jetbrainsMono.variable}`}
     >
-      <body className="min-h-screen bg-surface-ground text-body antialiased selection:bg-emerald-100 selection:text-emerald-900">
+      <body className="min-h-screen bg-slate-50/50 text-slate-800 font-sans antialiased selection:bg-emerald-500 selection:text-white">
         {children}
       </body>
     </html>

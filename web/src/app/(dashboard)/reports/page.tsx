@@ -244,36 +244,54 @@ export default function ReportsPage() {
       </div>
 
       {/* Filter & Search Bar */}
-      <div className="rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-[0_2px_10px_-3px_rgba(6,78,59,0.05)] space-y-4">
-        {/* Scope Tabs: Semua Laporan vs Laporan Saya */}
-        {user && (
-          <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-            <button
-              type="button"
-              onClick={() => setOnlyMyReports(false)}
-              className={cn(
-                'px-3 py-1.5 rounded-lg text-xs font-semibold transition-all',
-                !onlyMyReports
-                  ? 'bg-emerald-50 text-emerald-700 shadow-2xs'
-                  : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50'
-              )}
-            >
-              Semua Laporan Publik
-            </button>
-            <button
-              type="button"
-              onClick={() => setOnlyMyReports(true)}
-              className={cn(
-                'px-3 py-1.5 rounded-lg text-xs font-semibold transition-all',
-                onlyMyReports
-                  ? 'bg-emerald-50 text-emerald-700 shadow-2xs'
-                  : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50'
-              )}
-            >
-              Laporan Saya ({reports.filter((r) => r.reporter?.id === user.id).length})
-            </button>
-          </div>
-        )}
+      <div className="rounded-2xl border border-slate-200/90 bg-white p-4 sm:p-5 shadow-[0_1px_3px_rgba(15,23,42,0.04)] space-y-3.5">
+        {/* Quick Status Filter Tabs */}
+        <div className="flex flex-wrap items-center gap-1.5 border-b border-slate-100 pb-3">
+          {[
+            { label: 'Semua Status', value: '' },
+            { label: 'Menunggu Validasi', value: 'Pending' },
+            { label: 'Sedang Ditangani', value: 'In Progress' },
+            { label: 'Selesai Ditangani', value: 'Completed' },
+            { label: 'Ditolak', value: 'Rejected' },
+          ].map((tab) => {
+            const isTabActive = statusFilter === tab.value;
+            return (
+              <button
+                key={tab.value}
+                type="button"
+                onClick={() => {
+                  setStatusFilter(tab.value);
+                  setPage(1);
+                }}
+                className={cn(
+                  'px-3 py-1.5 rounded-xl text-xs font-bold transition-all',
+                  isTabActive
+                    ? 'bg-slate-900 text-white shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                )}
+              >
+                {tab.label}
+              </button>
+            );
+          })}
+
+          {user && (
+            <div className="ml-auto flex items-center gap-1.5 pl-3 border-l border-slate-200">
+              <button
+                type="button"
+                onClick={() => setOnlyMyReports(!onlyMyReports)}
+                className={cn(
+                  'px-3 py-1.5 rounded-xl text-xs font-bold transition-all',
+                  onlyMyReports
+                    ? 'bg-emerald-600 text-white shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                )}
+              >
+                Laporan Saya
+              </button>
+            </div>
+          )}
+        </div>
 
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
           {/* Keyword Search Input with 300ms debounce */}

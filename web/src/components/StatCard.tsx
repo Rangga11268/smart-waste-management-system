@@ -22,22 +22,27 @@ const variantStyles = {
   default: {
     iconBg: 'bg-slate-100 text-slate-700 border-slate-200/80',
     cardBorder: 'hover:border-slate-300',
+    topBar: 'bg-slate-300',
   },
   slate: {
     iconBg: 'bg-slate-100 text-slate-700 border-slate-200/80',
     cardBorder: 'hover:border-slate-300',
+    topBar: 'bg-slate-400',
   },
   amber: {
     iconBg: 'bg-amber-50 text-amber-600 border-amber-200/80',
     cardBorder: 'hover:border-amber-300',
+    topBar: 'bg-amber-500',
   },
   blue: {
     iconBg: 'bg-blue-50 text-blue-600 border-blue-200/80',
     cardBorder: 'hover:border-blue-300',
+    topBar: 'bg-blue-500',
   },
   emerald: {
     iconBg: 'bg-emerald-50 text-emerald-600 border-emerald-200/80',
     cardBorder: 'hover:border-emerald-300',
+    topBar: 'bg-emerald-500',
   },
 };
 
@@ -80,13 +85,14 @@ export default function StatCard({
   return (
     <div
       className={cn(
-        'group relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 sm:p-6 shadow-[0_2px_10px_-3px_rgba(6,78,59,0.05)] transition-all duration-200 hover:shadow-[0_8px_20px_-4px_rgba(6,78,59,0.08)] hover:-translate-y-0.5',
+        'group relative overflow-hidden rounded-2xl border border-slate-200/90 bg-white p-5 sm:p-6 shadow-[0_1px_3px_rgba(15,23,42,0.04)] transition-all duration-200 hover:shadow-[0_8px_20px_-4px_rgba(15,23,42,0.08)] hover:-translate-y-0.5',
         currentVariant.cardBorder,
         className
       )}
       data-testid="stat-card"
     >
-      <div className="flex items-start justify-between">
+      <div className={cn('absolute top-0 left-0 right-0 h-1', currentVariant.topBar)} />
+      <div className="flex items-start justify-between pt-1">
         <div className="space-y-1">
           <p className="font-sans text-xs font-semibold uppercase tracking-wider text-slate-500">{title}</p>
           <div className="font-heading text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">

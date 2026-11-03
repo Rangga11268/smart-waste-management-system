@@ -80,42 +80,46 @@ export default function DashboardPage() {
   return (
     <div className="space-y-6 sm:space-y-8">
       {/* Page Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between pb-2 border-b border-slate-200/80">
         <div>
           <div className="flex items-center gap-3">
-            <h1 className="font-heading text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-              Ringkasan Operasional
+            <h1 className="font-heading text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
+              Pusat Kendali Operasional
             </h1>
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-50 px-2.5 py-0.5 text-xs font-bold text-emerald-800">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              Live Telemetri (WIB)
+            </span>
             {activeUsers !== null && (
-              <span className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-xs font-semibold text-emerald-700">
-                <Users className="h-3 w-3" />
+              <span className="hidden lg:inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2.5 py-0.5 text-xs font-semibold text-slate-700 shadow-2xs">
+                <Users className="h-3 w-3 text-slate-500" />
                 {activeUsers} Pengguna Aktif
               </span>
             )}
           </div>
           <p className="mt-1 font-sans text-sm text-slate-500">
-            Pemantauan real-time metrik laporan sampah perkotaan dan aktivitas sistem terintegrasi.
+            Pemantauan metrik laporan sampah perkotaan, inferensi AI MobileNetV2, dan respon armada lapangan terintegrasi.
           </p>
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
           <Link
             href="/reports"
-            className="inline-flex items-center gap-2 rounded-xl border border-slate-200/80 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-[0_2px_10px_-3px_rgba(6,78,59,0.05)] hover:bg-slate-50 hover:text-slate-900 active:scale-[0.98] transition-all"
+            className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-xs sm:text-sm font-bold text-white shadow-sm hover:bg-emerald-700 active:scale-[0.98] transition-all"
           >
-            <span>Lihat Semua Laporan</span>
-            <ArrowRight className="h-4 w-4 text-slate-400" />
+            <span>Tinjau Laporan</span>
+            <ArrowRight className="h-4 w-4" />
           </Link>
           <button
             type="button"
             onClick={() => fetchStats(true)}
             disabled={isRefreshing || isLoading}
-            className="inline-flex items-center gap-2 rounded-xl bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white shadow-[0_2px_10px_-3px_rgba(6,78,59,0.05)] hover:bg-primary-700 active:scale-[0.98] disabled:opacity-50 transition-all"
+            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-xs sm:text-sm font-semibold text-slate-700 shadow-2xs hover:bg-slate-50 hover:text-slate-900 active:scale-[0.98] disabled:opacity-50 transition-all"
             aria-label="Segarkan data statistik"
           >
             <RotateCw
-              className={cn('h-4 w-4 transition-transform', isRefreshing && 'animate-spin')}
+              className={cn('h-4 w-4 transition-transform', isRefreshing && 'animate-spin text-emerald-600')}
             />
             <span className="hidden sm:inline">Segarkan</span>
           </button>
