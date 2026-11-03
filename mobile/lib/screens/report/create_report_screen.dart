@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../models/category.dart';
@@ -25,7 +25,8 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
   final _formKey = GlobalKey<FormState>();
   final _imagePicker = ImagePicker();
 
-  File? _imageFile;
+  Uint8List? _imageBytes;
+  String? _imageName;
   bool _isAnalyzingAI = false;
   PredictionResult? _aiResult;
   String? _aiError;
@@ -94,15 +95,16 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
       );
 
       if (picked != null) {
-        final file = File(picked.path);
+        final bytes = await picked.readAsBytes();
         setState(() {
-          _imageFile = file;
+          _imageBytes = bytes;
+          _imageName = picked.name;
           _aiResult = null;
           _aiError = null;
         });
 
         // Trigger automatic AI analysis
-        _runAiInference(file.path);
+        _runAiInference(bytes, picked.name);
       }
     } catch (e) {
       if (mounted) {
@@ -116,14 +118,14 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
     }
   }
 
-  Future<void> _runAiInference(String path) async {
+  Future<void> _runAiInference(Uint8List bytes, String filename) async {
     setState(() {
       _isAnalyzingAI = true;
       _aiError = null;
     });
 
     try {
-      final result = await widget.apiService.predictImage(path);
+      final result = await widget.apiService.predictImage(bytes, filename);
       if (mounted) {
         setState(() {
           _aiResult = result;
@@ -147,7 +149,7 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
   }
 
   Future<void> _handleSubmit() async {
-    if (_imageFile == null) {
+    if (_imageBytes == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Harap ambil foto sampah terlebih dahulu'),
@@ -169,7 +171,8 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
 
     try {
       final res = await widget.apiService.submitReport(
-        imagePath: _imageFile!.path,
+        imageBytes: _imageBytes!,
+        filename: _imageName ?? 'evidence.jpg',
         title: _titleController.text.trim(),
         description: _descController.text.trim().isNotEmpty
             ? _descController.text.trim()
@@ -293,11 +296,11 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
       clipBehavior: Clip.antiAlias,
       child: Column(
         children: [
-          if (_imageFile != null)
+          if (_imageBytes != null)
             Stack(
               children: [
-                Image.file(
-                  _imageFile!,
+                Image.memory(
+                  _imageBytes!,
                   height: 220,
                   width: double.infinity,
                   fit: BoxFit.cover,
@@ -311,7 +314,8 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
                       icon: const Icon(Icons.close, color: Colors.white, size: 20),
                       onPressed: () {
                         setState(() {
-                          _imageFile = null;
+                          _imageBytes = null;
+                          _imageName = null;
                           _aiResult = null;
                           _aiError = null;
                         });

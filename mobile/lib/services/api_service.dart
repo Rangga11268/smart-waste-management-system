@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:io';
+import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 import '../config/app_config.dart';
 import '../models/category.dart';
@@ -45,19 +45,14 @@ class ApiService {
     }
   }
 
-  // 2. Classify image with MobileNetV2 AI
-  Future<PredictionResult> predictImage(String imagePath) async {
+  // 2. Classify image with MobileNetV2 AI (supports byte array for cross-platform Web & Mobile)
+  Future<PredictionResult> predictImage(Uint8List imageBytes, String filename) async {
     final uri = Uri.parse('${AppConfig.baseUrl}/predict');
     final request = http.MultipartRequest('POST', uri);
 
-    final file = File(imagePath);
-    if (!await file.exists()) {
-      throw Exception('Berkas gambar tidak ditemukan di perangkat');
-    }
-
     request.headers.addAll(_headers);
     request.files.add(
-      await http.MultipartFile.fromPath('file', file.path),
+      http.MultipartFile.fromBytes('file', imageBytes, filename: filename),
     );
 
     final streamedResponse = await request.send().timeout(const Duration(seconds: 25));
@@ -75,9 +70,10 @@ class ApiService {
     }
   }
 
-  // 3. Submit Waste Report
+  // 3. Submit Waste Report (cross-platform with byte array)
   Future<Map<String, dynamic>> submitReport({
-    required String imagePath,
+    required Uint8List imageBytes,
+    required String filename,
     required String title,
     String? description,
     required int categoryId,
@@ -88,14 +84,9 @@ class ApiService {
     final uri = Uri.parse('${AppConfig.baseUrl}/reports');
     final request = http.MultipartRequest('POST', uri);
 
-    final file = File(imagePath);
-    if (!await file.exists()) {
-      throw Exception('Berkas gambar tidak ditemukan di perangkat');
-    }
-
     request.headers.addAll(_headers);
     request.files.add(
-      await http.MultipartFile.fromPath('file', file.path),
+      http.MultipartFile.fromBytes('file', imageBytes, filename: filename),
     );
 
     request.fields['title'] = title;
