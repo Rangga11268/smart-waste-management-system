@@ -66,8 +66,8 @@ function DashboardShell({ children }: { children: React.ReactNode }) {
       {/* Sidebar Navigation */}
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-      {/* Main App Container */}
-      <div className="flex min-h-screen flex-1 flex-col lg:pl-64">
+      {/* Main App Container with Push Margin on Tablets & Desktop */}
+      <div className="flex min-h-screen flex-1 flex-col md:pl-64">
         {/* Top Header Bar */}
         <Header
           onOpenSidebar={() => setSidebarOpen(true)}

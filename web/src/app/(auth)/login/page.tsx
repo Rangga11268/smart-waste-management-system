@@ -291,11 +291,11 @@ function LoginForm() {
               <p className="text-center text-[11px] font-bold uppercase tracking-wider text-slate-400">
                 Pintasan Pengujian Cepat
               </p>
-              <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
+              <div className="mt-3 grid grid-cols-1 gap-2.5 sm:grid-cols-2">
                 <button
                   type="button"
                   onClick={() => handleQuickPreset('admin@bilcode.id', 'Admin123!')}
-                  className="flex items-center justify-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50/80 px-3 py-2 text-xs font-bold text-emerald-800 hover:bg-emerald-100 transition-all shadow-2xs"
+                  className="flex items-center justify-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50/80 px-3 py-2.5 text-xs font-bold text-emerald-800 hover:bg-emerald-100 transition-all shadow-2xs min-h-[44px]"
                 >
                   <ShieldCheck className="h-4 w-4 text-emerald-600 shrink-0" />
                   <span>Login Administrator</span>
@@ -303,7 +303,7 @@ function LoginForm() {
                 <button
                   type="button"
                   onClick={() => handleQuickPreset('user@bilcode.id', 'User123!')}
-                  className="flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-100 transition-all shadow-2xs"
+                  className="flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-xs font-bold text-slate-700 hover:bg-slate-100 transition-all shadow-2xs min-h-[44px]"
                 >
                   <UserCheck className="h-4 w-4 text-slate-500 shrink-0" />
                   <span>Login Warga Pelapor</span>

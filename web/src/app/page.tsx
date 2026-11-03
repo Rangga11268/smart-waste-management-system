@@ -96,8 +96,8 @@ export default function LandingPage() {
               Akselerasi Keberlanjutan Kota dengan <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">AI Vision</span> & <span className="bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent">Geotagging</span> Presisi.
             </h1>
 
-            {/* Subtitle */}
-            <p className="text-base sm:text-xl text-slate-600 leading-relaxed max-w-2xl mx-auto font-medium">
+            {/* Subtitle with High WCAG Contrast */}
+            <p className="text-base sm:text-xl text-slate-700 leading-relaxed max-w-2xl mx-auto font-medium">
               SWMS menghubungkan pelaporan foto bukti warga, inferensi model MobileNetV2 berkecepatan tinggi, serta orkestrasi armada lapangan secara waktu-nyata tanpa data loss.
             </p>
 

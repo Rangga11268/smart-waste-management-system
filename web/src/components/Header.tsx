@@ -97,7 +97,7 @@ export default function Header({ onOpenSidebar, user, onLogout, className }: Hea
         {/* Mobile Hamburger Toggle */}
         <button
           onClick={onOpenSidebar}
-          className="rounded-lg p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-700 lg:hidden"
+          className="rounded-xl p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-800 md:hidden transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
           aria-label="Buka menu navigasi"
         >
           <Menu className="h-5 w-5" />
@@ -158,9 +158,9 @@ export default function Header({ onOpenSidebar, user, onLogout, className }: Hea
           </span>
         </div>
 
-        {/* User Summary Widget */}
+        {/* User Summary Widget (Clean & Non-Redundant) */}
         <div className="flex items-center gap-2.5 border-l border-slate-200 pl-3 sm:pl-4">
-          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 font-heading text-xs font-bold text-slate-700 border border-slate-200">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 font-heading text-xs font-extrabold text-slate-800 border border-slate-200 shadow-2xs">
             {displayName
               .split(' ')
               .map((n) => n[0])
@@ -169,18 +169,15 @@ export default function Header({ onOpenSidebar, user, onLogout, className }: Hea
               .toUpperCase()}
           </div>
           <div className="hidden sm:block text-left">
-            <div className="text-sm font-semibold text-slate-900 leading-tight">{displayName}</div>
-            <div className="flex items-center gap-1.5">
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-500" />
-              <span className="text-[11px] font-medium text-slate-500">{displayRole}</span>
-            </div>
+            <div className="text-xs font-bold text-slate-900 leading-tight">{displayName}</div>
+            <div className="text-[11px] font-medium text-slate-500 capitalize">{displayRole}</div>
           </div>
 
           {/* Logout Button */}
           {onLogout && (
             <button
               onClick={onLogout}
-              className="ml-1 rounded-lg p-2 text-slate-400 hover:bg-rose-50 hover:text-rose-600 transition-colors"
+              className="ml-1 rounded-xl p-2 text-slate-400 hover:bg-rose-50 hover:text-rose-600 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
               title="Keluar / Logout"
               aria-label="Logout"
             >

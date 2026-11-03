@@ -18,45 +18,46 @@ export interface StatCardProps {
   className?: string;
 }
 
+/* Deep, high-contrast, comfortable backgrounds that meet WCAG standards without eye strain */
 const cardStyles = {
   black: {
-    bg: 'bg-slate-900 border-slate-800 text-white shadow-lg shadow-slate-900/10',
-    title: 'text-slate-300',
+    bg: 'bg-slate-900 border-slate-800 text-white shadow-md shadow-slate-900/10',
+    title: 'text-slate-300 font-semibold',
     value: 'text-white',
-    pill: 'bg-white/15 text-white border border-white/20',
-    subtitle: 'text-slate-400',
+    pill: 'bg-slate-800 text-slate-200 border border-slate-700',
+    subtitle: 'text-slate-300',
     dots: 'text-slate-400 hover:text-white',
   },
   purple: {
-    bg: 'bg-gradient-to-br from-fuchsia-600 via-purple-600 to-indigo-600 border-purple-500/40 text-white shadow-lg shadow-purple-600/20',
-    title: 'text-purple-100',
+    bg: 'bg-[#18112e] border-purple-900/50 text-white shadow-md shadow-purple-950/20',
+    title: 'text-purple-200 font-semibold',
     value: 'text-white',
-    pill: 'bg-white/20 text-white border border-white/30 backdrop-blur-xs',
-    subtitle: 'text-purple-100/90',
-    dots: 'text-purple-200 hover:text-white',
+    pill: 'bg-purple-900/60 text-purple-200 border border-purple-700/60',
+    subtitle: 'text-purple-200/90',
+    dots: 'text-purple-300 hover:text-white',
   },
   blue: {
-    bg: 'bg-gradient-to-br from-blue-600 via-blue-600 to-indigo-700 border-blue-500/40 text-white shadow-lg shadow-blue-600/20',
-    title: 'text-blue-100',
+    bg: 'bg-[#0e1d3d] border-blue-900/50 text-white shadow-md shadow-blue-950/20',
+    title: 'text-sky-200 font-semibold',
     value: 'text-white',
-    pill: 'bg-white/20 text-white border border-white/30 backdrop-blur-xs',
-    subtitle: 'text-blue-100/90',
-    dots: 'text-blue-200 hover:text-white',
+    pill: 'bg-blue-900/60 text-sky-200 border border-blue-700/60',
+    subtitle: 'text-sky-200/90',
+    dots: 'text-sky-300 hover:text-white',
   },
   emerald: {
-    bg: 'bg-gradient-to-br from-emerald-600 via-teal-600 to-teal-800 border-emerald-500/40 text-white shadow-lg shadow-emerald-600/20',
-    title: 'text-emerald-100',
+    bg: 'bg-[#09221b] border-emerald-900/50 text-white shadow-md shadow-emerald-950/20',
+    title: 'text-emerald-200 font-semibold',
     value: 'text-white',
-    pill: 'bg-white/20 text-white border border-white/30 backdrop-blur-xs',
-    subtitle: 'text-emerald-100/90',
-    dots: 'text-emerald-200 hover:text-white',
+    pill: 'bg-emerald-900/60 text-emerald-200 border border-emerald-700/60',
+    subtitle: 'text-emerald-200/90',
+    dots: 'text-emerald-300 hover:text-white',
   },
   default: {
     bg: 'bg-white border-slate-200 text-slate-900 shadow-sm',
-    title: 'text-slate-500',
+    title: 'text-slate-600 font-semibold',
     value: 'text-slate-900',
     pill: 'bg-slate-100 text-slate-700 border border-slate-200',
-    subtitle: 'text-slate-500',
+    subtitle: 'text-slate-600',
     dots: 'text-slate-400 hover:text-slate-600',
   },
 };
@@ -84,9 +85,9 @@ export default function StatCard({
           <div className="h-4 w-28 rounded bg-slate-200" />
           <div className="h-4 w-6 rounded bg-slate-200" />
         </div>
-        <div className="mt-6 flex items-baseline gap-3">
+        <div className="mt-5 space-y-3">
           <div className="h-10 w-24 rounded bg-slate-200" />
-          <div className="h-6 w-16 rounded-full bg-slate-200" />
+          <div className="h-5 w-28 rounded-full bg-slate-200" />
         </div>
         <div className="mt-5 pt-3 border-t border-slate-100">
           <div className="h-3 w-36 rounded bg-slate-100" />
@@ -109,7 +110,7 @@ export default function StatCard({
     >
       {/* Top Header: Title & Action/Icon */}
       <div className="flex items-center justify-between">
-        <span className={cn('text-sm font-semibold tracking-wide', style.title)}>
+        <span className={cn('text-sm tracking-wide', style.title)}>
           {title}
         </span>
         <div className="flex items-center gap-1.5">
@@ -120,7 +121,7 @@ export default function StatCard({
           ) : (
             <button
               type="button"
-              className={cn('rounded p-1 transition-colors', style.dots)}
+              className={cn('rounded-lg p-1.5 transition-colors min-h-[32px] min-w-[32px] flex items-center justify-center', style.dots)}
               aria-label="Opsi metrik"
             >
               <MoreHorizontal className="h-4 w-4" />
@@ -129,27 +130,29 @@ export default function StatCard({
         </div>
       </div>
 
-      {/* Main Metric Value & Trend Pill */}
-      <div className="mt-5 flex items-baseline flex-wrap gap-2.5">
-        <div className={cn('text-3xl sm:text-4xl font-extrabold tracking-tight', style.value)}>
+      {/* Main Metric Value (Uncramped with Dedicated Breathing Room) */}
+      <div className="mt-5">
+        <div className={cn('text-4xl sm:text-5xl font-black tracking-tight leading-none', style.value)}>
           {value}
         </div>
         {trend && (
-          <span
-            className={cn(
-              'inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-bold',
-              style.pill
-            )}
-          >
-            {trend.value}
-          </span>
+          <div className="mt-3">
+            <span
+              className={cn(
+                'inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-bold',
+                style.pill
+              )}
+            >
+              {trend.value}
+            </span>
+          </div>
         )}
       </div>
 
       {/* Footer Comparison Subtitle */}
       {subtitle && (
-        <div className="mt-5 pt-3 border-t border-white/10 flex items-center justify-between text-xs">
-          <span className={cn('font-medium line-clamp-1', style.subtitle)}>
+        <div className="mt-5 pt-3.5 border-t border-white/10 flex items-center justify-between text-xs">
+          <span className={cn('line-clamp-1 font-medium', style.subtitle)}>
             {subtitle}
           </span>
         </div>
