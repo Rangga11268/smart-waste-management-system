@@ -14,8 +14,8 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
-lib64/
+/lib/
+/lib64/
 parts/
 sdist/
 var/
@@ -23,6 +23,12 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+
+# Whitelist Flutter mobile/lib and Web lib
+!mobile/lib/
+!mobile/lib/**
+!web/src/lib/
+!web/src/lib/**
 
 # Virtual Environments
 venv/
