@@ -6,7 +6,7 @@ const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter',
   display: 'swap',
-  weight: ['400', '500', '600', '700'],
+  weight: ['400', '500', '600', '700', '800'],
 });
 
 const jetbrainsMono = JetBrains_Mono({
@@ -30,7 +30,7 @@ export default function RootLayout({
       lang="id"
       className={`${inter.variable} ${jetbrainsMono.variable}`}
     >
-      <body className="min-h-screen bg-slate-50 text-slate-800 font-sans antialiased selection:bg-emerald-600 selection:text-white">
+      <body className={`${inter.className} min-h-screen bg-slate-50 text-slate-800 antialiased selection:bg-emerald-600 selection:text-white`}>
         {children}
       </body>
     </html>

@@ -102,7 +102,7 @@ function LoginForm() {
       {/* Left Brand Showcase Column (Desktop Only) */}
       <div className="hidden lg:col-span-5 lg:flex lg:flex-col lg:justify-between bg-slate-900 p-12 text-white relative overflow-hidden border-r border-slate-800">
         <div className="relative z-10">
-          <Logo size={42} showText={true} />
+          <Logo size={42} showText={true} variant="inverted" />
           
           <div className="mt-12 space-y-5">
             <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-400">

@@ -5,9 +5,17 @@ export interface LogoProps {
   size?: number;
   className?: string;
   showText?: boolean;
+  variant?: 'default' | 'inverted';
 }
 
-export default function Logo({ size = 36, className, showText = true }: LogoProps) {
+export default function Logo({
+  size = 36,
+  className,
+  showText = true,
+  variant = 'default',
+}: LogoProps) {
+  const isInverted = variant === 'inverted';
+
   return (
     <div className={cn('inline-flex items-center gap-3', className)}>
       <svg
@@ -79,14 +87,31 @@ export default function Logo({ size = 36, className, showText = true }: LogoProp
       {showText && (
         <div className="flex flex-col">
           <div className="flex items-center gap-1.5">
-            <span className="font-heading text-lg font-extrabold tracking-tight text-slate-900 leading-none">
+            <span
+              className={cn(
+                'text-lg font-extrabold tracking-tight leading-none',
+                isInverted ? 'text-white' : 'text-slate-900'
+              )}
+            >
               SWMS
             </span>
-            <span className="rounded bg-emerald-50 px-1 py-0.2 text-[10px] font-bold text-emerald-700 border border-emerald-200/80">
+            <span
+              className={cn(
+                'rounded px-1.5 py-0.5 text-[10px] font-bold tracking-wider uppercase',
+                isInverted
+                  ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-400/30'
+                  : 'bg-emerald-50 text-emerald-700 border border-emerald-200/80'
+              )}
+            >
               ECO
             </span>
           </div>
-          <span className="text-[10px] font-semibold tracking-wider text-slate-500 uppercase mt-0.5">
+          <span
+            className={cn(
+              'text-[10px] font-semibold tracking-wider uppercase mt-1',
+              isInverted ? 'text-slate-300' : 'text-slate-500'
+            )}
+          >
             Smart Waste Management
           </span>
         </div>
