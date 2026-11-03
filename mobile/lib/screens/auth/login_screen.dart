@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../services/auth_service.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/swms_logo.dart';
 import '../settings/server_settings_screen.dart';
 import 'register_screen.dart';
 
@@ -89,20 +90,8 @@ class _LoginScreenState extends State<LoginScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 // Logo & Header
-                Center(
-                  child: Container(
-                    width: 72,
-                    height: 72,
-                    decoration: BoxDecoration(
-                      color: AppTheme.primaryContainer,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: const Icon(
-                      Icons.recycling_rounded,
-                      color: AppTheme.primary,
-                      size: 42,
-                    ),
-                  ),
+                const Center(
+                  child: SwmsLogo(size: 72, showText: false),
                 ),
                 const SizedBox(height: 16),
                 const Center(

@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import {
-  Recycle,
   Mail,
   Lock,
   Eye,
@@ -15,6 +14,7 @@ import {
   ArrowRight,
 } from 'lucide-react';
 import { AuthProvider, useAuth } from '@/lib/auth';
+import Logo from '@/components/Logo';
 import axios from 'axios';
 
 function LoginForm() {
@@ -28,14 +28,10 @@ function LoginForm() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [formErrors, setFormErrors] = useState<{ email?: string; password?: string }>({});
 
-  // If already authenticated, redirect appropriately
+  // If already authenticated, redirect to dashboard
   useEffect(() => {
     if (!authLoading && isAuthenticated && user) {
-      if (user.role === 'admin') {
-        router.replace('/dashboard');
-      } else {
-        router.replace('/reports');
-      }
+      router.replace('/dashboard');
     }
   }, [authLoading, isAuthenticated, user, router]);
 
@@ -68,12 +64,8 @@ function LoginForm() {
 
     setIsSubmitting(true);
     try {
-      const loggedUser = await login(email.trim(), password);
-      if (loggedUser.role === 'admin') {
-        router.push('/dashboard');
-      } else {
-        router.push('/reports');
-      }
+      await login(email.trim(), password);
+      router.push('/dashboard');
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
         if (err.response?.status === 401) {
@@ -108,9 +100,7 @@ function LoginForm() {
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         {/* Brand Logo & Header */}
         <div className="flex justify-center">
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary-600 text-white shadow-md shadow-emerald-600/20">
-            <Recycle className="h-8 w-8" />
-          </div>
+          <Logo size={58} showText={false} />
         </div>
 
         <div className="mt-4 text-center">

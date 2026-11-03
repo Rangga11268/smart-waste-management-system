@@ -7,6 +7,7 @@ import '../../services/auth_service.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/apple_bottom_bar.dart';
 import '../../widgets/backend_status_pill.dart';
+import '../../widgets/swms_logo.dart';
 import '../history/history_screen.dart';
 import '../history/report_detail_screen.dart';
 import '../report/create_report_screen.dart';
@@ -156,6 +157,8 @@ class _HomeScreenState extends State<HomeScreen> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                const SwmsLogo(size: 38),
+                const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -163,7 +166,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Text(
                         'Halo, ${user?.fullName.split(' ').first ?? 'Citizen'}',
                         style: const TextStyle(
-                          fontSize: 22,
+                          fontSize: 20,
                           fontWeight: FontWeight.w800,
                           color: AppTheme.textPrimary,
                           letterSpacing: -0.5,
@@ -171,9 +174,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       const SizedBox(height: 2),
                       const Text(
-                        'Sistem Pelaporan Sampah Cerdas',
+                        'SWMS Eco-Tech Platform',
                         style: TextStyle(
-                          fontSize: 13,
+                          fontSize: 12,
                           fontWeight: FontWeight.w500,
                           color: AppTheme.textSecondary,
                         ),

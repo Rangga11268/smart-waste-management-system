@@ -8,11 +8,12 @@ import {
   ClipboardList,
   Users,
   ExternalLink,
-  Recycle,
   X,
   FileText,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/lib/auth';
+import Logo from '@/components/Logo';
 
 interface NavItem {
   name: string;
@@ -57,6 +58,7 @@ interface SidebarProps {
 
 export default function Sidebar({ isOpen = false, onClose, className }: SidebarProps) {
   const pathname = usePathname();
+  const { isAdmin } = useAuth();
 
   const isNavActive = (href: string) => {
     if (href === '/dashboard' && pathname === '/dashboard') return true;
@@ -64,26 +66,19 @@ export default function Sidebar({ isOpen = false, onClose, className }: SidebarP
     return false;
   };
 
+  // Only administrators can see and access User Management
+  const visibleNavItems = navItems.filter((item) => {
+    if (item.href === '/users') return isAdmin;
+    return true;
+  });
+
   const navContent = (
     <div className="flex h-full flex-col justify-between bg-white text-slate-700">
       <div>
         {/* Logo and Brand Header */}
-        <div className="flex h-16 items-center justify-between border-b border-slate-200 px-6">
-          <Link href="/dashboard" className="flex items-center gap-3 group">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-600 text-white shadow-sm transition-transform group-hover:scale-105">
-              <Recycle className="h-6 w-6" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="font-heading text-lg font-bold tracking-tight text-slate-900">
-                  SWMS
-                </span>
-                <span className="rounded-md bg-emerald-50 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-700 border border-emerald-200">
-                  v1.0
-                </span>
-              </div>
-              <p className="text-[11px] font-medium text-slate-500">Eco-Tech Platform</p>
-            </div>
+        <div className="flex h-16 items-center justify-between border-b border-slate-200 px-5">
+          <Link href="/dashboard" className="flex items-center group">
+            <Logo size={34} showText={true} />
           </Link>
           {onClose && (
             <button
@@ -102,7 +97,7 @@ export default function Sidebar({ isOpen = false, onClose, className }: SidebarP
             Menu Utama
           </p>
           <nav className="space-y-1">
-            {navItems.map((item) => {
+            {visibleNavItems.map((item) => {
               const active = isNavActive(item.href);
               const Icon = item.icon;
               return (

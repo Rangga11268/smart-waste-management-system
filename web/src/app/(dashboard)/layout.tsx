@@ -25,19 +25,16 @@ function DashboardShell({ children }: { children: React.ReactNode }) {
     }
 
     // Role-based access control (RBAC):
-    // Citizen users ('user' role) are restricted to /reports and cannot access /dashboard or /users
-    if (user?.role === 'user') {
-      const isRestricted =
-        pathname === '/dashboard' ||
-        pathname?.startsWith('/dashboard/') ||
-        pathname === '/users' ||
-        pathname?.startsWith('/users/');
+    // Citizens ('user' role) have full access to /dashboard (public transparency) and /reports.
+    // Only /users (User Management) is strictly restricted to Administrators.
+    if (user?.role !== 'admin') {
+      const isRestricted = pathname === '/users' || pathname?.startsWith('/users/');
 
       if (isRestricted) {
         setAccessNotice(
-          'Akses Terbatas: Akun Warga Pelapor hanya diizinkan mengakses menu Laporan Sampah.'
+          'Akses Terbatas: Menu Manajemen Pengguna hanya dapat diakses oleh Administrator.'
         );
-        router.replace('/reports');
+        router.replace('/dashboard');
       }
     }
   }, [isLoading, isAuthenticated, user, pathname, router]);

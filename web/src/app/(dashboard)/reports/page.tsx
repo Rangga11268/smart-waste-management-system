@@ -13,12 +13,15 @@ import {
   AlertCircle,
   Loader2,
   FileSpreadsheet,
+  Plus,
 } from 'lucide-react';
 import StatusBadge from '@/components/StatusBadge';
 import CategoryBadge from '@/components/CategoryBadge';
 import ReportModal from '@/components/ReportModal';
+import CreateReportModal from '@/components/CreateReportModal';
+import { useAuth } from '@/lib/auth';
 import { reportsApi, categoriesApi, getFullImageUrl } from '@/lib/api';
-import { formatDate } from '@/lib/utils';
+import { formatDate, cn } from '@/lib/utils';
 import type {
   ReportListItem,
   ReportDetailData,
@@ -27,6 +30,8 @@ import type {
 } from '@/types/api';
 
 export default function ReportsPage() {
+  const { user } = useAuth();
+
   // Reports and pagination state
   const [reports, setReports] = useState<ReportListItem[]>([]);
   const [totalItems, setTotalItems] = useState<number>(0);
@@ -39,6 +44,7 @@ export default function ReportsPage() {
   const [debouncedSearch, setDebouncedSearch] = useState<string>('');
   const [statusFilter, setStatusFilter] = useState<string>('');
   const [categoryFilter, setCategoryFilter] = useState<string>('');
+  const [onlyMyReports, setOnlyMyReports] = useState<boolean>(false);
 
   // Categories list
   const [categories, setCategories] = useState<WasteCategory[]>([]);
@@ -48,9 +54,10 @@ export default function ReportsPage() {
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Review modal state
+  // Review & Create modal states
   const [selectedReport, setSelectedReport] = useState<ReportListItem | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
 
   // Fallback images map for failed image loads
   const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
@@ -190,6 +197,11 @@ export default function ReportsPage() {
     [searchInput, statusFilter, categoryFilter]
   );
 
+  const displayedReports = useMemo(() => {
+    if (!onlyMyReports || !user) return reports;
+    return reports.filter((r) => r.reporter?.id === user.id);
+  }, [reports, onlyMyReports, user]);
+
   return (
     <div className="space-y-6">
       {/* Page Header */}
@@ -208,19 +220,59 @@ export default function ReportsPage() {
           </p>
         </div>
 
-        <button
-          type="button"
-          onClick={() => fetchReports(false)}
-          disabled={isRefreshing || isLoading}
-          className="inline-flex items-center gap-2 self-start rounded-xl border border-slate-200/80 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 shadow-[0_2px_10px_-3px_rgba(6,78,59,0.05)] hover:bg-slate-50 hover:text-slate-900 active:scale-[0.98] transition-all disabled:opacity-50"
-        >
-          <RotateCw className={`h-3.5 w-3.5 ${isRefreshing ? 'animate-spin' : ''}`} />
-          <span>Segarkan Data</span>
-        </button>
+        <div className="flex flex-wrap items-center gap-2.5 self-start sm:self-auto">
+          <button
+            type="button"
+            onClick={() => setIsCreateModalOpen(true)}
+            className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2 text-xs sm:text-sm font-semibold text-white shadow-[0_2px_10px_-3px_rgba(6,78,59,0.15)] hover:bg-emerald-700 active:scale-[0.98] transition-all"
+          >
+            <Plus className="h-4 w-4" />
+            <span>Buat Laporan Baru</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => fetchReports(false)}
+            disabled={isRefreshing || isLoading}
+            className="inline-flex items-center gap-2 rounded-xl border border-slate-200/80 bg-white px-3.5 py-2 text-xs sm:text-sm font-semibold text-slate-700 shadow-[0_2px_10px_-3px_rgba(6,78,59,0.05)] hover:bg-slate-50 hover:text-slate-900 active:scale-[0.98] transition-all disabled:opacity-50"
+          >
+            <RotateCw className={`h-3.5 w-3.5 ${isRefreshing ? 'animate-spin' : ''}`} />
+            <span className="hidden sm:inline">Segarkan</span>
+          </button>
+        </div>
       </div>
 
       {/* Filter & Search Bar */}
       <div className="rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-[0_2px_10px_-3px_rgba(6,78,59,0.05)] space-y-4">
+        {/* Scope Tabs: Semua Laporan vs Laporan Saya */}
+        {user && (
+          <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
+            <button
+              type="button"
+              onClick={() => setOnlyMyReports(false)}
+              className={cn(
+                'px-3 py-1.5 rounded-lg text-xs font-semibold transition-all',
+                !onlyMyReports
+                  ? 'bg-emerald-50 text-emerald-700 shadow-2xs'
+                  : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50'
+              )}
+            >
+              Semua Laporan Publik
+            </button>
+            <button
+              type="button"
+              onClick={() => setOnlyMyReports(true)}
+              className={cn(
+                'px-3 py-1.5 rounded-lg text-xs font-semibold transition-all',
+                onlyMyReports
+                  ? 'bg-emerald-50 text-emerald-700 shadow-2xs'
+                  : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50'
+              )}
+            >
+              Laporan Saya ({reports.filter((r) => r.reporter?.id === user.id).length})
+            </button>
+          </div>
+        )}
+
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
           {/* Keyword Search Input with 300ms debounce */}
           <div className="relative flex-1">
@@ -401,7 +453,7 @@ export default function ReportsPage() {
                 </tr>
               ) : (
                 // Report Data Rows
-                reports.map((report) => {
+                displayedReports.map((report) => {
                   const truncatedId = report.id.slice(0, 8).toUpperCase();
                   const isImgError = imageErrors[report.id];
                   const imgSrc = isImgError
@@ -532,6 +584,16 @@ export default function ReportsPage() {
         isOpen={isModalOpen}
         onClose={handleCloseReviewModal}
         onStatusUpdated={handleReportUpdated}
+      />
+
+      {/* Create Report Modal Dialog */}
+      <CreateReportModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+        categories={categories}
+        onReportCreated={() => {
+          fetchReports(true);
+        }}
       />
     </div>
   );

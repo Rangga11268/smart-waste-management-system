@@ -9,6 +9,7 @@ import type {
   StatusUpdatePayload,
   DashboardStatsResponse,
   UserListResponse,
+  PredictResponseData,
 } from '@/types/api';
 
 const DEFAULT_API_BASE = 'http://localhost:8000/api/v1';
@@ -126,6 +127,31 @@ export const reportsApi = {
       `/reports/${id}/status`,
       payload
     );
+    return res.data;
+  },
+  createReport: async (formData: FormData): Promise<ApiResponse<ReportDetailData>> => {
+    const res = await apiClient.post<ApiResponse<ReportDetailData>>('/reports', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return res.data;
+  },
+  deleteReport: async (id: string): Promise<ApiResponse<{ id: string }>> => {
+    const res = await apiClient.delete<ApiResponse<{ id: string }>>(`/reports/${id}`);
+    return res.data;
+  },
+};
+
+export const predictApi = {
+  predict: async (file: File): Promise<ApiResponse<PredictResponseData>> => {
+    const formData = new FormData();
+    formData.append('file', file);
+    const res = await apiClient.post<ApiResponse<PredictResponseData>>('/predict', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
     return res.data;
   },
 };
