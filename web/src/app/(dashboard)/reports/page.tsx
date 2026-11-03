@@ -212,7 +212,7 @@ export default function ReportsPage() {
           type="button"
           onClick={() => fetchReports(false)}
           disabled={isRefreshing || isLoading}
-          className="inline-flex items-center gap-2 self-start rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 shadow-2xs hover:bg-slate-50 hover:text-slate-900 transition-colors disabled:opacity-50"
+          className="inline-flex items-center gap-2 self-start rounded-xl border border-slate-200/80 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 shadow-[0_2px_10px_-3px_rgba(6,78,59,0.05)] hover:bg-slate-50 hover:text-slate-900 active:scale-[0.98] transition-all disabled:opacity-50"
         >
           <RotateCw className={`h-3.5 w-3.5 ${isRefreshing ? 'animate-spin' : ''}`} />
           <span>Segarkan Data</span>
@@ -220,7 +220,7 @@ export default function ReportsPage() {
       </div>
 
       {/* Filter & Search Bar */}
-      <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-xs space-y-4">
+      <div className="rounded-2xl border border-slate-200/80 bg-white p-4 sm:p-5 shadow-[0_2px_10px_-3px_rgba(6,78,59,0.05)] space-y-4">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
           {/* Keyword Search Input with 300ms debounce */}
           <div className="relative flex-1">
@@ -317,11 +317,11 @@ export default function ReportsPage() {
       )}
 
       {/* Paginated Reports Table */}
-      <div className="rounded-2xl border border-slate-200 bg-white shadow-xs overflow-hidden">
+      <div className="rounded-2xl border border-slate-200/80 bg-white shadow-[0_2px_10px_-3px_rgba(6,78,59,0.05)] overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-slate-200 bg-slate-50/75 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+              <tr className="border-b border-slate-200/80 bg-slate-50/75 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
                 <th className="py-3.5 pl-5 pr-3">ID</th>
                 <th className="py-3.5 px-3">Thumbnail</th>
                 <th className="py-3.5 px-3 min-w-[200px]">Judul & Catatan</th>
@@ -390,7 +390,7 @@ export default function ReportsPage() {
                         <button
                           type="button"
                           onClick={handleResetFilters}
-                          className="mt-4 inline-flex items-center gap-1.5 rounded-xl border border-slate-300 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors shadow-2xs"
+                          className="mt-4 inline-flex items-center gap-1.5 rounded-xl border border-slate-300 bg-white px-3.5 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 active:scale-[0.98] transition-all shadow-2xs"
                         >
                           <RotateCcw className="h-3.5 w-3.5" />
                           <span>Bersihkan Filter</span>
@@ -411,11 +411,13 @@ export default function ReportsPage() {
                   return (
                     <tr
                       key={report.id}
-                      className="hover:bg-slate-50/80 transition-colors group"
+                      className="hover:bg-slate-50/80 transition-all duration-150 group"
                     >
                       {/* 1. ID */}
-                      <td className="py-3.5 pl-5 pr-3 font-mono text-xs font-semibold text-slate-500">
-                        #RPT-{truncatedId}
+                      <td className="py-3.5 pl-5 pr-3">
+                        <span className="font-mono text-xs font-medium text-slate-700 bg-slate-100/90 border border-slate-200/80 px-2 py-0.5 rounded-md">
+                          #RPT-{truncatedId}
+                        </span>
                       </td>
 
                       {/* 2. Thumbnail */}
@@ -455,8 +457,10 @@ export default function ReportsPage() {
                       </td>
 
                       {/* 6. Lokasi GPS */}
-                      <td className="py-3.5 px-3 font-mono text-xs text-slate-600 whitespace-nowrap">
-                        {report.latitude.toFixed(4)}, {report.longitude.toFixed(4)}
+                      <td className="py-3.5 px-3 whitespace-nowrap">
+                        <span className="font-mono text-xs font-medium text-slate-700 bg-slate-100/90 border border-slate-200/80 px-2 py-0.5 rounded-md">
+                          {report.latitude.toFixed(4)}, {report.longitude.toFixed(4)}
+                        </span>
                       </td>
 
                       {/* 7. Tanggal */}
@@ -474,7 +478,7 @@ export default function ReportsPage() {
                         <button
                           type="button"
                           onClick={() => handleOpenReviewModal(report)}
-                          className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-200 bg-emerald-50 px-2.5 py-1.5 text-xs font-semibold text-emerald-700 hover:bg-emerald-100 hover:border-emerald-300 transition-colors shadow-2xs group-hover:shadow-xs"
+                          className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-200 bg-emerald-50 px-2.5 py-1.5 text-xs font-semibold text-emerald-700 hover:bg-emerald-100 hover:border-emerald-300 active:scale-[0.98] transition-all shadow-2xs group-hover:shadow-xs"
                         >
                           <Eye className="h-3.5 w-3.5" />
                           <span>Tinjau</span>

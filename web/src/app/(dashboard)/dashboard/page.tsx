@@ -102,7 +102,7 @@ export default function DashboardPage() {
         <div className="flex items-center gap-3">
           <Link
             href="/reports"
-            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-xs hover:bg-slate-50 hover:text-slate-900 transition-all"
+            className="inline-flex items-center gap-2 rounded-xl border border-slate-200/80 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-[0_2px_10px_-3px_rgba(6,78,59,0.05)] hover:bg-slate-50 hover:text-slate-900 active:scale-[0.98] transition-all"
           >
             <span>Lihat Semua Laporan</span>
             <ArrowRight className="h-4 w-4 text-slate-400" />
@@ -111,7 +111,7 @@ export default function DashboardPage() {
             type="button"
             onClick={() => fetchStats(true)}
             disabled={isRefreshing || isLoading}
-            className="inline-flex items-center gap-2 rounded-xl bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-primary-700 disabled:opacity-50 transition-all"
+            className="inline-flex items-center gap-2 rounded-xl bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white shadow-[0_2px_10px_-3px_rgba(6,78,59,0.05)] hover:bg-primary-700 active:scale-[0.98] disabled:opacity-50 transition-all"
             aria-label="Segarkan data statistik"
           >
             <RotateCw
@@ -210,7 +210,7 @@ export default function DashboardPage() {
       {/* Recent Activity Audit Stream Section */}
       <section
         aria-labelledby="recent-activity-heading"
-        className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm"
+        className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-[0_2px_10px_-3px_rgba(6,78,59,0.05)]"
       >
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pb-4 border-b border-slate-100">
           <div className="flex items-center gap-2.5">
@@ -257,7 +257,7 @@ export default function DashboardPage() {
               {recentActivities.map((act, idx) => (
                 <div
                   key={`${act.report_id}-${idx}`}
-                  className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-3.5 px-3 rounded-lg hover:bg-slate-50/70 transition-colors gap-2"
+                  className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-3.5 px-3 rounded-xl hover:bg-slate-50/80 transition-all duration-150 gap-2"
                 >
                   <div className="flex items-start gap-3">
                     <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 border border-emerald-200 mt-0.5">
@@ -267,9 +267,9 @@ export default function DashboardPage() {
                       <p className="font-sans text-sm font-medium text-slate-900">
                         {act.action}
                       </p>
-                      <div className="mt-0.5 flex flex-wrap items-center gap-2">
-                        <span className="font-mono text-xs text-slate-500">
-                          ID: #{act.report_id}
+                      <div className="mt-1 flex flex-wrap items-center gap-2">
+                        <span className="font-mono text-xs font-medium text-slate-700 bg-slate-100/90 border border-slate-200/80 px-2 py-0.5 rounded-md">
+                          #RPT-{act.report_id.slice(0, 8).toUpperCase()}
                         </span>
                       </div>
                     </div>

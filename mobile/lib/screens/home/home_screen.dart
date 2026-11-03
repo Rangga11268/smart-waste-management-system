@@ -5,6 +5,8 @@ import '../../models/waste_report.dart';
 import '../../services/api_service.dart';
 import '../../services/auth_service.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/apple_bottom_bar.dart';
+import '../../widgets/backend_status_pill.dart';
 import '../history/history_screen.dart';
 import '../history/report_detail_screen.dart';
 import '../report/create_report_screen.dart';
@@ -103,13 +105,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       body: pages[_currentIndex == 1 ? 0 : _currentIndex],
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _currentIndex,
-        height: 72,
-        backgroundColor: Colors.white,
-        elevation: 2,
-        indicatorColor: AppTheme.primaryContainer,
-        onDestinationSelected: (idx) {
+      bottomNavigationBar: AppleBottomBar(
+        currentIndex: _currentIndex,
+        onTap: (idx) {
           if (idx == 1) {
             _openCreateReport();
           } else {
@@ -118,25 +116,25 @@ class _HomeScreenState extends State<HomeScreen> {
             });
           }
         },
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home, color: AppTheme.primaryDark),
+        items: const [
+          AppleBottomBarItem(
+            icon: Icons.grid_view_rounded,
+            activeIcon: Icons.grid_view_rounded,
             label: 'Beranda',
           ),
-          NavigationDestination(
-            icon: Icon(Icons.add_circle, color: AppTheme.primary, size: 28),
-            selectedIcon: Icon(Icons.add_circle, color: AppTheme.primaryDark, size: 28),
+          AppleBottomBarItem(
+            icon: Icons.add_circle_outline_rounded,
+            activeIcon: Icons.add_circle_rounded,
             label: 'Lapor',
           ),
-          NavigationDestination(
-            icon: Icon(Icons.history_outlined),
-            selectedIcon: Icon(Icons.history, color: AppTheme.primaryDark),
+          AppleBottomBarItem(
+            icon: Icons.history_rounded,
+            activeIcon: Icons.history_rounded,
             label: 'Riwayat',
           ),
-          NavigationDestination(
-            icon: Icon(Icons.person_outline),
-            selectedIcon: Icon(Icons.person, color: AppTheme.primaryDark),
+          AppleBottomBarItem(
+            icon: Icons.person_outline_rounded,
+            activeIcon: Icons.person_rounded,
             label: 'Profil',
           ),
         ],
@@ -156,14 +154,14 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             // 1. Top Header with User Greeting & Live Backend Indicator
             Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Halo, ${user?.fullName.split(' ').first ?? 'Citizen'} 👋',
+                        'Halo, ${user?.fullName.split(' ').first ?? 'Citizen'}',
                         style: const TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.w800,
@@ -171,51 +169,30 @@ class _HomeScreenState extends State<HomeScreen> {
                           letterSpacing: -0.5,
                         ),
                       ),
-                      const SizedBox(height: 3),
+                      const SizedBox(height: 2),
                       const Text(
-                        'Jaga kebersihan lingkungan bersama SWMS',
+                        'Sistem Pelaporan Sampah Cerdas',
                         style: TextStyle(
                           fontSize: 13,
+                          fontWeight: FontWeight.w500,
                           color: AppTheme.textSecondary,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      // Live backend connection pill
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: AppTheme.primaryContainer.withValues(alpha: 0.7),
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: AppTheme.primaryLight.withValues(alpha: 0.4)),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Container(
-                              width: 7,
-                              height: 7,
-                              decoration: const BoxDecoration(
-                                color: AppTheme.primary,
-                                shape: BoxShape.circle,
-                              ),
-                            ),
-                            const SizedBox(width: 6),
-                            const Text(
-                              'Backend Terhubung',
-                              style: TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w700,
-                                color: AppTheme.onPrimaryContainer,
-                              ),
-                            ),
-                          ],
                         ),
                       ),
                     ],
                   ),
                 ),
+                BackendStatusPill(
+                  isConnected: true,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const ServerSettingsScreen()),
+                    );
+                  },
+                ),
+                const SizedBox(width: 4),
                 IconButton(
-                  icon: const Icon(Icons.settings_outlined, color: AppTheme.textSecondary),
+                  icon: const Icon(Icons.settings_outlined, color: AppTheme.textSecondary, size: 22),
                   tooltip: 'Server Settings',
                   onPressed: () {
                     Navigator.push(
@@ -403,56 +380,176 @@ class _HomeScreenState extends State<HomeScreen> {
     final inProgress = _stats['in_progress_reports'] ?? 0;
     final completed = _stats['completed_reports'] ?? 0;
 
-    return Row(
-      children: [
-        Expanded(
-          child: _buildStatCard('Total', total.toString(), Icons.layers_outlined, AppTheme.textPrimary, Colors.white),
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: _buildStatCard('Menunggu', pending.toString(), Icons.hourglass_top, AppTheme.statusPending, AppTheme.statusPendingBg),
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: _buildStatCard('Diproses', inProgress.toString(), Icons.build_circle_outlined, AppTheme.statusInProgress, AppTheme.statusInProgressBg),
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: _buildStatCard('Selesai', completed.toString(), Icons.task_alt, AppTheme.statusCompleted, AppTheme.statusCompletedBg),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildStatCard(String title, String count, IconData icon, Color color, Color bg) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
       decoration: BoxDecoration(
-        color: bg,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppTheme.border, width: 1),
-      ),
-      child: Column(
-        children: [
-          Icon(icon, size: 18, color: color),
-          const SizedBox(height: 4),
-          Text(
-            count,
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w800,
-              color: color,
-            ),
-          ),
-          const SizedBox(height: 2),
-          Text(
-            title,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppTheme.textSecondary),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: const Color(0xFFE2E8F0), width: 1),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+            child: Row(
+              children: [
+                Expanded(
+                  child: _buildAppleMetricItem(
+                    title: 'Total',
+                    count: total.toString(),
+                    icon: Icons.layers_outlined,
+                    accentColor: const Color(0xFF475569),
+                  ),
+                ),
+                _buildAppleVerticalDivider(),
+                Expanded(
+                  child: _buildAppleMetricItem(
+                    title: 'Menunggu',
+                    count: pending.toString(),
+                    icon: Icons.hourglass_top_rounded,
+                    accentColor: AppTheme.statusPending,
+                  ),
+                ),
+                _buildAppleVerticalDivider(),
+                Expanded(
+                  child: _buildAppleMetricItem(
+                    title: 'Diproses',
+                    count: inProgress.toString(),
+                    icon: Icons.engineering_rounded,
+                    accentColor: AppTheme.statusInProgress,
+                  ),
+                ),
+                _buildAppleVerticalDivider(),
+                Expanded(
+                  child: _buildAppleMetricItem(
+                    title: 'Selesai',
+                    count: completed.toString(),
+                    icon: Icons.check_circle_rounded,
+                    accentColor: AppTheme.statusCompleted,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          if (total > 0) ...[
+            Container(
+              height: 1,
+              color: const Color(0xFFF1F5F9),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
+              child: Column(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(999),
+                    child: SizedBox(
+                      height: 5,
+                      child: Row(
+                        children: [
+                          if (pending > 0)
+                            Expanded(
+                              flex: pending,
+                              child: Container(color: AppTheme.statusPending),
+                            ),
+                          if (inProgress > 0)
+                            Expanded(
+                              flex: inProgress,
+                              child: Container(color: AppTheme.statusInProgress),
+                            ),
+                          if (completed > 0)
+                            Expanded(
+                              flex: completed,
+                              child: Container(color: AppTheme.statusCompleted),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Penyelesaian: ${(completed / total * 100).toStringAsFixed(0)}%',
+                        style: const TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w600,
+                          color: AppTheme.textSecondary,
+                        ),
+                      ),
+                      Text(
+                        '$completed dari $total selesai',
+                        style: const TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w500,
+                          color: AppTheme.textTertiary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAppleVerticalDivider() {
+    return Container(
+      width: 1,
+      height: 38,
+      color: const Color(0xFFF1F5F9),
+    );
+  }
+
+  Widget _buildAppleMetricItem({
+    required String title,
+    required String count,
+    required IconData icon,
+    required Color accentColor,
+  }) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: 34,
+          height: 34,
+          decoration: BoxDecoration(
+            color: accentColor.withValues(alpha: 0.1),
+            shape: BoxShape.circle,
+          ),
+          child: Icon(icon, size: 17, color: accentColor),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          count,
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w800,
+            color: AppTheme.textPrimary,
+            letterSpacing: -0.5,
+          ),
+        ),
+        const SizedBox(height: 2),
+        Text(
+          title,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.w600,
+            color: AppTheme.textSecondary,
+          ),
+        ),
+      ],
     );
   }
 

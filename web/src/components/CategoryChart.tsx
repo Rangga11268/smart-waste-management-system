@@ -130,7 +130,7 @@ export default function CategoryChart({
   return (
     <div
       className={cn(
-        'rounded-xl border border-slate-200 bg-white p-6 shadow-sm',
+        'rounded-2xl border border-slate-200/80 bg-white p-6 shadow-[0_2px_10px_-3px_rgba(6,78,59,0.05)] transition-all',
         className
       )}
       data-testid="category-chart"

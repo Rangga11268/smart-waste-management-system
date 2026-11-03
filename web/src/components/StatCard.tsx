@@ -20,23 +20,23 @@ export interface StatCardProps {
 
 const variantStyles = {
   default: {
-    iconBg: 'bg-slate-100 text-slate-700 border-slate-200',
+    iconBg: 'bg-slate-100 text-slate-700 border-slate-200/80',
     cardBorder: 'hover:border-slate-300',
   },
   slate: {
-    iconBg: 'bg-slate-100 text-slate-700 border-slate-200',
+    iconBg: 'bg-slate-100 text-slate-700 border-slate-200/80',
     cardBorder: 'hover:border-slate-300',
   },
   amber: {
-    iconBg: 'bg-amber-50 text-amber-600 border-amber-200',
+    iconBg: 'bg-amber-50 text-amber-600 border-amber-200/80',
     cardBorder: 'hover:border-amber-300',
   },
   blue: {
-    iconBg: 'bg-blue-50 text-blue-600 border-blue-200',
+    iconBg: 'bg-blue-50 text-blue-600 border-blue-200/80',
     cardBorder: 'hover:border-blue-300',
   },
   emerald: {
-    iconBg: 'bg-emerald-50 text-emerald-600 border-emerald-200',
+    iconBg: 'bg-emerald-50 text-emerald-600 border-emerald-200/80',
     cardBorder: 'hover:border-emerald-300',
   },
 };
@@ -55,7 +55,7 @@ export default function StatCard({
     return (
       <div
         className={cn(
-          'rounded-xl border border-slate-200 bg-white p-5 sm:p-6 shadow-sm animate-pulse',
+          'rounded-2xl border border-slate-200/80 bg-white p-5 sm:p-6 shadow-[0_2px_10px_-3px_rgba(6,78,59,0.05)] animate-pulse',
           className
         )}
         data-testid="stat-card-skeleton"
@@ -80,7 +80,7 @@ export default function StatCard({
   return (
     <div
       className={cn(
-        'group relative overflow-hidden rounded-xl border border-slate-200 bg-white p-5 sm:p-6 shadow-sm transition-all hover:shadow-md',
+        'group relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 sm:p-6 shadow-[0_2px_10px_-3px_rgba(6,78,59,0.05)] transition-all duration-200 hover:shadow-[0_8px_20px_-4px_rgba(6,78,59,0.08)] hover:-translate-y-0.5',
         currentVariant.cardBorder,
         className
       )}
@@ -88,14 +88,14 @@ export default function StatCard({
     >
       <div className="flex items-start justify-between">
         <div className="space-y-1">
-          <p className="font-sans text-sm font-medium text-slate-600">{title}</p>
-          <div className="font-heading text-3xl font-bold tracking-tight text-slate-900">
+          <p className="font-sans text-xs font-semibold uppercase tracking-wider text-slate-500">{title}</p>
+          <div className="font-heading text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
             {value}
           </div>
         </div>
         <div
           className={cn(
-            'flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border transition-transform group-hover:scale-105',
+            'flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border transition-transform duration-200 group-hover:scale-105',
             currentVariant.iconBg
           )}
           aria-hidden="true"
@@ -105,21 +105,21 @@ export default function StatCard({
       </div>
 
       {(subtitle || trend) && (
-        <div className="mt-4 flex flex-wrap items-center gap-2 text-xs">
+        <div className="mt-4 flex items-center gap-2 text-xs">
           {trend && (
             <span
               className={cn(
-                'inline-flex items-center gap-1 rounded-md border px-2 py-0.5 font-medium font-sans text-xs',
-                trend.isPositive === false
-                  ? 'bg-rose-50 text-rose-700 border-rose-200'
-                  : 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                'inline-flex items-center font-semibold rounded-md px-1.5 py-0.5 font-mono text-[11px]',
+                trend.isPositive !== false
+                  ? 'bg-emerald-50 text-emerald-700'
+                  : 'bg-rose-50 text-rose-700'
               )}
             >
               {trend.value}
             </span>
           )}
           {subtitle && (
-            <span className="font-sans text-slate-500 font-normal">{subtitle}</span>
+            <span className="text-slate-500 line-clamp-1">{subtitle}</span>
           )}
         </div>
       )}

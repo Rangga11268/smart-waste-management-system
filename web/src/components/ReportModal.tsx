@@ -12,6 +12,7 @@ import {
   Clock,
   ArrowRight,
   ShieldAlert,
+  Maximize2,
 } from 'lucide-react';
 import StatusBadge from '@/components/StatusBadge';
 import CategoryBadge from '@/components/CategoryBadge';
@@ -53,6 +54,7 @@ export default function ReportModal({
 
   // Image fallback state
   const [imgSrc, setImgSrc] = useState<string>('/placeholder.png');
+  const [isLightboxOpen, setIsLightboxOpen] = useState<boolean>(false);
 
   // Load detailed report data on open
   const fetchReportDetail = useCallback(async (reportId: string) => {
@@ -207,31 +209,50 @@ export default function ReportModal({
         <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-5">
           {/* Photo Evidence Preview */}
           <div className="space-y-1.5">
-            <label className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-              Bukti Foto Sampah
-            </label>
-            <div className="relative w-full h-56 sm:h-64 rounded-xl overflow-hidden border border-slate-200 bg-slate-100 flex items-center justify-center">
+            <div className="flex items-center justify-between">
+              <label className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                Bukti Foto Sampah
+              </label>
+              <button
+                type="button"
+                onClick={() => setIsLightboxOpen(true)}
+                className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600 hover:text-emerald-700 transition-colors"
+              >
+                <Maximize2 className="h-3 w-3" />
+                <span>Perbesar Foto</span>
+              </button>
+            </div>
+            <div
+              onClick={() => setIsLightboxOpen(true)}
+              className="group relative w-full h-56 sm:h-64 rounded-xl overflow-hidden border border-slate-200/90 bg-slate-100 flex items-center justify-center cursor-pointer shadow-inner"
+            >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={imgSrc}
                 alt={report.title}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 onError={() => setImgSrc('/placeholder.png')}
               />
+              <div className="absolute inset-0 bg-slate-900/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <span className="inline-flex items-center gap-1.5 bg-slate-900/80 text-white text-xs font-semibold px-3 py-1.5 rounded-lg shadow-lg backdrop-blur-xs">
+                  <Maximize2 className="h-3.5 w-3.5" />
+                  <span>Klik untuk Memperbesar</span>
+                </span>
+              </div>
             </div>
           </div>
 
           {/* AI Classification & Confidence Badge */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 bg-emerald-50/70 border border-emerald-200/70 rounded-xl">
-            <div className="flex items-center gap-2.5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-600 text-white shadow-xs">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 bg-emerald-50/70 border border-emerald-200/80 rounded-xl shadow-[0_2px_10px_-3px_rgba(6,78,59,0.05)]">
+            <div className="flex items-center gap-3">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-xs">
                 <Sparkles className="h-4 w-4" />
               </div>
               <div>
-                <p className="text-[11px] font-medium text-emerald-800 uppercase tracking-wider">
+                <p className="text-[11px] font-semibold text-emerald-800 uppercase tracking-wider">
                   Deteksi Kategori AI
                 </p>
-                <div className="mt-0.5">
+                <div className="mt-1">
                   <CategoryBadge
                     category={detail?.detected_category || detail?.category || report.category}
                     size="sm"
@@ -239,35 +260,37 @@ export default function ReportModal({
                 </div>
               </div>
             </div>
-            <div className="sm:text-right pl-10 sm:pl-0 border-t sm:border-t-0 pt-2 sm:pt-0 border-emerald-200/50">
+            <div className="sm:text-right pl-12 sm:pl-0 border-t sm:border-t-0 pt-2 sm:pt-0 border-emerald-200/50">
               <p className="text-[11px] font-medium text-slate-500">Tingkat Keyakinan (Confidence)</p>
-              <p className="font-mono text-sm font-semibold text-emerald-900 mt-0.5">
-                {formatPercentage(detail?.ai_confidence ?? 0)}
-              </p>
+              <div className="mt-1">
+                <span className="font-mono text-xs font-semibold text-emerald-800 bg-white/90 border border-emerald-200/80 px-2 py-0.5 rounded-md">
+                  {formatPercentage(detail?.ai_confidence ?? 0)}
+                </span>
+              </div>
             </div>
           </div>
 
           {/* Geolocation & Maps Integration */}
-          <div className="rounded-xl border border-slate-200 bg-slate-50/60 p-4 space-y-3">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-              <div className="space-y-1">
-                <div className="flex items-center gap-1.5 text-xs text-slate-700">
+          <div className="rounded-xl border border-slate-200/80 bg-slate-50/70 p-4 space-y-3">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-2 text-xs text-slate-700">
                   <MapPin className="h-4 w-4 text-rose-500 shrink-0" />
                   <span className="font-semibold text-slate-800">Koordinat GPS:</span>
-                  <span className="font-mono text-xs font-medium text-slate-600">
-                    Latitude: {typeof latitude === 'number' ? latitude.toFixed(4) : latitude}, Longitude:{' '}
+                  <span className="font-mono text-xs font-medium text-slate-700 bg-white border border-slate-200/80 px-2 py-0.5 rounded-md shadow-2xs">
+                    Lat: {typeof latitude === 'number' ? latitude.toFixed(4) : latitude}, Lng:{' '}
                     {typeof longitude === 'number' ? longitude.toFixed(4) : longitude}
                   </span>
                 </div>
                 {detail?.address_note && (
-                  <p className="text-xs text-slate-600 pl-5.5">
-                    <span className="font-medium text-slate-700">Patokan Alamat:</span>{' '}
+                  <p className="text-xs text-slate-600 pl-6">
+                    <span className="font-semibold text-slate-700">Patokan Alamat:</span>{' '}
                     {detail.address_note}
                   </p>
                 )}
                 {detail?.description && (
-                  <p className="text-xs text-slate-600 pl-5.5 pt-0.5">
-                    <span className="font-medium text-slate-700">Deskripsi:</span>{' '}
+                  <p className="text-xs text-slate-600 pl-6 pt-0.5">
+                    <span className="font-semibold text-slate-700">Deskripsi:</span>{' '}
                     {detail.description}
                   </p>
                 )}
@@ -276,10 +299,10 @@ export default function ReportModal({
                 href={mapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 hover:text-emerald-700 hover:border-emerald-300 shadow-xs transition-colors shrink-0"
+                className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-emerald-700 hover:border-emerald-300 active:scale-[0.98] shadow-xs transition-all shrink-0"
               >
                 <span>Buka di Google Maps</span>
-                <ExternalLink className="h-3.5 w-3.5" />
+                <ExternalLink className="h-3.5 w-3.5 text-emerald-600" />
               </a>
             </div>
           </div>
@@ -457,12 +480,40 @@ export default function ReportModal({
           <button
             type="button"
             onClick={onClose}
-            className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition-colors shadow-xs"
+            className="rounded-xl border border-slate-300 bg-white px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-100 hover:text-slate-900 active:scale-[0.98] transition-all shadow-xs"
           >
             Tutup
           </button>
         </div>
       </div>
+
+      {/* Lightbox / Zoom Overlay */}
+      {isLightboxOpen && (
+        <div
+          className="fixed inset-0 z-60 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4"
+          onClick={() => setIsLightboxOpen(false)}
+        >
+          <div className="relative max-w-4xl max-h-[90vh] flex flex-col items-center">
+            <button
+              type="button"
+              onClick={() => setIsLightboxOpen(false)}
+              className="absolute -top-12 right-0 rounded-full bg-white/20 p-2 text-white hover:bg-white/30 transition-colors"
+              aria-label="Tutup foto perbesar"
+            >
+              <X className="h-6 w-6" />
+            </button>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={imgSrc}
+              alt={report.title}
+              className="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl border border-white/10"
+            />
+            <p className="mt-3 text-xs text-white/80 font-medium">
+              {report.title} — Klik di mana saja untuk menutup
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

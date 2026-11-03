@@ -20,24 +20,24 @@ const defaultCategoryStyles: Record<
   }
 > = {
   'Organic Waste': {
-    bgClass: 'bg-green-50',
-    textClass: 'text-green-800',
-    borderClass: 'border-green-200',
-    dotClass: 'bg-[#16a34a]',
-    hex: '#16a34a',
+    bgClass: 'bg-emerald-50/90',
+    textClass: 'text-emerald-800',
+    borderClass: 'border-emerald-200/80',
+    dotClass: 'bg-emerald-500',
+    hex: '#059669',
   },
   'Plastic Waste': {
-    bgClass: 'bg-sky-50',
+    bgClass: 'bg-sky-50/90',
     textClass: 'text-sky-800',
-    borderClass: 'border-sky-200',
-    dotClass: 'bg-[#0284c7]',
+    borderClass: 'border-sky-200/80',
+    dotClass: 'bg-sky-500',
     hex: '#0284c7',
   },
   'Paper Waste': {
-    bgClass: 'bg-amber-50',
+    bgClass: 'bg-amber-50/90',
     textClass: 'text-amber-800',
-    borderClass: 'border-amber-200',
-    dotClass: 'bg-[#d97706]',
+    borderClass: 'border-amber-200/80',
+    dotClass: 'bg-amber-500',
     hex: '#d97706',
   },
 };
@@ -60,7 +60,7 @@ export default function CategoryBadge({
   };
 
   const sizeClasses = {
-    sm: 'text-xs px-2 py-0.5 gap-1.5',
+    sm: 'text-[11px] px-2 py-0.5 gap-1.5 font-medium',
     md: 'text-xs px-2.5 py-1 gap-1.5 font-medium',
     lg: 'text-sm px-3 py-1.5 gap-2 font-medium',
   };
@@ -74,7 +74,7 @@ export default function CategoryBadge({
   return (
     <span
       className={cn(
-        'inline-flex items-center rounded-md border tracking-wide transition-colors',
+        'inline-flex items-center rounded-lg border tracking-wide transition-colors shadow-[0_1px_2px_rgba(0,0,0,0.02)]',
         styleConfig.bgClass,
         styleConfig.textClass,
         styleConfig.borderClass,
