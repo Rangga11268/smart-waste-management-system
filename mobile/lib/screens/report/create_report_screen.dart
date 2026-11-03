@@ -619,10 +619,31 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
                 ),
               ],
             ),
-            const SizedBox(height: 6),
-            const Text(
-              'Kategori formulir di bawah otomatis disesuaikan sesuai rekomendasi AI.',
-              style: TextStyle(fontSize: 11, color: AppTheme.textSecondary),
+            const SizedBox(height: 8),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.7),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: AppTheme.primaryLight.withValues(alpha: 0.3)),
+              ),
+              child: const Row(
+                children: [
+                  Icon(Icons.edit_note_rounded, size: 16, color: AppTheme.primaryDark),
+                  SizedBox(width: 6),
+                  Expanded(
+                    child: Text(
+                      'Rekomendasi awal AI. Jika tidak sesuai, Anda dapat mengganti pilihan kategori pada dropdown di bawah secara manual.',
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: AppTheme.textSecondary,
+                        fontWeight: FontWeight.w500,
+                        height: 1.35,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
