@@ -11,6 +11,7 @@ import '../../widgets/skeleton_loader.dart';
 import '../../widgets/swms_logo.dart';
 import '../history/history_screen.dart';
 import '../history/report_detail_screen.dart';
+import '../onboarding/onboarding_screen.dart';
 import '../report/create_report_screen.dart';
 import '../settings/server_settings_screen.dart';
 
@@ -803,6 +804,24 @@ class _HomeScreenState extends State<HomeScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (_) => const ServerSettingsScreen()),
+                    );
+                  },
+                ),
+                const Divider(height: 1, color: AppTheme.border),
+                ListTile(
+                  leading: const Icon(Icons.auto_stories_outlined, color: AppTheme.primary),
+                  title: const Text('Panduan Fitur & Onboarding'),
+                  subtitle: const Text('Buka kembali 3 slide panduan fitur SWMS'),
+                  trailing: const Icon(Icons.arrow_forward_ios, size: 14),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => OnboardingScreen(
+                          authService: widget.authService,
+                          onFinish: () => Navigator.pop(context),
+                        ),
+                      ),
                     );
                   },
                 ),
