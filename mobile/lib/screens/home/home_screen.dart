@@ -9,6 +9,7 @@ import '../../widgets/apple_bottom_bar.dart';
 import '../../widgets/backend_status_pill.dart';
 import '../../widgets/skeleton_loader.dart';
 import '../../widgets/swms_logo.dart';
+import '../auth/login_screen.dart';
 import '../history/history_screen.dart';
 import '../history/report_detail_screen.dart';
 import '../onboarding/onboarding_screen.dart';
@@ -855,27 +856,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 side: const BorderSide(color: AppTheme.statusRejectedBorder, width: 1.2),
               ),
               onPressed: () async {
-                final confirm = await showDialog<bool>(
-                  context: context,
-                  builder: (ctx) => AlertDialog(
-                    title: const Text('Konfirmasi Keluar'),
-                    content: const Text('Apakah Anda yakin ingin keluar dari akun ini?'),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(ctx, false),
-                        child: const Text('Batal'),
-                      ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(backgroundColor: AppTheme.statusRejected),
-                        onPressed: () => Navigator.pop(ctx, true),
-                        child: const Text('Keluar'),
-                      ),
-                    ],
-                  ),
-                );
+                final confirm = await _showLogoutConfirmationDialog(context);
 
                 if (confirm == true) {
-                  widget.authService.logout();
+                  await widget.authService.logout();
+                  if (mounted) {
+                    Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                        builder: (_) => LoginScreen(authService: widget.authService),
+                      ),
+                      (route) => false,
+                    );
+                  }
                 }
               },
               icon: const Icon(Icons.logout),
@@ -883,6 +875,136 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Future<bool?> _showLogoutConfirmationDialog(BuildContext context) {
+    return showDialog<bool>(
+      context: context,
+      barrierDismissible: true,
+      builder: (ctx) => Dialog(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        insetPadding: const EdgeInsets.symmetric(horizontal: 28),
+        child: Container(
+          padding: const EdgeInsets.fromLTRB(24, 28, 24, 20),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(color: const Color(0xFFE2E8F0), width: 1),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.12),
+                blurRadius: 32,
+                offset: const Offset(0, 12),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // 1. Soft Red Icon Badge
+              Container(
+                width: 56,
+                height: 56,
+                decoration: const BoxDecoration(
+                  color: Color(0xFFFEE2E2),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.logout_rounded,
+                  color: Color(0xFFDC2626),
+                  size: 26,
+                ),
+              ),
+              const SizedBox(height: 18),
+
+              // 2. Title
+              const Text(
+                'Keluar dari Akun',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w800,
+                  color: AppTheme.textPrimary,
+                  letterSpacing: -0.4,
+                ),
+              ),
+              const SizedBox(height: 8),
+
+              // 3. Description
+              const Text(
+                'Apakah Anda yakin ingin keluar? Sesi Anda akan diakhiri dan Anda perlu masuk kembali untuk melapor.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 13,
+                  color: AppTheme.textSecondary,
+                  height: 1.45,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              const SizedBox(height: 24),
+
+              // 4. Action Buttons (Apple horizontal dual-pill)
+              Row(
+                children: [
+                  Expanded(
+                    child: SizedBox(
+                      height: 46,
+                      child: OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: const Color(0xFF475569),
+                          backgroundColor: const Color(0xFFF1F5F9),
+                          side: const BorderSide(color: Color(0xFFE2E8F0)),
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                          padding: EdgeInsets.zero,
+                        ),
+                        onPressed: () => Navigator.pop(ctx, false),
+                        child: const Text(
+                          'Batal',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: SizedBox(
+                      height: 46,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.white,
+                          backgroundColor: const Color(0xFFDC2626),
+                          elevation: 0,
+                          shadowColor: Colors.transparent,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                          padding: EdgeInsets.zero,
+                        ),
+                        onPressed: () => Navigator.pop(ctx, true),
+                        child: const Text(
+                          'Keluar',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

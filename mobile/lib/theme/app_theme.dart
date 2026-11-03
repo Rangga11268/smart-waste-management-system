@@ -143,6 +143,26 @@ class AppTheme {
         ),
         margin: EdgeInsets.zero,
       ),
+      dialogTheme: DialogThemeData(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        surfaceTintColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+          side: const BorderSide(color: border, width: 1),
+        ),
+        titleTextStyle: const TextStyle(
+          color: textPrimary,
+          fontSize: 18,
+          fontWeight: FontWeight.w800,
+          letterSpacing: -0.4,
+        ),
+        contentTextStyle: const TextStyle(
+          color: textSecondary,
+          fontSize: 14,
+          height: 1.45,
+        ),
+      ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: Colors.white,
