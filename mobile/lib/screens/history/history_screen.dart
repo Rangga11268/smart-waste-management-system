@@ -3,6 +3,7 @@ import '../../config/app_config.dart';
 import '../../models/waste_report.dart';
 import '../../services/api_service.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/skeleton_loader.dart';
 import 'report_detail_screen.dart';
 
 class HistoryScreen extends StatefulWidget {
@@ -147,7 +148,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
               onRefresh: _fetchReports,
               color: AppTheme.primary,
               child: _isLoading
-                  ? const Center(child: CircularProgressIndicator())
+                  ? const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      child: HistoryListSkeleton(),
+                    )
                   : _error != null
                       ? Center(
                           child: Padding(

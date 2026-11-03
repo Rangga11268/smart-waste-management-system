@@ -7,6 +7,7 @@ import '../../services/auth_service.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/apple_bottom_bar.dart';
 import '../../widgets/backend_status_pill.dart';
+import '../../widgets/skeleton_loader.dart';
 import '../../widgets/swms_logo.dart';
 import '../history/history_screen.dart';
 import '../history/report_detail_screen.dart';
@@ -264,12 +265,7 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 8),
 
             if (_isLoading)
-              const Center(
-                child: Padding(
-                  padding: EdgeInsets.all(32),
-                  child: CircularProgressIndicator(color: AppTheme.primary),
-                ),
-              )
+              const HomeFeedSkeleton()
             else if (_recentReports.isEmpty)
               const Card(
                 child: Padding(

@@ -5,6 +5,7 @@ import '../../config/app_config.dart';
 import '../../models/waste_report.dart';
 import '../../services/api_service.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/skeleton_loader.dart';
 
 class ReportDetailScreen extends StatefulWidget {
   final String reportId;
@@ -90,7 +91,7 @@ class _ReportDetailScreenState extends State<ReportDetailScreen> {
         ],
       ),
       body: _isLoading && report == null
-          ? const Center(child: CircularProgressIndicator())
+          ? const ReportDetailSkeleton()
           : _error != null && report == null
               ? Center(
                   child: Padding(
