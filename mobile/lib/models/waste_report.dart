@@ -1,5 +1,16 @@
 import 'category.dart';
 
+DateTime parseUtcDateTime(dynamic raw) {
+  if (raw == null) return DateTime.now();
+  String s = raw.toString().trim();
+  if (s.isEmpty) return DateTime.now();
+  if (!s.endsWith('Z') && !s.contains('+') && !(s.length > 10 && s.substring(10).contains('-'))) {
+    s = '${s}Z';
+  }
+  final dt = DateTime.tryParse(s) ?? DateTime.now();
+  return dt.isUtc ? dt.toLocal() : dt;
+}
+
 class Reporter {
   final String id;
   final String fullName;
@@ -41,9 +52,7 @@ class ReportLog {
       previousStatus: json['previous_status']?.toString(),
       newStatus: json['new_status']?.toString() ?? '',
       remarks: json['remarks']?.toString(),
-      createdAt: json['created_at'] != null
-          ? DateTime.tryParse(json['created_at'].toString()) ?? DateTime.now()
-          : DateTime.now(),
+      createdAt: parseUtcDateTime(json['created_at']),
     );
   }
 }
@@ -107,9 +116,7 @@ class WasteReport {
       addressNote: json['address_note']?.toString(),
       status: json['status']?.toString() ?? 'Pending',
       adminNotes: json['admin_notes']?.toString(),
-      createdAt: json['created_at'] != null
-          ? DateTime.tryParse(json['created_at'].toString()) ?? DateTime.now()
-          : DateTime.now(),
+      createdAt: parseUtcDateTime(json['created_at']),
       category: json['category'] is Map<String, dynamic>
           ? WasteCategory.fromJson(json['category'])
           : WasteCategory(id: 0, name: 'Umum', badgeColor: '#059669'),

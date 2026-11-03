@@ -4,6 +4,8 @@ from datetime import datetime, timezone
 import io
 from pathlib import Path
 import sys
+import json
+import urllib.request
 from typing import Any, Dict, List, Optional, Set
 import uuid
 
@@ -19,6 +21,18 @@ if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
 from ml_pipeline.predict import get_default_predictor
+
+
+def reverse_geocode(lat: float, lon: float) -> Optional[str]:
+    """Reverse geocode latitude and longitude to human-readable address via OSM Nominatim."""
+    try:
+        url = f"https://nominatim.openstreetmap.org/reverse?format=json&lat={lat}&lon={lon}&zoom=18&addressdetails=1"
+        req = urllib.request.Request(url, headers={"User-Agent": "SWMS-Backend/1.0 (bilcode-assessment)"})
+        with urllib.request.urlopen(req, timeout=3) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+            return data.get("display_name")
+    except Exception:
+        return None
 
 try:
     from app.api.deps import get_current_admin, get_current_user, get_db
@@ -129,7 +143,7 @@ async def submit_report(
 
     # 4. Save file to disk
     unique_filename = f"{uuid.uuid4().hex}{ext}"
-    reports_dir = Path("backend/uploads/reports")
+    reports_dir = project_root / "backend" / "uploads" / "reports"
     reports_dir.mkdir(parents=True, exist_ok=True)
     file_path = reports_dir / unique_filename
     with open(file_path, "wb") as f:
@@ -147,7 +161,14 @@ async def submit_report(
         detected_category = category.name
         ai_confidence = 0.0
 
-    # 6. Insert WasteReport and initial audit log
+    # 6. Auto-resolve address note via reverse geocoding if not provided
+    resolved_address = address_note
+    if not resolved_address or not resolved_address.strip():
+        resolved_address = reverse_geocode(latitude, longitude)
+
+    now = datetime.now(timezone.utc)
+
+    # 7. Insert WasteReport and initial audit log
     report = WasteReport(
         id=uuid.uuid4(),
         user_id=current_user.id,
@@ -159,8 +180,10 @@ async def submit_report(
         ai_confidence=ai_confidence,
         latitude=latitude,
         longitude=longitude,
-        address_note=address_note,
+        address_note=resolved_address,
         status="Pending",
+        created_at=now,
+        updated_at=now,
     )
     db.add(report)
     db.flush()
@@ -172,10 +195,15 @@ async def submit_report(
         previous_status=None,
         new_status="Pending",
         remarks="Initial report submission",
+        created_at=now,
     )
     db.add(initial_log)
     db.commit()
     db.refresh(report)
+
+    created_iso = report.created_at.isoformat() if report.created_at else now.isoformat()
+    if created_iso and not created_iso.endswith("Z") and "+" not in created_iso:
+        created_iso += "Z"
 
     return ReportCreateResponse(
         status="success",
@@ -187,7 +215,7 @@ async def submit_report(
             "detected_category": report.detected_category,
             "ai_confidence": report.ai_confidence,
             "status": report.status,
-            "created_at": report.created_at.isoformat() if report.created_at else None,
+            "created_at": created_iso,
         },
     )
 
@@ -261,6 +289,9 @@ def list_reports(
                 image_url=r.image_url,
                 latitude=r.latitude,
                 longitude=r.longitude,
+                address_note=r.address_note,
+                detected_category=r.detected_category,
+                ai_confidence=r.ai_confidence,
                 status=r.status,
                 created_at=r.created_at,
                 category=cat_brief,

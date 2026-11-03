@@ -12,6 +12,9 @@ import {
   ShieldCheck,
   UserCheck,
   ArrowRight,
+  Sparkles,
+  MapPin,
+  CheckCircle2,
 } from 'lucide-react';
 import { AuthProvider, useAuth } from '@/lib/auth';
 import Logo from '@/components/Logo';
@@ -28,7 +31,6 @@ function LoginForm() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [formErrors, setFormErrors] = useState<{ email?: string; password?: string }>({});
 
-  // If already authenticated, redirect to dashboard
   useEffect(() => {
     if (!authLoading && isAuthenticated && user) {
       router.replace('/dashboard');
@@ -96,186 +98,220 @@ function LoginForm() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col justify-center bg-slate-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        {/* Brand Logo & Header */}
-        <div className="flex justify-center">
-          <Logo size={58} showText={false} />
+    <div className="min-h-screen bg-slate-50 flex flex-col lg:grid lg:grid-cols-12">
+      {/* Left Brand Showcase Column (Desktop Only) */}
+      <div className="hidden lg:col-span-5 lg:flex lg:flex-col lg:justify-between bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950 p-12 text-white relative overflow-hidden border-r border-slate-800">
+        <div className="relative z-10">
+          <Logo size={42} showText={true} />
+          
+          <div className="mt-14 space-y-6">
+            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-400 backdrop-blur-xs">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              Sistem Pengelolaan Sampah Cerdas Terintegrasi
+            </div>
+            
+            <h1 className="text-3xl font-extrabold tracking-tight text-white leading-tight font-heading">
+              Akselerasi Keberlanjutan Kota dengan Computer Vision & Geotagging.
+            </h1>
+            
+            <p className="text-sm text-slate-300 leading-relaxed font-sans">
+              SWMS menghubungkan pelaporan warga, inferensi AI MobileNetV2 presisi tinggi, dan dashboard armada kebersihan dalam satu ekosistem waktu-nyata.
+            </p>
+          </div>
+
+          <div className="mt-10 space-y-4 font-sans text-xs">
+            <div className="flex items-center gap-3 text-slate-200">
+              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                <Sparkles className="h-4 w-4" />
+              </div>
+              <span>Klasifikasi Citra Sampah Otomatis (Organik, Plastik, Kertas)</span>
+            </div>
+            <div className="flex items-center gap-3 text-slate-200">
+              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                <MapPin className="h-4 w-4" />
+              </div>
+              <span>Geocoding Terbalik Otomatis & Alamat Lapangan Presisi</span>
+            </div>
+            <div className="flex items-center gap-3 text-slate-200">
+              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                <CheckCircle2 className="h-4 w-4" />
+              </div>
+              <span>Audit Trail Disposisi Status Lengkap Tanpa Kehilangan Data</span>
+            </div>
+          </div>
         </div>
 
-        <div className="mt-4 text-center">
-          <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-xs font-semibold text-emerald-800">
-            <span>SWMS Eco-Tech</span>
-            <span className="text-emerald-500">•</span>
-            <span>v1.0</span>
-          </div>
-          <h1 className="mt-3 font-heading text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-            Masuk ke Portal SWMS
-          </h1>
-          <p className="mt-2 text-sm text-slate-600">
-            Sistem Informasi Pengelolaan Sampah Kota Berbasis AI & Geotagging
-          </p>
+        <div className="relative z-10 border-t border-slate-800/80 pt-6 mt-12 flex items-center justify-between text-xs text-slate-400">
+          <span>&copy; 2026 PT Bilcode Teknologi Indonesia</span>
+          <span className="font-mono text-emerald-400">v1.0.0 Production</span>
         </div>
       </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+      {/* Right Login Form Column */}
+      <div className="flex-1 lg:col-span-7 flex flex-col justify-center px-4 py-12 sm:px-6 lg:px-12 xl:px-16">
+        <div className="mx-auto w-full max-w-md">
+          {/* Mobile Logo Brand */}
+          <div className="lg:hidden flex items-center justify-center mb-8">
+            <Logo size={48} showText={true} />
+          </div>
+
+          <div className="mb-8">
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 font-heading">
+              Selamat Datang
+            </h2>
+            <p className="mt-2 text-sm text-slate-600">
+              Masukkan kredensial akun Anda untuk mengakses portal manajemen SWMS.
+            </p>
+          </div>
+
           {/* Error Banner */}
           {errorMessage && (
             <div
-              className="mb-6 flex items-start gap-3 rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-800"
+              className="mb-6 flex items-start gap-3 rounded-2xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-800 shadow-xs"
               role="alert"
             >
               <AlertCircle className="h-5 w-5 shrink-0 text-rose-600 mt-0.5" />
               <div className="flex-1">
-                <p className="font-semibold text-rose-900">Gagal Masuk</p>
+                <p className="font-bold text-rose-900">Gagal Masuk</p>
                 <p className="mt-0.5 text-xs text-rose-700 leading-relaxed">{errorMessage}</p>
               </div>
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-5" noValidate>
-            {/* Email Field */}
-            <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-slate-700"
-              >
-                Alamat Email
-              </label>
-              <div className="relative mt-1.5">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
-                  <Mail className="h-4 w-4" />
+          <div className="rounded-2xl border border-slate-200/90 bg-white p-6 sm:p-8 shadow-[0_2px_12px_-4px_rgba(15,23,42,0.06)]">
+            <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+              {/* Email Field */}
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block text-xs font-bold uppercase tracking-wider text-slate-700"
+                >
+                  Alamat Email
+                </label>
+                <div className="relative mt-1.5">
+                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
+                    <Mail className="h-4 w-4" />
+                  </div>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    value={email}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      if (formErrors.email) {
+                        setFormErrors((prev) => ({ ...prev, email: undefined }));
+                      }
+                    }}
+                    placeholder="nama@bilcode.id"
+                    className={`w-full rounded-xl border bg-slate-50/50 py-2.5 pl-10 pr-3.5 text-sm text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 transition-all ${
+                      formErrors.email
+                        ? 'border-rose-300 focus:border-rose-500 focus:ring-rose-200'
+                        : 'border-slate-200 focus:border-emerald-600 focus:ring-emerald-600/20'
+                    }`}
+                  />
                 </div>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                    if (formErrors.email) {
-                      setFormErrors((prev) => ({ ...prev, email: undefined }));
-                    }
-                  }}
-                  placeholder="admin@bilcode.id"
-                  className={`w-full rounded-xl border bg-white py-2.5 pl-10 pr-3.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 transition-all ${
-                    formErrors.email
-                      ? 'border-rose-300 focus:border-rose-500 focus:ring-rose-200'
-                      : 'border-slate-200 focus:border-emerald-600 focus:ring-emerald-600/20'
-                  }`}
-                />
+                {formErrors.email && (
+                  <p className="mt-1 text-xs text-rose-600 font-medium">{formErrors.email}</p>
+                )}
               </div>
-              {formErrors.email && (
-                <p className="mt-1 text-xs text-rose-600">{formErrors.email}</p>
-              )}
-            </div>
 
-            {/* Password Field */}
-            <div>
-              <div className="flex items-center justify-between">
+              {/* Password Field */}
+              <div>
                 <label
                   htmlFor="password"
-                  className="block text-sm font-medium text-slate-700"
+                  className="block text-xs font-bold uppercase tracking-wider text-slate-700"
                 >
                   Kata Sandi
                 </label>
-              </div>
-              <div className="relative mt-1.5">
-                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
-                  <Lock className="h-4 w-4" />
+                <div className="relative mt-1.5">
+                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
+                    <Lock className="h-4 w-4" />
+                  </div>
+                  <input
+                    id="password"
+                    name="password"
+                    type={showPassword ? 'text' : 'password'}
+                    autoComplete="current-password"
+                    required
+                    value={password}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                      if (formErrors.password) {
+                        setFormErrors((prev) => ({ ...prev, password: undefined }));
+                      }
+                    }}
+                    placeholder="••••••••"
+                    className={`w-full rounded-xl border bg-slate-50/50 py-2.5 pl-10 pr-10 text-sm text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 transition-all ${
+                      formErrors.password
+                        ? 'border-rose-300 focus:border-rose-500 focus:ring-rose-200'
+                        : 'border-slate-200 focus:border-emerald-600 focus:ring-emerald-600/20'
+                    }`}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-600"
+                    aria-label={showPassword ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi'}
+                  >
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
                 </div>
-                <input
-                  id="password"
-                  name="password"
-                  type={showPassword ? 'text' : 'password'}
-                  autoComplete="current-password"
-                  required
-                  value={password}
-                  onChange={(e) => {
-                    setPassword(e.target.value);
-                    if (formErrors.password) {
-                      setFormErrors((prev) => ({ ...prev, password: undefined }));
-                    }
-                  }}
-                  placeholder="••••••••"
-                  className={`w-full rounded-xl border bg-white py-2.5 pl-10 pr-10 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 transition-all ${
-                    formErrors.password
-                      ? 'border-rose-300 focus:border-rose-500 focus:ring-rose-200'
-                      : 'border-slate-200 focus:border-emerald-600 focus:ring-emerald-600/20'
-                  }`}
-                />
+                {formErrors.password && (
+                  <p className="mt-1 text-xs text-rose-600 font-medium">{formErrors.password}</p>
+                )}
+              </div>
+
+              {/* Submit Button */}
+              <div className="pt-2">
                 <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-600"
-                  aria-label={showPassword ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi'}
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="group flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-3 text-sm font-bold text-white shadow-sm hover:bg-emerald-700 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60 transition-all"
                 >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      <span>Memverifikasi Akun...</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>Masuk ke Dashboard</span>
+                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                    </>
+                  )}
                 </button>
               </div>
-              {formErrors.password && (
-                <p className="mt-1 text-xs text-rose-600">{formErrors.password}</p>
-              )}
-            </div>
+            </form>
 
-            {/* Submit Button */}
-            <div>
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="group flex w-full items-center justify-center gap-2 rounded-xl bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 disabled:cursor-not-allowed disabled:opacity-60 transition-all"
-              >
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                    <span>Memproses Autentikasi...</span>
-                  </>
-                ) : (
-                  <>
-                    <span>Masuk ke Akun</span>
-                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                  </>
-                )}
-              </button>
+            {/* Quick Presets for Evaluator */}
+            <div className="mt-6 border-t border-slate-100 pt-5">
+              <p className="text-center text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                Pintasan Pengujian Cepat
+              </p>
+              <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                <button
+                  type="button"
+                  onClick={() => handleQuickPreset('admin@bilcode.id', 'Admin123!')}
+                  className="flex items-center justify-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50/80 px-3 py-2 text-xs font-bold text-emerald-800 hover:bg-emerald-100 transition-all shadow-2xs"
+                >
+                  <ShieldCheck className="h-4 w-4 text-emerald-600 shrink-0" />
+                  <span>Login Administrator</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleQuickPreset('user@bilcode.id', 'User123!')}
+                  className="flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-100 transition-all shadow-2xs"
+                >
+                  <UserCheck className="h-4 w-4 text-slate-500 shrink-0" />
+                  <span>Login Warga Pelapor</span>
+                </button>
+              </div>
             </div>
-          </form>
-
-          {/* Evaluator Quick Presets */}
-          <div className="mt-6 border-t border-slate-100 pt-6">
-            <p className="text-center text-xs font-semibold uppercase tracking-wider text-slate-400">
-              Akun Pengujian Evaluator
-            </p>
-            <div className="mt-3 grid grid-cols-1 gap-2.5 sm:grid-cols-2">
-              <button
-                type="button"
-                onClick={() => handleQuickPreset('admin@bilcode.id', 'Admin123!')}
-                className="flex items-center justify-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50/70 px-3 py-2 text-xs font-medium text-emerald-800 hover:bg-emerald-100/70 hover:border-emerald-300 transition-colors"
-              >
-                <ShieldCheck className="h-4 w-4 text-emerald-600 shrink-0" />
-                <span>Masuk sebagai Admin</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => handleQuickPreset('user@bilcode.id', 'User123!')}
-                className="flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-medium text-slate-700 hover:bg-slate-100 hover:border-slate-300 transition-colors"
-              >
-                <UserCheck className="h-4 w-4 text-slate-500 shrink-0" />
-                <span>Masuk sebagai Warga</span>
-              </button>
-            </div>
-            <p className="mt-2.5 text-center text-[11px] text-slate-400">
-              Klik salah satu tombol di atas untuk mengisi kredensial uji coba secara instan.
-            </p>
           </div>
         </div>
-
-        {/* Footer Info */}
-        <p className="mt-6 text-center text-xs text-slate-500">
-          Smart Waste Management System &copy; 2026 PT Bilcode Teknologi Indonesia
-        </p>
       </div>
     </div>
   );

@@ -90,9 +90,22 @@ export default function CreateReportModal({
     }
     setIsLocating(true);
     navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        setLatitude(pos.coords.latitude.toFixed(6));
-        setLongitude(pos.coords.longitude.toFixed(6));
+      async (pos) => {
+        const lat = pos.coords.latitude;
+        const lon = pos.coords.longitude;
+        setLatitude(lat.toFixed(6));
+        setLongitude(lon.toFixed(6));
+        try {
+          const res = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18`
+          );
+          if (res.ok) {
+            const data = await res.json();
+            if (data?.display_name && !addressNote) {
+              setAddressNote(data.display_name);
+            }
+          }
+        } catch (_) {}
         setIsLocating(false);
       },
       () => {

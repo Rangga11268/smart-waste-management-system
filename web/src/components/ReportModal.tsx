@@ -17,7 +17,7 @@ import {
 import StatusBadge from '@/components/StatusBadge';
 import CategoryBadge from '@/components/CategoryBadge';
 import { reportsApi, getFullImageUrl } from '@/lib/api';
-import { formatDate, formatPercentage, cn } from '@/lib/utils';
+import { formatDate, formatRelativeTime, formatPercentage, cn } from '@/lib/utils';
 import { useAuth } from '@/lib/auth';
 import type {
   ReportDetailData,
@@ -271,27 +271,23 @@ export default function ReportModal({
           </div>
 
           {/* Geolocation & Maps Integration */}
-          <div className="rounded-xl border border-slate-200/80 bg-slate-50/70 p-4 space-y-3">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-              <div className="space-y-1.5">
-                <div className="flex items-center gap-2 text-xs text-slate-700">
-                  <MapPin className="h-4 w-4 text-rose-500 shrink-0" />
-                  <span className="font-semibold text-slate-800">Koordinat GPS:</span>
-                  <span className="font-mono text-xs font-medium text-slate-700 bg-white border border-slate-200/80 px-2 py-0.5 rounded-md shadow-2xs">
-                    Lat: {typeof latitude === 'number' ? latitude.toFixed(4) : latitude}, Lng:{' '}
-                    {typeof longitude === 'number' ? longitude.toFixed(4) : longitude}
-                  </span>
+          <div className="rounded-xl border border-emerald-100 bg-emerald-50/40 p-4 space-y-3">
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+              <div className="space-y-2 flex-1">
+                <div className="flex items-start gap-2 text-xs">
+                  <MapPin className="h-4 w-4 text-emerald-600 shrink-0 mt-0.5" />
+                  <div>
+                    <span className="font-bold text-slate-900 block text-sm">
+                      {detail?.address_note || (report as any)?.address_note || 'Alamat Lapangan'}
+                    </span>
+                    <span className="font-mono text-xs text-slate-500 mt-0.5 inline-block">
+                      Koordinat: {typeof latitude === 'number' ? latitude.toFixed(6) : latitude}, {typeof longitude === 'number' ? longitude.toFixed(6) : longitude}
+                    </span>
+                  </div>
                 </div>
-                {detail?.address_note && (
-                  <p className="text-xs text-slate-600 pl-6">
-                    <span className="font-semibold text-slate-700">Patokan Alamat:</span>{' '}
-                    {detail.address_note}
-                  </p>
-                )}
                 {detail?.description && (
-                  <p className="text-xs text-slate-600 pl-6 pt-0.5">
-                    <span className="font-semibold text-slate-700">Deskripsi:</span>{' '}
-                    {detail.description}
+                  <p className="text-xs text-slate-600 pl-6 border-t border-emerald-100/60 pt-2 mt-2">
+                    <span className="font-semibold text-slate-700">Keterangan:</span> {detail.description}
                   </p>
                 )}
               </div>
@@ -299,16 +295,16 @@ export default function ReportModal({
                 href={mapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-emerald-700 hover:border-emerald-300 active:scale-[0.98] shadow-xs transition-all shrink-0"
+                className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-white border border-slate-200 text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 hover:border-emerald-300 active:scale-[0.98] shadow-xs transition-all shrink-0"
               >
-                <span>Buka di Google Maps</span>
+                <span>Buka Google Maps</span>
                 <ExternalLink className="h-3.5 w-3.5 text-emerald-600" />
               </a>
             </div>
           </div>
 
           {/* Pelapor & Waktu Info */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-slate-600 bg-white p-3 rounded-xl border border-slate-200">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-slate-600 bg-white p-3.5 rounded-xl border border-slate-200">
             <div>
               <span className="font-medium text-slate-500">Pelapor:</span>{' '}
               <span className="font-semibold text-slate-800">
@@ -317,7 +313,10 @@ export default function ReportModal({
             </div>
             <div>
               <span className="font-medium text-slate-500">Waktu Lapor:</span>{' '}
-              <span className="text-slate-800">{formatDate(report.created_at)}</span>
+              <span className="text-slate-800 font-medium">
+                {formatRelativeTime(report.created_at)}{' '}
+                <span className="text-[11px] text-slate-400">({formatDate(report.created_at)})</span>
+              </span>
             </div>
           </div>
 

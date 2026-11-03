@@ -67,6 +67,9 @@ export interface ReportListItem {
   image_url: string;
   latitude: number;
   longitude: number;
+  address_note?: string | null;
+  detected_category?: string | null;
+  ai_confidence?: number | null;
   status: ReportStatus;
   created_at: string;
   category: CategoryBrief;

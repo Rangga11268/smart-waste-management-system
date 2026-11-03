@@ -1,9 +1,18 @@
 """Pydantic schemas for waste reports, pagination, and status transitions."""
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 import uuid
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_serializer
+
+
+def serialize_utc_datetime(dt: Optional[datetime]) -> Optional[str]:
+    """Serialize datetime ensuring UTC ISO format with Z suffix."""
+    if dt is None:
+        return None
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    return dt.isoformat()
 
 
 class CategoryBrief(BaseModel):
@@ -39,6 +48,10 @@ class ReportLogResponse(BaseModel):
     remarks: Optional[str] = None
     created_at: datetime
 
+    @field_serializer("created_at")
+    def serialize_created_at(self, dt: datetime) -> str:
+        return serialize_utc_datetime(dt) or ""
+
 
 class ReportCreate(BaseModel):
     """Schema for validating programmatic report submissions."""
@@ -68,10 +81,17 @@ class ReportListItem(BaseModel):
     image_url: str
     latitude: float
     longitude: float
+    address_note: Optional[str] = None
+    detected_category: Optional[str] = None
+    ai_confidence: Optional[float] = 0.0
     status: str
     created_at: datetime
     category: CategoryBrief
     reporter: ReporterBrief
+
+    @field_serializer("created_at")
+    def serialize_created_at(self, dt: datetime) -> str:
+        return serialize_utc_datetime(dt) or ""
 
 
 class ReportDetailData(BaseModel):
@@ -96,6 +116,18 @@ class ReportDetailData(BaseModel):
     category: CategoryBrief
     reporter: ReporterBrief
     logs: List[ReportLogResponse] = []
+
+    @field_serializer("created_at")
+    def serialize_created_at(self, dt: datetime) -> str:
+        return serialize_utc_datetime(dt) or ""
+
+    @field_serializer("updated_at")
+    def serialize_updated_at(self, dt: datetime) -> str:
+        return serialize_utc_datetime(dt) or ""
+
+    @field_serializer("resolved_at")
+    def serialize_resolved_at(self, dt: Optional[datetime]) -> Optional[str]:
+        return serialize_utc_datetime(dt)
 
 
 class PaginationMeta(BaseModel):

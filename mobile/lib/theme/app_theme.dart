@@ -86,10 +86,11 @@ class AppTheme {
 
   /// Relative human-readable time formatter (e.g., "10 menit yang lalu")
   static String formatRelativeTime(DateTime dt) {
+    final localDt = dt.isUtc ? dt.toLocal() : dt;
     final now = DateTime.now();
-    final difference = now.difference(dt);
+    final difference = now.difference(localDt);
 
-    if (difference.inSeconds < 45) {
+    if (difference.isNegative || difference.inSeconds < 60) {
       return 'Baru saja';
     } else if (difference.inMinutes < 60) {
       return '${difference.inMinutes} menit lalu';
@@ -100,7 +101,7 @@ class AppTheme {
     } else if (difference.inDays < 7) {
       return '${difference.inDays} hari lalu';
     } else {
-      return '${dt.day}/${dt.month}/${dt.year}';
+      return '${localDt.day}/${localDt.month}/${localDt.year}';
     }
   }
 

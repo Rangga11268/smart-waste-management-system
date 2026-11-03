@@ -82,6 +82,9 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
       setState(() {
         _location = loc;
         _isLoadingGps = false;
+        if (loc.address != null && _addressController.text.isEmpty) {
+          _addressController.text = loc.address!;
+        }
       });
     }
   }
@@ -834,6 +837,35 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
                   ],
                 ),
               ),
+              if (_location!.address != null) ...[
+                const SizedBox(height: 8),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF0FDF4),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: AppTheme.primaryLight.withValues(alpha: 0.3)),
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Icon(Icons.place_rounded, size: 15, color: AppTheme.primaryDark),
+                      const SizedBox(width: 6),
+                      Expanded(
+                        child: Text(
+                          _location!.address!,
+                          style: const TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                            color: AppTheme.textPrimary,
+                            height: 1.3,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
               if (_location!.isSimulated)
                 Padding(
                   padding: const EdgeInsets.only(top: 6),

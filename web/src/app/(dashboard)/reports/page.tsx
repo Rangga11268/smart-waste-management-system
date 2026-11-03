@@ -14,6 +14,8 @@ import {
   Loader2,
   FileSpreadsheet,
   Plus,
+  MapPin,
+  ExternalLink,
 } from 'lucide-react';
 import StatusBadge from '@/components/StatusBadge';
 import CategoryBadge from '@/components/CategoryBadge';
@@ -21,7 +23,7 @@ import ReportModal from '@/components/ReportModal';
 import CreateReportModal from '@/components/CreateReportModal';
 import { useAuth } from '@/lib/auth';
 import { reportsApi, categoriesApi, getFullImageUrl } from '@/lib/api';
-import { formatDate, cn } from '@/lib/utils';
+import { formatDate, formatRelativeTime, getGoogleMapsUrl, cn } from '@/lib/utils';
 import type {
   ReportListItem,
   ReportDetailData,
@@ -376,11 +378,11 @@ export default function ReportsPage() {
               <tr className="border-b border-slate-200/80 bg-slate-50/75 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
                 <th className="py-3.5 pl-5 pr-3">ID</th>
                 <th className="py-3.5 px-3">Thumbnail</th>
-                <th className="py-3.5 px-3 min-w-[200px]">Judul & Catatan</th>
+                <th className="py-3.5 px-3 min-w-[180px]">Judul Laporan</th>
                 <th className="py-3.5 px-3">Kategori</th>
                 <th className="py-3.5 px-3">Pelapor</th>
-                <th className="py-3.5 px-3">Lokasi GPS</th>
-                <th className="py-3.5 px-3">Tanggal</th>
+                <th className="py-3.5 px-3 min-w-[200px]">Lokasi & Alamat</th>
+                <th className="py-3.5 px-3">Waktu</th>
                 <th className="py-3.5 px-3">Status</th>
                 <th className="py-3.5 pl-3 pr-5 text-right">Aksi</th>
               </tr>
@@ -508,16 +510,51 @@ export default function ReportsPage() {
                         {report.reporter?.full_name || report.reporter?.email || 'Warga'}
                       </td>
 
-                      {/* 6. Lokasi GPS */}
-                      <td className="py-3.5 px-3 whitespace-nowrap">
-                        <span className="font-mono text-xs font-medium text-slate-700 bg-slate-100/90 border border-slate-200/80 px-2 py-0.5 rounded-md">
-                          {report.latitude.toFixed(4)}, {report.longitude.toFixed(4)}
-                        </span>
+                      {/* 6. Lokasi & Alamat */}
+                      <td className="py-3.5 px-3 min-w-[200px]">
+                        <div className="flex flex-col gap-1">
+                          {report.address_note ? (
+                            <span
+                              className="font-semibold text-slate-800 line-clamp-1 flex items-center gap-1.5"
+                              title={report.address_note}
+                            >
+                              <MapPin className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
+                              <span className="truncate">{report.address_note}</span>
+                            </span>
+                          ) : (
+                            <span className="text-slate-400 italic text-[11px] flex items-center gap-1">
+                              <MapPin className="h-3 w-3 text-slate-300" />
+                              Alamat tersimpan di GPS
+                            </span>
+                          )}
+                          <div className="flex items-center gap-1.5">
+                            <span className="font-mono text-[11px] font-medium text-slate-600 bg-slate-100 border border-slate-200/80 px-1.5 py-0.5 rounded">
+                              {report.latitude.toFixed(4)}, {report.longitude.toFixed(4)}
+                            </span>
+                            <a
+                              href={getGoogleMapsUrl(report.latitude, report.longitude)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-0.5 text-[11px] font-semibold text-emerald-600 hover:text-emerald-700 hover:underline"
+                              title="Buka titik koordinat di Google Maps"
+                            >
+                              <span>Peta</span>
+                              <ExternalLink className="h-2.5 w-2.5" />
+                            </a>
+                          </div>
+                        </div>
                       </td>
 
-                      {/* 7. Tanggal */}
-                      <td className="py-3.5 px-3 text-xs text-slate-500 whitespace-nowrap">
-                        {formatDate(report.created_at)}
+                      {/* 7. Waktu & Tanggal */}
+                      <td className="py-3.5 px-3 text-xs whitespace-nowrap">
+                        <div className="flex flex-col">
+                          <span className="font-semibold text-slate-700">
+                            {formatRelativeTime(report.created_at)}
+                          </span>
+                          <span className="text-[10px] text-slate-400 font-mono">
+                            {formatDate(report.created_at)}
+                          </span>
+                        </div>
                       </td>
 
                       {/* 8. Status */}

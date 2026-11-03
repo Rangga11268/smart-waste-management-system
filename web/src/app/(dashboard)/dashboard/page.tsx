@@ -18,7 +18,7 @@ import {
 import StatCard from '@/components/StatCard';
 import CategoryChart from '@/components/CategoryChart';
 import { dashboardApi } from '@/lib/api';
-import { formatDate, cn } from '@/lib/utils';
+import { formatDate, formatRelativeTime, cn } from '@/lib/utils';
 import type { DashboardStatsData } from '@/types/api';
 
 export default function DashboardPage() {
@@ -274,8 +274,10 @@ export default function DashboardPage() {
                       </div>
                     </div>
                   </div>
-                  <div className="font-sans text-xs text-slate-400 pl-11 sm:pl-0 sm:text-right shrink-0">
-                    {formatDate(act.timestamp)}
+                  <div className="font-sans text-xs font-medium text-slate-500 pl-11 sm:pl-0 sm:text-right shrink-0">
+                    <span title={formatDate(act.timestamp)} className="bg-slate-50 border border-slate-200 px-2 py-0.5 rounded-md">
+                      {formatRelativeTime(act.timestamp)}
+                    </span>
                   </div>
                 </div>
               ))}

@@ -58,7 +58,7 @@ interface SidebarProps {
 
 export default function Sidebar({ isOpen = false, onClose, className }: SidebarProps) {
   const pathname = usePathname();
-  const { isAdmin } = useAuth();
+  const { isAdmin, user, logout } = useAuth();
 
   const isNavActive = (href: string) => {
     if (href === '/dashboard' && pathname === '/dashboard') return true;
@@ -158,16 +158,40 @@ export default function Sidebar({ isOpen = false, onClose, className }: SidebarP
         </div>
       </div>
 
-      {/* Footer System Status Badge */}
-      <div className="border-t border-slate-200 p-4 bg-slate-50/50 m-4 rounded-xl">
-        <div className="flex items-center justify-between text-xs text-slate-500">
-          <span className="font-medium">Backend Service</span>
+      {/* Footer User Profile & System Status Badge */}
+      <div className="border-t border-slate-200/90 p-3 m-3 space-y-2">
+        {user && (
+          <div className="flex items-center justify-between rounded-xl bg-slate-50 border border-slate-200/80 p-2.5">
+            <div className="flex items-center gap-2.5 min-w-0">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-600 font-bold text-white text-xs shadow-xs">
+                {user.full_name?.charAt(0)?.toUpperCase() || 'U'}
+              </div>
+              <div className="min-w-0">
+                <p className="truncate text-xs font-bold text-slate-800">{user.full_name}</p>
+                <span className="inline-block rounded px-1.5 py-0.2 bg-emerald-100 text-[10px] font-bold text-emerald-800 uppercase tracking-wider">
+                  {user.role}
+                </span>
+              </div>
+            </div>
+            {logout && (
+              <button
+                type="button"
+                onClick={logout}
+                title="Keluar dari akun"
+                className="rounded-lg p-1.5 text-slate-400 hover:bg-rose-50 hover:text-rose-600 transition-colors"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
+          </div>
+        )}
+        <div className="flex items-center justify-between px-2 py-1 text-xs text-slate-500">
+          <span className="font-medium text-[11px]">Backend API</span>
           <span className="flex items-center gap-1.5 font-mono text-[11px] text-emerald-700">
-            <span className="h-2 w-2 rounded-full bg-emerald-500" />
-            FastAPI 0.110
+            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+            Connected
           </span>
         </div>
-        <p className="mt-1 text-[11px] text-slate-400">Smart Waste Management</p>
       </div>
     </div>
   );
