@@ -100,17 +100,17 @@ function LoginForm() {
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col lg:grid lg:grid-cols-12">
       {/* Left Brand Showcase Column (Desktop Only) */}
-      <div className="hidden lg:col-span-5 lg:flex lg:flex-col lg:justify-between bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950 p-12 text-white relative overflow-hidden border-r border-slate-800">
+      <div className="hidden lg:col-span-5 lg:flex lg:flex-col lg:justify-between bg-slate-900 p-12 text-white relative overflow-hidden border-r border-slate-800">
         <div className="relative z-10">
           <Logo size={42} showText={true} />
           
-          <div className="mt-14 space-y-6">
-            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-400 backdrop-blur-xs">
+          <div className="mt-12 space-y-5">
+            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-400">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
               Sistem Pengelolaan Sampah Cerdas Terintegrasi
             </div>
             
-            <h1 className="text-3xl font-extrabold tracking-tight text-white leading-tight font-heading">
+            <h1 className="text-3xl font-extrabold tracking-tight text-white leading-tight font-sans">
               Akselerasi Keberlanjutan Kota dengan Computer Vision & Geotagging.
             </h1>
             
@@ -141,7 +141,7 @@ function LoginForm() {
           </div>
         </div>
 
-        <div className="relative z-10 border-t border-slate-800/80 pt-6 mt-12 flex items-center justify-between text-xs text-slate-400">
+        <div className="relative z-10 border-t border-slate-800 pt-6 mt-12 flex items-center justify-between text-xs text-slate-400">
           <span>&copy; 2026 PT Bilcode Teknologi Indonesia</span>
           <span className="font-mono text-emerald-400">v1.0.0 Production</span>
         </div>
