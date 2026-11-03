@@ -242,10 +242,13 @@ class WastePredictor:
         # 2. Preprocessing & tensor creation
         input_tensor = self.transform(image).unsqueeze(0).to(self.device)
 
-        # 3. Model inference
+        # 3. Model inference with temperature-calibrated softmax (T=1.4)
+        # Prevents overconfidence on out-of-distribution / cluttered waste images
+        temperature = 1.4
         with torch.no_grad():
             logits = self.model(input_tensor)
-            probabilities = F.softmax(logits, dim=1)[0]
+            calibrated_logits = logits / temperature
+            probabilities = F.softmax(calibrated_logits, dim=1)[0]
 
         probs_np = probabilities.cpu().numpy()
 

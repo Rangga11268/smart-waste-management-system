@@ -149,6 +149,18 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
     }
   }
 
+  void _onCategoryChanged(int? newId) {
+    if (newId == null) return;
+    setState(() {
+      _selectedCategoryId = newId;
+      final selectedCat = _categories.firstWhere(
+        (c) => c.id == newId,
+        orElse: () => _categories.first,
+      );
+      _titleController.text = 'Tumpukan Sampah ${selectedCat.name}';
+    });
+  }
+
   Future<void> _handleSubmit() async {
     if (_imageBytes == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -574,20 +586,24 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
                   ),
                 ),
                 const Spacer(),
-                // Highlighted Category Badge
+                // Highlighted Category & Confidence Badge
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
-                    color: AppTheme.primary,
+                    color: res.confidence >= 0.85
+                        ? AppTheme.primary
+                        : const Color(0xFFD97706),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    res.category.toUpperCase(),
+                    res.confidence >= 0.85
+                        ? res.category.toUpperCase()
+                        : '${res.category.toUpperCase()} (SARAN)',
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w800,
-                      fontSize: 12,
-                      letterSpacing: 0.4,
+                      fontSize: 11,
+                      letterSpacing: 0.3,
                     ),
                   ),
                 ),
@@ -604,22 +620,93 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
                       value: res.confidence,
                       minHeight: 10,
                       backgroundColor: Colors.white,
-                      color: AppTheme.primary,
+                      color: res.confidence >= 0.85
+                          ? AppTheme.primary
+                          : const Color(0xFFD97706),
                     ),
                   ),
                 ),
                 const SizedBox(width: 12),
                 Text(
                   res.confidencePercentage,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w800,
-                    color: AppTheme.primaryDark,
+                    color: res.confidence >= 0.85
+                        ? AppTheme.primaryDark
+                        : const Color(0xFFB45309),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+
+            // 1-Tap Category Quick Chips
+            const Row(
+              children: [
+                Icon(Icons.touch_app_rounded, size: 15, color: AppTheme.primaryDark),
+                SizedBox(width: 6),
+                Text(
+                  'Koreksi Kategori (1-Ketuk jika AI meleset):',
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    color: AppTheme.textPrimary,
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 8),
+            Wrap(
+              spacing: 8,
+              runSpacing: 6,
+              children: _categories.map((cat) {
+                final isSelected = _selectedCategoryId == cat.id;
+                return InkWell(
+                  onTap: () => _onCategoryChanged(cat.id),
+                  borderRadius: BorderRadius.circular(10),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 150),
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+                    decoration: BoxDecoration(
+                      color: isSelected ? AppTheme.primary : Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: isSelected ? AppTheme.primaryDark : const Color(0xFFCBD5E1),
+                        width: isSelected ? 1.5 : 1.0,
+                      ),
+                      boxShadow: isSelected
+                          ? [
+                              BoxShadow(
+                                color: AppTheme.primary.withValues(alpha: 0.25),
+                                blurRadius: 6,
+                                offset: const Offset(0, 2),
+                              )
+                            ]
+                          : null,
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (isSelected) ...[
+                          const Icon(Icons.check_circle_rounded, size: 14, color: Colors.white),
+                          const SizedBox(width: 5),
+                        ],
+                        Text(
+                          cat.name,
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: isSelected ? FontWeight.w800 : FontWeight.w600,
+                            color: isSelected ? Colors.white : AppTheme.textPrimary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
+            const SizedBox(height: 10),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
               decoration: BoxDecoration(
@@ -629,11 +716,11 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
               ),
               child: const Row(
                 children: [
-                  Icon(Icons.edit_note_rounded, size: 16, color: AppTheme.primaryDark),
+                  Icon(Icons.info_outline, size: 15, color: AppTheme.primaryDark),
                   SizedBox(width: 6),
                   Expanded(
                     child: Text(
-                      'Rekomendasi awal AI. Jika tidak sesuai, Anda dapat mengganti pilihan kategori pada dropdown di bawah secara manual.',
+                      'AI memberikan rekomendasi awal. Sentuh salah satu chip di atas untuk mengoreksi kategori seketika.',
                       style: TextStyle(
                         fontSize: 11,
                         color: AppTheme.textSecondary,
@@ -801,11 +888,7 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
               child: Text(c.name, style: const TextStyle(fontWeight: FontWeight.w600)),
             );
           }).toList(),
-          onChanged: (val) {
-            setState(() {
-              _selectedCategoryId = val;
-            });
-          },
+          onChanged: _onCategoryChanged,
           validator: (val) => val == null ? 'Pilih kategori sampah' : null,
         ),
         const SizedBox(height: 16),
