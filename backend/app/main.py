@@ -107,10 +107,12 @@ from app.api.v1.predict import router as predict_router
 from app.api.v1.reports import router as reports_router
 from app.api.v1.dashboard import router as dashboard_router
 from app.api.v1.categories import router as categories_router
+from app.api.v1.users import router as users_router
 
 app.include_router(auth_router, prefix=f"{settings.API_V1_STR}/auth", tags=["Auth"])
 app.include_router(predict_router, prefix=f"{settings.API_V1_STR}/predict", tags=["Prediction"])
 app.include_router(reports_router, prefix=f"{settings.API_V1_STR}/reports", tags=["Reports"])
 app.include_router(dashboard_router, prefix=f"{settings.API_V1_STR}/dashboard", tags=["Dashboard"])
 app.include_router(categories_router, prefix=f"{settings.API_V1_STR}/categories", tags=["Categories"])
+app.include_router(users_router, prefix=f"{settings.API_V1_STR}/users", tags=["Users"])
 

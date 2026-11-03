@@ -166,3 +166,22 @@ export interface PredictResponseData {
   category_id?: number;
   probabilities?: Record<string, number>;
 }
+
+// ==========================================
+// User Management Types
+// ==========================================
+export interface UserListItem {
+  id: string; // UUID
+  email: string;
+  full_name: string;
+  role: UserRole;
+  phone_number?: string | null;
+  is_active: boolean;
+  total_reports: number;
+  created_at?: string | null;
+}
+
+export interface UserListResponse {
+  status: 'success';
+  data: UserListItem[];
+}
