@@ -73,14 +73,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     } else {
       nextScreen = LoginScreen(
         authService: widget.authService,
-        onLoginSuccess: () {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (_) => HomeScreen(authService: widget.authService),
-            ),
-          );
-        },
       );
     }
 

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'config/app_config.dart';
@@ -8,13 +9,21 @@ import 'theme/app_theme.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // Set system navigation & status bar colors
-  SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.dark,
-    ),
-  );
+  // Set system navigation & status bar colors (mobile native only)
+  if (!kIsWeb) {
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+      ),
+    );
+  }
+
+  // Catch unhandled asynchronous errors to prevent unhandled promise rejections on web
+  PlatformDispatcher.instance.onError = (error, stack) {
+    debugPrint('SWMS Handled Exception: $error');
+    return true;
+  };
 
   // Initialize dynamic server base URL
   await AppConfig.init();

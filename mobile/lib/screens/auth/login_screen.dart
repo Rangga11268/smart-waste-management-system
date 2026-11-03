@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import '../../services/auth_service.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/swms_logo.dart';
+import '../home/home_screen.dart';
 import '../settings/server_settings_screen.dart';
 import 'register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   final AuthService authService;
-  final VoidCallback onLoginSuccess;
+  final VoidCallback? onLoginSuccess;
 
   const LoginScreen({
     super.key,
     required this.authService,
-    required this.onLoginSuccess,
+    this.onLoginSuccess,
   });
 
   @override
@@ -51,7 +52,16 @@ class _LoginScreenState extends State<LoginScreen> {
       });
 
       if (res['success'] == true) {
-        widget.onLoginSuccess();
+        if (widget.onLoginSuccess != null) {
+          widget.onLoginSuccess!();
+        } else {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (_) => HomeScreen(authService: widget.authService),
+            ),
+          );
+        }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
