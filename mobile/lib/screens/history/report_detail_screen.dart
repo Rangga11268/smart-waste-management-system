@@ -125,7 +125,7 @@ class _ReportDetailScreenState extends State<ReportDetailScreen> {
                                 decoration: BoxDecoration(
                                   color: AppTheme.getStatusBgColor(report.status),
                                   borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(color: AppTheme.getStatusColor(report.status)),
+                                  border: Border.all(color: AppTheme.getStatusBorderColor(report.status)),
                                 ),
                                 child: Text(
                                   report.status.toUpperCase(),

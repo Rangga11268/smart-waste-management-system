@@ -6,6 +6,7 @@ import '../../models/prediction_result.dart';
 import '../../services/api_service.dart';
 import '../../services/location_service.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/dashed_border.dart';
 
 class CreateReportScreen extends StatefulWidget {
   final ApiService apiService;
@@ -197,18 +198,24 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
           context: context,
           barrierDismissible: false,
           builder: (ctx) => AlertDialog(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             title: const Row(
               children: [
-                Icon(Icons.check_circle, color: AppTheme.primary, size: 28),
-                SizedBox(width: 8),
-                Text('Laporan Berhasil'),
+                Icon(Icons.check_circle_rounded, color: AppTheme.primary, size: 28),
+                SizedBox(width: 10),
+                Text('Laporan Terkirim!'),
               ],
             ),
             content: Text(
-              'Laporan Anda #$reportId telah berhasil dikirim ke sistem. Petugas kebersihan akan segera menindaklanjuti lokasi ini.',
+              'Laporan Anda #$reportId telah masuk ke sistem antrean dinas kebersihan dan akan segera ditindaklanjuti oleh armada lapangan.',
+              style: const TextStyle(fontSize: 14, height: 1.45),
             ),
             actions: [
-              TextButton(
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(120, 44),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                ),
                 onPressed: () {
                   Navigator.pop(ctx);
                   widget.onReportCreated?.call();
@@ -239,52 +246,76 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Laporkan Sampah'),
+        title: const Text('Form Laporan Sampah'),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(18),
+        padding: const EdgeInsets.fromLTRB(18, 12, 18, 100), // Extra bottom padding for floating submit bar
         child: Form(
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // 1. Photo Capture Section
+              // 1. Photo Capture Section (Dashed Border when empty, 16dp rounded when filled)
               _buildPhotoCard(),
               const SizedBox(height: 16),
 
-              // 2. AI Classification Result
+              // 2. AI Detection Banner (Progress bar + percentage badge)
               if (_isAnalyzingAI || _aiResult != null || _aiError != null)
                 _buildAiResultCard(),
               const SizedBox(height: 16),
 
-              // 3. GPS Geotagging Card
+              // 3. Compact GPS Geotagging Card
               _buildGpsCard(),
               const SizedBox(height: 16),
 
               // 4. Form Fields
               _buildFormFields(),
-              const SizedBox(height: 24),
-
-              // Submit Action
-              ElevatedButton.icon(
-                onPressed: _isSubmitting ? null : _handleSubmit,
-                icon: _isSubmitting
-                    ? const SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: Colors.white,
-                        ),
-                      )
-                    : const Icon(Icons.send_rounded),
-                label: Text(
-                  _isSubmitting ? 'Mengirim Laporan...' : 'Kirim Laporan Sampah',
-                  style: const TextStyle(fontWeight: FontWeight.w700),
-                ),
-              ),
-              const SizedBox(height: 20),
             ],
+          ),
+        ),
+      ),
+      // 5. Floating Ergonomic Thumb-Friendly Bottom Button (Height 54dp)
+      bottomNavigationBar: Container(
+        padding: EdgeInsets.fromLTRB(
+          18,
+          12,
+          18,
+          MediaQuery.of(context).padding.bottom + 12,
+        ),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.06),
+              offset: const Offset(0, -4),
+              blurRadius: 14,
+            ),
+          ],
+        ),
+        child: SizedBox(
+          height: 52,
+          child: ElevatedButton.icon(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppTheme.primary,
+              foregroundColor: Colors.white,
+              elevation: 0,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+            ),
+            onPressed: _isSubmitting ? null : _handleSubmit,
+            icon: _isSubmitting
+                ? const SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2.2,
+                      color: Colors.white,
+                    ),
+                  )
+                : const Icon(Icons.send_rounded, size: 20),
+            label: Text(
+              _isSubmitting ? 'Mengirim Laporan...' : 'Kirim Laporan Sampah',
+              style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
+            ),
           ),
         ),
       ),
@@ -292,92 +323,142 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
   }
 
   Widget _buildPhotoCard() {
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      child: Column(
-        children: [
-          if (_imageBytes != null)
-            Stack(
-              children: [
-                Image.memory(
-                  _imageBytes!,
-                  height: 220,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
+    if (_imageBytes != null) {
+      return Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: AppTheme.border, width: 1.2),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: Stack(
+          children: [
+            Image.memory(
+              _imageBytes!,
+              height: 230,
+              width: double.infinity,
+              fit: BoxFit.cover,
+            ),
+            Positioned(
+              top: 10,
+              right: 10,
+              child: CircleAvatar(
+                radius: 18,
+                backgroundColor: Colors.black.withValues(alpha: 0.6),
+                child: IconButton(
+                  icon: const Icon(Icons.close_rounded, color: Colors.white, size: 18),
+                  padding: EdgeInsets.zero,
+                  onPressed: () {
+                    setState(() {
+                      _imageBytes = null;
+                      _imageName = null;
+                      _aiResult = null;
+                      _aiError = null;
+                    });
+                  },
                 ),
-                Positioned(
-                  top: 8,
-                  right: 8,
-                  child: CircleAvatar(
-                    backgroundColor: Colors.black54,
-                    child: IconButton(
-                      icon: const Icon(Icons.close, color: Colors.white, size: 20),
-                      onPressed: () {
-                        setState(() {
-                          _imageBytes = null;
-                          _imageName = null;
-                          _aiResult = null;
-                          _aiError = null;
-                        });
-                      },
-                    ),
-                  ),
+              ),
+            ),
+            Positioned(
+              bottom: 10,
+              right: 10,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                decoration: BoxDecoration(
+                  color: Colors.black.withValues(alpha: 0.7),
+                  borderRadius: BorderRadius.circular(8),
                 ),
-              ],
-            )
-          else
-            Container(
-              height: 180,
-              color: AppTheme.background,
-              child: const Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.camera_alt_outlined, size: 52, color: AppTheme.primary),
-                    SizedBox(height: 8),
+                    Icon(Icons.check_circle, color: Color(0xFF4ADE80), size: 14),
+                    SizedBox(width: 5),
                     Text(
-                      'Ambil foto bukti sampah',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: AppTheme.textPrimary,
-                        fontSize: 15,
-                      ),
-                    ),
-                    SizedBox(height: 4),
-                    Text(
-                      'AI akan mengenali jenis sampah secara otomatis',
-                      style: TextStyle(
-                        color: AppTheme.textSecondary,
-                        fontSize: 12,
-                      ),
+                      'Foto Terpilih',
+                      style: TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w600),
                     ),
                   ],
                 ),
               ),
             ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-            child: Row(
+          ],
+        ),
+      );
+    }
+
+    // Clean Dashed Border Camera Placeholder
+    return DashedBorderContainer(
+      radius: 16,
+      strokeWidth: 1.5,
+      color: AppTheme.primaryLight.withValues(alpha: 0.5),
+      backgroundColor: const Color(0xFFF0FDF4), // Subtle Emerald 50 tint
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(14),
+              decoration: const BoxDecoration(
+                color: AppTheme.primaryContainer,
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.photo_camera_rounded,
+                size: 34,
+                color: AppTheme.primaryDark,
+              ),
+            ),
+            const SizedBox(height: 12),
+            const Text(
+              'Ambil Foto Bukti Sampah',
+              style: TextStyle(
+                fontWeight: FontWeight.w700,
+                color: AppTheme.textPrimary,
+                fontSize: 15,
+              ),
+            ),
+            const SizedBox(height: 4),
+            const Text(
+              'AI MobileNetV2 akan mendeteksi otomatis kategori sampah',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: AppTheme.textSecondary,
+                fontSize: 12,
+              ),
+            ),
+            const SizedBox(height: 18),
+            Row(
               children: [
                 Expanded(
-                  child: OutlinedButton.icon(
+                  child: ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppTheme.primary,
+                      foregroundColor: Colors.white,
+                      minimumSize: const Size(0, 46),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    ),
                     onPressed: () => _pickImage(ImageSource.camera),
                     icon: const Icon(Icons.photo_camera, size: 18),
-                    label: const Text('Kamera', style: TextStyle(fontSize: 13)),
+                    label: const Text('Buka Kamera', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700)),
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: 10),
                 Expanded(
                   child: OutlinedButton.icon(
+                    style: OutlinedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      minimumSize: const Size(0, 46),
+                      side: const BorderSide(color: AppTheme.border, width: 1.2),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    ),
                     onPressed: () => _pickImage(ImageSource.gallery),
-                    icon: const Icon(Icons.photo_library_outlined, size: 18),
-                    label: const Text('Galeri', style: TextStyle(fontSize: 13)),
+                    icon: const Icon(Icons.photo_library_outlined, size: 18, color: AppTheme.textPrimary),
+                    label: const Text('Pilih Galeri', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppTheme.textPrimary)),
                   ),
                 ),
               ],
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -385,28 +466,41 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
   Widget _buildAiResultCard() {
     if (_isAnalyzingAI) {
       return Container(
-        padding: const EdgeInsets.all(14),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         decoration: BoxDecoration(
           color: AppTheme.primaryContainer.withValues(alpha: 0.5),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppTheme.primary.withValues(alpha: 0.3)),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: AppTheme.primaryLight.withValues(alpha: 0.5)),
         ),
         child: const Row(
           children: [
             SizedBox(
-              width: 20,
-              height: 20,
-              child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.primary),
+              width: 22,
+              height: 22,
+              child: CircularProgressIndicator(
+                strokeWidth: 2.2,
+                color: AppTheme.primaryDark,
+              ),
             ),
-            SizedBox(width: 12),
+            SizedBox(width: 14),
             Expanded(
-              child: Text(
-                'AI MobileNetV2 sedang memindai citra sampah...',
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                  color: AppTheme.primaryDark,
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'AI MobileNetV2 Memindai...',
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                      color: AppTheme.primaryDark,
+                    ),
+                  ),
+                  SizedBox(height: 2),
+                  Text(
+                    'Mengklasifikasikan jenis sampah secara real-time',
+                    style: TextStyle(fontSize: 11, color: AppTheme.onPrimaryContainer),
+                  ),
+                ],
               ),
             ),
           ],
@@ -416,19 +510,19 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
 
     if (_aiError != null) {
       return Container(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
           color: AppTheme.statusPendingBg,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppTheme.statusPending.withValues(alpha: 0.3)),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: AppTheme.statusPendingBorder),
         ),
         child: Row(
           children: [
             const Icon(Icons.info_outline, color: AppTheme.statusPending, size: 20),
-            const SizedBox(width: 8),
+            const SizedBox(width: 10),
             Expanded(
               child: Text(
-                'Pemberitahuan AI: $_aiError. Anda dapat memilih kategori manual.',
+                'Info AI: $_aiError. Anda dapat memilih kategori secara manual.',
                 style: const TextStyle(fontSize: 12, color: AppTheme.textPrimary),
               ),
             ),
@@ -440,18 +534,36 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
     if (_aiResult != null) {
       final res = _aiResult!;
       return Container(
-        padding: const EdgeInsets.all(14),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: AppTheme.primaryContainer.withValues(alpha: 0.6),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppTheme.primary),
+          gradient: const LinearGradient(
+            colors: [Color(0xFFECFDF5), Color(0xFFF0FDF4)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: AppTheme.primaryLight, width: 1.5),
+          boxShadow: [
+            BoxShadow(
+              color: AppTheme.primary.withValues(alpha: 0.08),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                const Icon(Icons.auto_awesome, color: AppTheme.primary, size: 20),
+                Container(
+                  padding: const EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                    color: AppTheme.primary,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Icon(Icons.auto_awesome, color: Colors.white, size: 16),
+                ),
                 const SizedBox(width: 8),
                 const Text(
                   'Deteksi AI MobileNetV2',
@@ -462,47 +574,55 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
                   ),
                 ),
                 const Spacer(),
+                // Highlighted Category Badge
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
                     color: AppTheme.primary,
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    res.category,
+                    res.category.toUpperCase(),
                     style: const TextStyle(
                       color: Colors.white,
-                      fontWeight: FontWeight.w700,
+                      fontWeight: FontWeight.w800,
                       fontSize: 12,
+                      letterSpacing: 0.4,
                     ),
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 12),
+            // Progress Bar & Percentage
             Row(
               children: [
                 Expanded(
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(6),
                     child: LinearProgressIndicator(
                       value: res.confidence,
-                      minHeight: 8,
+                      minHeight: 10,
                       backgroundColor: Colors.white,
                       color: AppTheme.primary,
                     ),
                   ),
                 ),
-                const SizedBox(width: 10),
+                const SizedBox(width: 12),
                 Text(
                   res.confidencePercentage,
                   style: const TextStyle(
-                    fontSize: 13,
+                    fontSize: 14,
                     fontWeight: FontWeight.w800,
-                    color: AppTheme.onPrimaryContainer,
+                    color: AppTheme.primaryDark,
                   ),
                 ),
               ],
+            ),
+            const SizedBox(height: 6),
+            const Text(
+              'Kategori formulir di bawah otomatis disesuaikan sesuai rekomendasi AI.',
+              style: TextStyle(fontSize: 11, color: AppTheme.textSecondary),
             ),
           ],
         ),
@@ -521,54 +641,102 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
           children: [
             Row(
               children: [
-                const Icon(Icons.location_on, color: AppTheme.statusInProgress, size: 20),
-                const SizedBox(width: 8),
-                const Text(
-                  'Geotagging Lokasi GPS',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
-                    color: AppTheme.textPrimary,
+                Container(
+                  padding: const EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                    color: AppTheme.statusInProgressBg,
+                    borderRadius: BorderRadius.circular(8),
                   ),
+                  child: const Icon(Icons.location_on, color: AppTheme.statusInProgress, size: 18),
+                ),
+                const SizedBox(width: 10),
+                const Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Geotagging Lokasi GPS',
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w700,
+                        color: AppTheme.textPrimary,
+                      ),
+                    ),
+                    Text(
+                      'Koordinat bukti laporan lapangan',
+                      style: TextStyle(fontSize: 11, color: AppTheme.textTertiary),
+                    ),
+                  ],
                 ),
                 const Spacer(),
                 if (_isLoadingGps)
                   const SizedBox(
-                    width: 16,
-                    height: 16,
-                    child: CircularProgressIndicator(strokeWidth: 2),
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.statusInProgress),
                   )
                 else
-                  IconButton(
-                    icon: const Icon(Icons.refresh, size: 18),
-                    tooltip: 'Perbarui Koordinat GPS',
-                    visualDensity: VisualDensity.compact,
+                  OutlinedButton.icon(
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                      minimumSize: const Size(0, 36),
+                      side: const BorderSide(color: AppTheme.border),
+                    ),
                     onPressed: _fetchGpsLocation,
+                    icon: const Icon(Icons.refresh, size: 15, color: AppTheme.textPrimary),
+                    label: const Text('Refresh', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
                   ),
               ],
             ),
-            const SizedBox(height: 6),
+            const SizedBox(height: 10),
             if (_location != null) ...[
-              Text(
-                'Lat: ${_location!.latitude.toStringAsFixed(6)}, Lng: ${_location!.longitude.toStringAsFixed(6)}',
-                style: const TextStyle(
-                  fontFamily: 'monospace',
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                  color: AppTheme.textPrimary,
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                decoration: BoxDecoration(
+                  color: AppTheme.surfaceMuted,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Lat: ${_location!.latitude.toStringAsFixed(6)} | Lng: ${_location!.longitude.toStringAsFixed(6)}',
+                        style: const TextStyle(
+                          fontFamily: 'monospace',
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                          color: AppTheme.textPrimary,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: _location!.isSimulated ? AppTheme.statusPendingBg : AppTheme.statusCompletedBg,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Text(
+                        _location!.isSimulated ? 'Simulasi' : 'Akurat',
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w700,
+                          color: _location!.isSimulated ? AppTheme.statusPending : AppTheme.statusCompleted,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               if (_location!.isSimulated)
                 Padding(
-                  padding: const EdgeInsets.only(top: 4),
+                  padding: const EdgeInsets.only(top: 6),
                   child: Text(
-                    _location!.errorMessage ?? 'Mode simulasi / default Jakarta',
+                    _location!.errorMessage ?? 'Mode default koordinat Jakarta Pusat',
                     style: const TextStyle(fontSize: 11, color: AppTheme.statusPending),
                   ),
                 ),
             ] else
               const Text(
-                'Mencari sinyal GPS...',
+                'Sedang mengunci sinyal GPS...',
                 style: TextStyle(fontSize: 12, color: AppTheme.textSecondary),
               ),
           ],
@@ -587,7 +755,7 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
           decoration: const InputDecoration(
             labelText: 'Judul Laporan *',
             hintText: 'Contoh: Tumpukan Sampah Plastik Liar',
-            prefixIcon: Icon(Icons.title),
+            prefixIcon: Icon(Icons.title, color: AppTheme.textSecondary),
           ),
           validator: (val) {
             if (val == null || val.trim().isEmpty) {
@@ -604,12 +772,12 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
           initialValue: _selectedCategoryId,
           decoration: const InputDecoration(
             labelText: 'Kategori Sampah *',
-            prefixIcon: Icon(Icons.category_outlined),
+            prefixIcon: Icon(Icons.category_outlined, color: AppTheme.textSecondary),
           ),
           items: _categories.map((c) {
             return DropdownMenuItem<int>(
               value: c.id,
-              child: Text(c.name),
+              child: Text(c.name, style: const TextStyle(fontWeight: FontWeight.w600)),
             );
           }).toList(),
           onChanged: (val) {
@@ -625,9 +793,9 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
         TextFormField(
           controller: _addressController,
           decoration: const InputDecoration(
-            labelText: 'Catatan Alamat / Patokan (Opsional)',
+            labelText: 'Patokan Alamat (Opsional)',
             hintText: 'Contoh: Samping pos satpam RT 04, Jl. Merpati',
-            prefixIcon: Icon(Icons.map_outlined),
+            prefixIcon: Icon(Icons.map_outlined, color: AppTheme.textSecondary),
           ),
         ),
         const SizedBox(height: 16),
@@ -637,11 +805,11 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
           controller: _descController,
           maxLines: 3,
           decoration: const InputDecoration(
-            labelText: 'Keterangan Tambahan (Opsional)',
+            labelText: 'Keterangan Lapangan (Opsional)',
             hintText: 'Jelaskan kondisi tumpukan, aroma bau, atau potensi sumbatan selokan...',
             prefixIcon: Padding(
               padding: EdgeInsets.only(bottom: 40),
-              child: Icon(Icons.notes_rounded),
+              child: Icon(Icons.notes_rounded, color: AppTheme.textSecondary),
             ),
           ),
         ),

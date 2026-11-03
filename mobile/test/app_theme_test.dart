@@ -18,5 +18,18 @@ void main() {
       expect(AppTheme.getStatusBgColor('Completed'), AppTheme.statusCompletedBg);
       expect(AppTheme.getStatusBgColor('Rejected'), AppTheme.statusRejectedBg);
     });
+
+    test('formats relative time accurately', () {
+      final now = DateTime.now();
+      expect(AppTheme.formatRelativeTime(now), 'Baru saja');
+      expect(
+        AppTheme.formatRelativeTime(now.subtract(const Duration(minutes: 10))),
+        '10 menit lalu',
+      );
+      expect(
+        AppTheme.formatRelativeTime(now.subtract(const Duration(hours: 3))),
+        '3 jam lalu',
+      );
+    });
   });
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import '../../config/app_config.dart';
 import '../../models/waste_report.dart';
 import '../../services/api_service.dart';
@@ -58,10 +57,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
         });
       }
     }
-  }
-
-  String _formatDate(DateTime dt) {
-    return DateFormat('dd MMM yyyy, HH:mm').format(dt);
   }
 
   String _normalizeImageUrl(String url) {
@@ -228,24 +223,27 @@ class _HistoryScreenState extends State<HistoryScreen> {
           ).then((_) => _fetchReports());
         },
         child: Padding(
-          padding: const EdgeInsets.all(14),
+          padding: const EdgeInsets.all(12),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Thumbnail
+              // Thumbnail 12dp Radius
               ClipRRect(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(12),
                 child: Image.network(
                   _normalizeImageUrl(report.imageUrl),
-                  width: 72,
-                  height: 72,
+                  width: 76,
+                  height: 76,
                   fit: BoxFit.cover,
                   errorBuilder: (ctx, err, stack) {
                     return Container(
-                      width: 72,
-                      height: 72,
-                      color: const Color(0xFFF1F5F9),
-                      child: const Icon(Icons.image_not_supported_outlined, color: AppTheme.textSecondary),
+                      width: 76,
+                      height: 76,
+                      decoration: BoxDecoration(
+                        color: AppTheme.surfaceMuted,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(Icons.image_not_supported_outlined, color: AppTheme.textTertiary),
                     );
                   },
                 ),
@@ -259,11 +257,47 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   children: [
                     Row(
                       children: [
+                        // Category Pill with Accent Dot
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                          decoration: BoxDecoration(
+                            color: AppTheme.surfaceMuted,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                width: 6,
+                                height: 6,
+                                decoration: const BoxDecoration(
+                                  color: AppTheme.primary,
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                              const SizedBox(width: 5),
+                              Text(
+                                report.category.name,
+                                style: const TextStyle(
+                                  color: AppTheme.textPrimary,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 10,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Spacer(),
+                        // Status Badge in Top Right with Semantic Border
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                           decoration: BoxDecoration(
                             color: AppTheme.getStatusBgColor(report.status),
-                            borderRadius: BorderRadius.circular(6),
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: AppTheme.getStatusBorderColor(report.status),
+                              width: 1,
+                            ),
                           ),
                           child: Text(
                             report.status.toUpperCase(),
@@ -271,29 +305,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                               color: AppTheme.getStatusColor(report.status),
                               fontWeight: FontWeight.w700,
                               fontSize: 10,
+                              letterSpacing: 0.2,
                             ),
                           ),
-                        ),
-                        const SizedBox(width: 6),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                          decoration: BoxDecoration(
-                            color: AppTheme.primaryContainer,
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: Text(
-                            report.category.name,
-                            style: const TextStyle(
-                              color: AppTheme.onPrimaryContainer,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 10,
-                            ),
-                          ),
-                        ),
-                        const Spacer(),
-                        Text(
-                          _formatDate(report.createdAt),
-                          style: const TextStyle(fontSize: 11, color: AppTheme.textSecondary),
                         ),
                       ],
                     ),
@@ -303,28 +317,38 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
-                        fontSize: 15,
+                        fontSize: 14,
                         fontWeight: FontWeight.w700,
                         color: AppTheme.textPrimary,
+                        letterSpacing: -0.2,
                       ),
                     ),
-                    if (report.addressNote != null && report.addressNote!.isNotEmpty) ...[
-                      const SizedBox(height: 3),
-                      Row(
-                        children: [
-                          const Icon(Icons.location_on_outlined, size: 14, color: AppTheme.textSecondary),
-                          const SizedBox(width: 4),
-                          Expanded(
-                            child: Text(
-                              report.addressNote!,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(fontSize: 12, color: AppTheme.textSecondary),
-                            ),
+                    const SizedBox(height: 4),
+                    Row(
+                      children: [
+                        const Icon(Icons.location_on_outlined, size: 13, color: AppTheme.textTertiary),
+                        const SizedBox(width: 3),
+                        Expanded(
+                          child: Text(
+                            report.addressNote?.isNotEmpty == true
+                                ? report.addressNote!
+                                : '${report.latitude.toStringAsFixed(4)}, ${report.longitude.toStringAsFixed(4)}',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(fontSize: 11, color: AppTheme.textSecondary),
                           ),
-                        ],
-                      ),
-                    ],
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          AppTheme.formatRelativeTime(report.createdAt),
+                          style: const TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w500,
+                            color: AppTheme.textTertiary,
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),

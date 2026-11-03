@@ -178,28 +178,31 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 24),
 
-                // Submit Button
-                ElevatedButton(
-                  onPressed: _isSubmitting ? null : _handleLogin,
-                  child: _isSubmitting
-                      ? const SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: Colors.white,
-                          ),
-                        )
-                      : const Text('Masuk Sekarang'),
+                // Submit Button (Ergonomic 52dp height)
+                SizedBox(
+                  height: 52,
+                  child: ElevatedButton(
+                    onPressed: _isSubmitting ? null : _handleLogin,
+                    child: _isSubmitting
+                        ? const SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2.2,
+                              color: Colors.white,
+                            ),
+                          )
+                        : const Text('Masuk Sekarang', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
+                  ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 18),
 
                 // Demo Credentials Helper
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
-                    color: AppTheme.background,
-                    borderRadius: BorderRadius.circular(10),
+                    color: AppTheme.surfaceMuted,
+                    borderRadius: BorderRadius.circular(16),
                     border: Border.all(color: AppTheme.border),
                   ),
                   child: Column(

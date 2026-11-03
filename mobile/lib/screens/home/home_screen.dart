@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../config/app_config.dart';
 import '../../models/user.dart';
 import '../../models/waste_report.dart';
 import '../../services/api_service.dart';
@@ -45,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     try {
       final statsData = await _apiService.getDashboardStats();
-      final reportsData = await _apiService.getReports(limit: 5);
+      final reportsData = await _apiService.getReports(limit: 6);
 
       if (mounted) {
         setState(() {
@@ -75,13 +76,24 @@ class _HomeScreenState extends State<HomeScreen> {
     ).then((_) => _loadDashboardData());
   }
 
+  String _normalizeImageUrl(String url) {
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      return url;
+    }
+    final base = AppConfig.baseUrl.replaceAll('/api/v1', '');
+    if (url.startsWith('/')) {
+      return '$base$url';
+    }
+    return '$base/$url';
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = widget.authService.currentUser;
 
     final List<Widget> pages = [
       _buildHomeTab(user),
-      const SizedBox.shrink(), // Placeholder for center CTA action
+      const SizedBox.shrink(), // Placeholder for central report action
       HistoryScreen(
         apiService: _apiService,
         currentUserId: user?.id,
@@ -93,6 +105,10 @@ class _HomeScreenState extends State<HomeScreen> {
       body: pages[_currentIndex == 1 ? 0 : _currentIndex],
       bottomNavigationBar: NavigationBar(
         selectedIndex: _currentIndex,
+        height: 72,
+        backgroundColor: Colors.white,
+        elevation: 2,
+        indicatorColor: AppTheme.primaryContainer,
         onDestinationSelected: (idx) {
           if (idx == 1) {
             _openCreateReport();
@@ -105,23 +121,23 @@ class _HomeScreenState extends State<HomeScreen> {
         destinations: const [
           NavigationDestination(
             icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home, color: AppTheme.primary),
+            selectedIcon: Icon(Icons.home, color: AppTheme.primaryDark),
             label: 'Beranda',
           ),
           NavigationDestination(
-            icon: Icon(Icons.add_circle, color: AppTheme.primary, size: 30),
-            selectedIcon: Icon(Icons.add_circle, color: AppTheme.primary, size: 30),
-            label: 'Laporkan',
+            icon: Icon(Icons.add_circle, color: AppTheme.primary, size: 28),
+            selectedIcon: Icon(Icons.add_circle, color: AppTheme.primaryDark, size: 28),
+            label: 'Lapor',
           ),
           NavigationDestination(
             icon: Icon(Icons.history_outlined),
-            selectedIcon: Icon(Icons.history, color: AppTheme.primary),
+            selectedIcon: Icon(Icons.history, color: AppTheme.primaryDark),
             label: 'Riwayat',
           ),
           NavigationDestination(
             icon: Icon(Icons.person_outline),
-            selectedIcon: Icon(Icons.person, color: AppTheme.primary),
-            label: 'Akun',
+            selectedIcon: Icon(Icons.person, color: AppTheme.primaryDark),
+            label: 'Profil',
           ),
         ],
       ),
@@ -133,19 +149,21 @@ class _HomeScreenState extends State<HomeScreen> {
       onRefresh: _loadDashboardData,
       color: AppTheme.primary,
       child: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(18, 54, 18, 24),
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: const EdgeInsets.fromLTRB(18, 52, 18, 32),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Top Bar
+            // 1. Top Header with User Greeting & Live Backend Indicator
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Halo, ${user?.fullName ?? 'Citizen'} 👋',
+                        'Halo, ${user?.fullName.split(' ').first ?? 'Citizen'} 👋',
                         style: const TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.w800,
@@ -153,7 +171,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           letterSpacing: -0.5,
                         ),
                       ),
-                      const SizedBox(height: 2),
+                      const SizedBox(height: 3),
                       const Text(
                         'Jaga kebersihan lingkungan bersama SWMS',
                         style: TextStyle(
@@ -161,11 +179,44 @@ class _HomeScreenState extends State<HomeScreen> {
                           color: AppTheme.textSecondary,
                         ),
                       ),
+                      const SizedBox(height: 8),
+                      // Live backend connection pill
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: AppTheme.primaryContainer.withValues(alpha: 0.7),
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: AppTheme.primaryLight.withValues(alpha: 0.4)),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              width: 7,
+                              height: 7,
+                              decoration: const BoxDecoration(
+                                color: AppTheme.primary,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                            const SizedBox(width: 6),
+                            const Text(
+                              'Backend Terhubung',
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w700,
+                                color: AppTheme.onPrimaryContainer,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.settings_outlined),
+                  icon: const Icon(Icons.settings_outlined, color: AppTheme.textSecondary),
+                  tooltip: 'Server Settings',
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -177,33 +228,44 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: 20),
 
-            // Hero CTA Card
+            // 2. Hero CTA Card (AI Smart Waste Scanner)
             _buildHeroCtaCard(),
             const SizedBox(height: 24),
 
-            // KPI Summary Stats
-            const Text(
-              'Statistik Pengelolaan Sampah',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-                color: AppTheme.textPrimary,
-              ),
+            // 3. Compact KPI Metrics Summary
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Ringkasan Laporan',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: AppTheme.textPrimary,
+                    letterSpacing: -0.3,
+                  ),
+                ),
+                Text(
+                  'Update Realtime',
+                  style: TextStyle(fontSize: 12, color: AppTheme.textTertiary),
+                ),
+              ],
             ),
             const SizedBox(height: 12),
             _buildStatsGrid(),
             const SizedBox(height: 28),
 
-            // Recent Reports Section
+            // 4. Recent Reports Feed Section
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text(
-                  'Laporan Terbaru',
+                  'Feed Laporan Terbaru',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
                     color: AppTheme.textPrimary,
+                    letterSpacing: -0.3,
                   ),
                 ),
                 TextButton(
@@ -212,34 +274,39 @@ class _HomeScreenState extends State<HomeScreen> {
                       _currentIndex = 2; // Switch to History tab
                     });
                   },
-                  child: const Text('Lihat Semua'),
+                  child: const Text(
+                    'Lihat Semua',
+                    style: TextStyle(fontWeight: FontWeight.w700, fontSize: 13),
+                  ),
                 ),
               ],
             ),
             const SizedBox(height: 8),
+
             if (_isLoading)
               const Center(
                 child: Padding(
-                  padding: EdgeInsets.all(24),
-                  child: CircularProgressIndicator(),
+                  padding: EdgeInsets.all(32),
+                  child: CircularProgressIndicator(color: AppTheme.primary),
                 ),
               )
             else if (_recentReports.isEmpty)
               const Card(
                 child: Padding(
-                  padding: EdgeInsets.all(24),
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 32),
                   child: Center(
                     child: Column(
                       children: [
-                        Icon(Icons.check_circle_outline, size: 40, color: AppTheme.primary),
-                        SizedBox(height: 8),
+                        Icon(Icons.check_circle_outline_rounded, size: 44, color: AppTheme.primary),
+                        SizedBox(height: 12),
                         Text(
-                          'Belum ada laporan sampah aktif',
-                          style: TextStyle(fontWeight: FontWeight.w600),
+                          'Lingkungan Anda Bersih!',
+                          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
                         ),
                         SizedBox(height: 4),
                         Text(
-                          'Gunakan tombol "Laporkan Sampah" untuk memulai.',
+                          'Belum ada laporan sampah aktif. Laporkan tumpukan baru untuk ditindaklanjuti.',
+                          textAlign: TextAlign.center,
                           style: TextStyle(fontSize: 12, color: AppTheme.textSecondary),
                         ),
                       ],
@@ -257,19 +324,19 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildHeroCtaCard() {
     return Container(
-      padding: const EdgeInsets.all(18),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           colors: [Color(0xFF059669), Color(0xFF047857)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF059669).withValues(alpha: 0.25),
-            blurRadius: 16,
-            offset: const Offset(0, 6),
+            color: const Color(0xFF059669).withValues(alpha: 0.28),
+            blurRadius: 18,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -281,8 +348,8 @@ class _HomeScreenState extends State<HomeScreen> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.white.withValues(alpha: 0.22),
+                  borderRadius: BorderRadius.circular(12),
                 ),
                 child: const Icon(Icons.auto_awesome, color: Colors.white, size: 22),
               ),
@@ -292,35 +359,36 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w700,
-                  fontSize: 15,
+                  fontSize: 16,
                 ),
               ),
             ],
           ),
           const SizedBox(height: 12),
           const Text(
-            'Temukan tumpukan sampah? Foto langsung dengan kamera untuk klasifikasi otomatis (Organik, Plastik, Kertas) & kunci koordinat GPS.',
+            'Temukan tumpukan sampah? Foto langsung untuk klasifikasi otomatis (Organik, Plastik, Kertas) & kunci koordinat GPS.',
             style: TextStyle(
               color: Colors.white,
               fontSize: 13,
-              height: 1.4,
+              height: 1.45,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 18),
           SizedBox(
             width: double.infinity,
+            height: 50,
             child: ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
                 foregroundColor: AppTheme.primaryDark,
                 elevation: 0,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
               ),
               onPressed: _openCreateReport,
-              icon: const Icon(Icons.photo_camera_rounded),
+              icon: const Icon(Icons.photo_camera_rounded, size: 20),
               label: const Text(
                 'Ambil Foto & Lapor Sekarang',
-                style: TextStyle(fontWeight: FontWeight.w700),
+                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
               ),
             ),
           ),
@@ -338,57 +406,61 @@ class _HomeScreenState extends State<HomeScreen> {
     return Row(
       children: [
         Expanded(
-          child: _buildStatCard('Total Laporan', total.toString(), Icons.layers_outlined, AppTheme.textPrimary),
+          child: _buildStatCard('Total', total.toString(), Icons.layers_outlined, AppTheme.textPrimary, Colors.white),
         ),
         const SizedBox(width: 8),
         Expanded(
-          child: _buildStatCard('Menunggu', pending.toString(), Icons.hourglass_top, AppTheme.statusPending),
+          child: _buildStatCard('Menunggu', pending.toString(), Icons.hourglass_top, AppTheme.statusPending, AppTheme.statusPendingBg),
         ),
         const SizedBox(width: 8),
         Expanded(
-          child: _buildStatCard('Diproses', inProgress.toString(), Icons.build_circle_outlined, AppTheme.statusInProgress),
+          child: _buildStatCard('Diproses', inProgress.toString(), Icons.build_circle_outlined, AppTheme.statusInProgress, AppTheme.statusInProgressBg),
         ),
         const SizedBox(width: 8),
         Expanded(
-          child: _buildStatCard('Selesai', completed.toString(), Icons.task_alt, AppTheme.statusCompleted),
+          child: _buildStatCard('Selesai', completed.toString(), Icons.task_alt, AppTheme.statusCompleted, AppTheme.statusCompletedBg),
         ),
       ],
     );
   }
 
-  Widget _buildStatCard(String title, String count, IconData icon, Color color) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-        child: Column(
-          children: [
-            Icon(icon, size: 20, color: color),
-            const SizedBox(height: 6),
-            Text(
-              count,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w800,
-                color: color,
-              ),
+  Widget _buildStatCard(String title, String count, IconData icon, Color color, Color bg) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+      decoration: BoxDecoration(
+        color: bg,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: AppTheme.border, width: 1),
+      ),
+      child: Column(
+        children: [
+          Icon(icon, size: 18, color: color),
+          const SizedBox(height: 4),
+          Text(
+            count,
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w800,
+              color: color,
             ),
-            const SizedBox(height: 2),
-            Text(
-              title,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontSize: 11, color: AppTheme.textSecondary),
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            title,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppTheme.textSecondary),
+          ),
+        ],
       ),
     );
   }
 
   Widget _buildRecentItem(WasteReport r) {
     return Card(
-      margin: const EdgeInsets.only(bottom: 10),
-      child: ListTile(
+      margin: const EdgeInsets.only(bottom: 12),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
         onTap: () {
           Navigator.push(
             context,
@@ -401,33 +473,149 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ).then((_) => _loadDashboardData());
         },
-        leading: Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: AppTheme.getStatusBgColor(r.status),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Icon(
-            Icons.delete_outline_rounded,
-            color: AppTheme.getStatusColor(r.status),
-            size: 22,
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // 1. Photo Thumbnail with 12dp Radius
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.network(
+                  _normalizeImageUrl(r.imageUrl),
+                  width: 74,
+                  height: 74,
+                  fit: BoxFit.cover,
+                  errorBuilder: (ctx, err, stack) {
+                    return Container(
+                      width: 74,
+                      height: 74,
+                      decoration: BoxDecoration(
+                        color: AppTheme.surfaceMuted,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(
+                        Icons.image_not_supported_outlined,
+                        color: AppTheme.textTertiary,
+                        size: 26,
+                      ),
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(width: 14),
+
+              // 2. Report Information & Top-Right Status Chip
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Status Chip at top-right & Category Badge
+                    Row(
+                      children: [
+                        // Category Pill with Accent Dot
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                          decoration: BoxDecoration(
+                            color: AppTheme.surfaceMuted,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                width: 6,
+                                height: 6,
+                                decoration: const BoxDecoration(
+                                  color: AppTheme.primary,
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                              const SizedBox(width: 5),
+                              Text(
+                                r.category.name,
+                                style: const TextStyle(
+                                  color: AppTheme.textPrimary,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 10,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Spacer(),
+                        // Modern Status Chip in Top Right
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                          decoration: BoxDecoration(
+                            color: AppTheme.getStatusBgColor(r.status),
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: AppTheme.getStatusBorderColor(r.status),
+                              width: 1,
+                            ),
+                          ),
+                          child: Text(
+                            r.status.toUpperCase(),
+                            style: TextStyle(
+                              color: AppTheme.getStatusColor(r.status),
+                              fontWeight: FontWeight.w700,
+                              fontSize: 10,
+                              letterSpacing: 0.2,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 6),
+
+                    // Title
+                    Text(
+                      r.title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        color: AppTheme.textPrimary,
+                        letterSpacing: -0.2,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+
+                    // Location / Address note & Relative Time
+                    Row(
+                      children: [
+                        const Icon(Icons.location_on_outlined, size: 13, color: AppTheme.textTertiary),
+                        const SizedBox(width: 3),
+                        Expanded(
+                          child: Text(
+                            r.addressNote?.isNotEmpty == true
+                                ? r.addressNote!
+                                : '${r.latitude.toStringAsFixed(4)}, ${r.longitude.toStringAsFixed(4)}',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(fontSize: 11, color: AppTheme.textSecondary),
+                          ),
+                        ),
+                        const SizedBox(width: 6),
+                        // Relative time format
+                        Text(
+                          AppTheme.formatRelativeTime(r.createdAt),
+                          style: const TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w500,
+                            color: AppTheme.textTertiary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
-        title: Text(
-          r.title,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 14),
-        ),
-        subtitle: Text(
-          '${r.category.name} • ${r.status}',
-          style: TextStyle(
-            fontSize: 12,
-            color: AppTheme.getStatusColor(r.status),
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        trailing: const Icon(Icons.chevron_right, size: 18, color: AppTheme.textSecondary),
       ),
     );
   }
@@ -447,12 +635,12 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Row(
                 children: [
                   CircleAvatar(
-                    radius: 30,
+                    radius: 28,
                     backgroundColor: AppTheme.primaryContainer,
                     child: Text(
                       user?.fullName.isNotEmpty == true ? user!.fullName[0].toUpperCase() : 'U',
                       style: const TextStyle(
-                        fontSize: 24,
+                        fontSize: 22,
                         fontWeight: FontWeight.w800,
                         color: AppTheme.primaryDark,
                       ),
@@ -545,10 +733,11 @@ class _HomeScreenState extends State<HomeScreen> {
           // Logout Button
           SizedBox(
             width: double.infinity,
+            height: 50,
             child: OutlinedButton.icon(
               style: OutlinedButton.styleFrom(
                 foregroundColor: AppTheme.statusRejected,
-                side: const BorderSide(color: AppTheme.statusRejected),
+                side: const BorderSide(color: AppTheme.statusRejectedBorder, width: 1.2),
               ),
               onPressed: () async {
                 final confirm = await showDialog<bool>(

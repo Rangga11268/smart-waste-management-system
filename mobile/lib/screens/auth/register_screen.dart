@@ -173,19 +173,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               const SizedBox(height: 28),
 
-              // Submit Button
-              ElevatedButton(
-                onPressed: _isSubmitting ? null : _handleRegister,
-                child: _isSubmitting
-                    ? const SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: Colors.white,
-                        ),
-                      )
-                    : const Text('Daftar Akun'),
+              // Submit Button (Ergonomic 52dp height)
+              SizedBox(
+                height: 52,
+                child: ElevatedButton(
+                  onPressed: _isSubmitting ? null : _handleRegister,
+                  child: _isSubmitting
+                      ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2.2,
+                            color: Colors.white,
+                          ),
+                        )
+                      : const Text('Daftar Akun', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
+                ),
               ),
             ],
           ),
