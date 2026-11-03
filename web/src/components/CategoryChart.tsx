@@ -16,44 +16,44 @@ export interface CategoryChartProps {
 interface CategoryStyleConfig {
   name: string;
   hex: string;
-  bgLight: string;
+  cardBg: string;
+  cardBorder: string;
   textClass: string;
-  borderClass: string;
   badgeBg: string;
   badgeText: string;
-  dotColor: string;
+  barColor: string;
 }
 
 const CANONICAL_CATEGORIES: Record<string, CategoryStyleConfig> = {
   'Organic Waste': {
     name: 'Organic Waste',
-    hex: '#16a34a',
-    bgLight: 'bg-green-50',
-    textClass: 'text-green-800',
-    borderClass: 'border-green-200',
-    badgeBg: 'bg-green-100',
-    badgeText: 'text-green-800',
-    dotColor: '#16a34a',
+    hex: '#10b981',
+    cardBg: 'bg-emerald-50/60 hover:bg-emerald-50/90',
+    cardBorder: 'border-emerald-200/90',
+    textClass: 'text-emerald-900',
+    badgeBg: 'bg-emerald-100',
+    badgeText: 'text-emerald-800',
+    barColor: 'bg-emerald-500',
   },
   'Plastic Waste': {
     name: 'Plastic Waste',
     hex: '#0284c7',
-    bgLight: 'bg-sky-50',
-    textClass: 'text-sky-800',
-    borderClass: 'border-sky-200',
+    cardBg: 'bg-sky-50/60 hover:bg-sky-50/90',
+    cardBorder: 'border-sky-200/90',
+    textClass: 'text-sky-900',
     badgeBg: 'bg-sky-100',
     badgeText: 'text-sky-800',
-    dotColor: '#0284c7',
+    barColor: 'bg-sky-500',
   },
   'Paper Waste': {
     name: 'Paper Waste',
-    hex: '#d97706',
-    bgLight: 'bg-amber-50',
-    textClass: 'text-amber-800',
-    borderClass: 'border-amber-200',
+    hex: '#f59e0b',
+    cardBg: 'bg-amber-50/60 hover:bg-amber-50/90',
+    cardBorder: 'border-amber-200/90',
+    textClass: 'text-amber-900',
     badgeBg: 'bg-amber-100',
     badgeText: 'text-amber-800',
-    dotColor: '#d97706',
+    barColor: 'bg-amber-500',
   },
 };
 
@@ -67,7 +67,7 @@ export default function CategoryChart({
     return (
       <div
         className={cn(
-          'rounded-xl border border-slate-200 bg-white p-6 shadow-sm animate-pulse',
+          'rounded-3xl border border-slate-200/90 bg-white p-6 sm:p-8 shadow-sm animate-pulse',
           className
         )}
         data-testid="category-chart-skeleton"
@@ -79,10 +79,10 @@ export default function CategoryChart({
         <div className="h-4 w-full rounded-full bg-slate-200 mb-6" />
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="rounded-xl border border-slate-200 p-4 space-y-2">
+            <div key={i} className="rounded-2xl border border-slate-200 p-5 space-y-3">
               <div className="h-4 w-24 rounded bg-slate-200" />
-              <div className="h-6 w-16 rounded bg-slate-200" />
-              <div className="h-3 w-full rounded bg-slate-100" />
+              <div className="h-7 w-16 rounded bg-slate-200" />
+              <div className="h-2 w-full rounded bg-slate-100" />
             </div>
           ))}
         </div>
@@ -90,10 +90,8 @@ export default function CategoryChart({
     );
   }
 
-  // Canonical ordering for the 3 main waste categories
   const targetCategoryNames = ['Organic Waste', 'Plastic Waste', 'Paper Waste'];
 
-  // Normalize distribution data
   const normalizedItems = targetCategoryNames.map((name) => {
     const found = distribution.find(
       (d) => d.category?.trim().toLowerCase() === name.toLowerCase()
@@ -114,7 +112,6 @@ export default function CategoryChart({
     };
   });
 
-  // Calculate cumulative X coordinates for SVG segmented meter
   let cumulativeX = 0;
   const segments = normalizedItems.map((item) => {
     const width = totalReports > 0 ? item.percentage : 0;
@@ -130,66 +127,57 @@ export default function CategoryChart({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-slate-200/80 bg-white p-6 shadow-[0_2px_10px_-3px_rgba(6,78,59,0.05)] transition-all',
+        'rounded-3xl border border-slate-200/90 bg-white p-6 sm:p-8 shadow-sm transition-all',
         className
       )}
       data-testid="category-chart"
     >
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
         <div>
-          <h3 className="font-heading text-lg font-bold text-slate-900">
+          <h3 className="font-heading text-xl font-extrabold text-slate-900 tracking-tight">
             Distribusi Kategori Sampah
           </h3>
-          <p className="font-sans text-xs text-slate-500">
-            Proporsi laporan sampah berdasarkan hasil inferensi AI MobileNetV2
+          <p className="font-sans text-xs sm:text-sm text-slate-500 mt-0.5">
+            Proporsi laporan sampah berdasarkan hasil inferensi AI MobileNetV2 presisi tinggi
           </p>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="font-sans text-xs text-slate-500">Total Terklasifikasi:</span>
-          <span className="font-mono text-xs font-semibold text-slate-900 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200">
+        <div className="flex items-center gap-2 self-start sm:self-auto">
+          <span className="font-sans text-xs text-slate-500 font-medium">Total Terklasifikasi:</span>
+          <span className="font-mono text-xs font-bold text-slate-900 bg-slate-100 px-2.5 py-1 rounded-lg border border-slate-200">
             {totalReports} Laporan
           </span>
         </div>
       </div>
 
-      {/* Segmented Proportional Meter (SVG + CSS) */}
+      {/* Proportional Segmented Progress Bar */}
       <div className="relative mb-6">
-        <svg
-          className="w-full h-4 rounded-full overflow-hidden bg-slate-100 border border-slate-200 shadow-inner"
-          viewBox="0 0 100 12"
-          preserveAspectRatio="none"
-          aria-label="Grafik proporsi kategori sampah"
-          role="img"
-        >
+        <div className="h-4 w-full rounded-full bg-slate-100 border border-slate-200/80 overflow-hidden flex shadow-inner">
           {totalReports > 0 ? (
             segments.map((item) => {
               if (item.width <= 0) return null;
               return (
-                <rect
+                <div
                   key={item.name}
-                  x={`${item.x}%`}
-                  y="0"
-                  width={`${item.width}%`}
-                  height="12"
-                  fill={item.config.hex}
-                >
-                  <title>{`${item.name}: ${item.count} laporan (${item.percentage.toFixed(1)}%)`}</title>
-                </rect>
+                  style={{ width: `${item.width}%`, backgroundColor: item.config.hex }}
+                  className="h-full transition-all duration-500 first:rounded-l-full last:rounded-r-full"
+                  title={`${item.name}: ${item.count} laporan (${item.percentage.toFixed(1)}%)`}
+                />
               );
             })
           ) : (
-            <rect x="0" y="0" width="100%" height="12" fill="#e2e8f0" />
+            <div className="w-full h-full bg-slate-200/60" />
           )}
-        </svg>
+        </div>
 
         {totalReports === 0 && (
-          <p className="mt-2 text-center text-xs text-slate-400">
+          <p className="mt-2 text-center text-xs text-slate-400 font-medium">
             Belum ada data laporan sampah untuk visualisasi proporsi.
           </p>
         )}
       </div>
 
-      {/* Category Metric Cards Grid */}
+      {/* Modern High-Contrast Category Cards Grid */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         {normalizedItems.map((item) => {
           const formattedPct = totalReports > 0 ? `${item.percentage.toFixed(1)}%` : '0%';
@@ -197,25 +185,25 @@ export default function CategoryChart({
             <div
               key={item.name}
               className={cn(
-                'group relative rounded-xl border p-4 transition-all hover:shadow-xs',
-                item.config.borderClass,
-                item.config.bgLight
+                'group relative rounded-2xl border p-5 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md',
+                item.config.cardBorder,
+                item.config.cardBg
               )}
             >
-              <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <span
-                    className="h-2.5 w-2.5 rounded-full shrink-0 shadow-xs"
+                    className="h-3 w-3 rounded-full shrink-0 shadow-xs ring-2 ring-white"
                     style={{ backgroundColor: item.config.hex }}
                     aria-hidden="true"
                   />
-                  <span className={cn('font-sans text-xs font-semibold', item.config.textClass)}>
+                  <span className={cn('font-sans text-xs font-bold tracking-tight', item.config.textClass)}>
                     {item.name}
                   </span>
                 </div>
                 <span
                   className={cn(
-                    'font-mono text-xs px-2 py-0.5 rounded-full font-medium',
+                    'font-mono text-xs px-2.5 py-0.5 rounded-full font-bold',
                     item.config.badgeBg,
                     item.config.badgeText
                   )}
@@ -224,17 +212,17 @@ export default function CategoryChart({
                 </span>
               </div>
 
-              <div className="mt-3 flex items-baseline justify-between">
-                <span className="font-heading text-2xl font-bold tracking-tight text-slate-900">
+              <div className="mt-4 flex items-baseline justify-between">
+                <span className="font-heading text-3xl font-black tracking-tight text-slate-900">
                   {formattedPct}
                 </span>
-                <span className="font-sans text-xs text-slate-500">
+                <span className="font-sans text-xs font-medium text-slate-500">
                   {item.count} dari {totalReports}
                 </span>
               </div>
 
-              {/* Mini individual bar */}
-              <div className="mt-2.5 h-1.5 w-full rounded-full bg-white/70 overflow-hidden border border-slate-200/50">
+              {/* Progress Line */}
+              <div className="mt-3.5 h-2 w-full rounded-full bg-white/80 overflow-hidden border border-slate-200/60">
                 <div
                   className="h-full rounded-full transition-all duration-500"
                   style={{

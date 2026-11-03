@@ -211,43 +211,43 @@ export default function DashboardPage() {
         />
       </section>
 
-      {/* Recent Activity Audit Stream Section */}
+      {/* Recent Activity Audit Stream Section (Harmonized Modern Card) */}
       <section
         aria-labelledby="recent-activity-heading"
-        className="rounded-2xl border border-slate-200/80 bg-white p-6 shadow-[0_2px_10px_-3px_rgba(6,78,59,0.05)]"
+        className="rounded-3xl border border-slate-200/90 bg-white p-6 sm:p-8 shadow-sm transition-all"
       >
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pb-4 border-b border-slate-100">
-          <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 border border-emerald-200">
-              <History className="h-4 w-4" />
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-5 border-b border-slate-100">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-200/80 shadow-xs">
+              <History className="h-5 w-5" />
             </div>
             <div>
-              <h3 id="recent-activity-heading" className="font-heading text-lg font-bold text-slate-900">
+              <h3 id="recent-activity-heading" className="font-heading text-xl font-extrabold text-slate-900 tracking-tight">
                 Aktivitas Terbaru
               </h3>
-              <p className="font-sans text-xs text-slate-500">
-                Log audit pergantian status laporan dan tindakan operasional terkini
+              <p className="font-sans text-xs sm:text-sm text-slate-500 mt-0.5">
+                Log audit pergantian status laporan dan tindakan armada lapangan terkini
               </p>
             </div>
           </div>
           <Link
             href="/reports"
-            className="text-xs font-semibold text-emerald-600 hover:text-emerald-700 inline-flex items-center gap-1 transition-colors self-start sm:self-auto"
+            className="text-xs sm:text-sm font-bold text-emerald-600 hover:text-emerald-700 inline-flex items-center gap-1.5 transition-colors self-start sm:self-auto bg-emerald-50/60 hover:bg-emerald-50 px-3.5 py-1.5 rounded-xl border border-emerald-200/60"
           >
             <span>Buka Riwayat Lengkap</span>
-            <ArrowRight className="h-3.5 w-3.5" />
+            <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
 
         {/* Activity Stream Feed */}
-        <div className="mt-4">
+        <div className="mt-5">
           {isLoading ? (
             <div className="space-y-3 animate-pulse" data-testid="recent-activity-skeleton">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="flex items-center justify-between p-3">
+                <div key={i} className="flex items-center justify-between p-4 rounded-2xl bg-slate-50">
                   <div className="flex items-center gap-3">
-                    <div className="h-8 w-8 rounded-lg bg-slate-200" />
-                    <div className="space-y-1.5">
+                    <div className="h-9 w-9 rounded-xl bg-slate-200" />
+                    <div className="space-y-2">
                       <div className="h-4 w-40 rounded bg-slate-200" />
                       <div className="h-3 w-56 rounded bg-slate-100" />
                     </div>
@@ -261,25 +261,25 @@ export default function DashboardPage() {
               {recentActivities.map((act, idx) => (
                 <div
                   key={`${act.report_id}-${idx}`}
-                  className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-3.5 px-3 rounded-xl hover:bg-slate-50/80 transition-all duration-150 gap-2"
+                  className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-4 px-3 rounded-2xl hover:bg-slate-50/80 transition-all duration-150 gap-2"
                 >
-                  <div className="flex items-start gap-3">
-                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 border border-emerald-200 mt-0.5">
+                  <div className="flex items-start gap-3.5">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-200 mt-0.5 shadow-xs">
                       <Activity className="h-4 w-4" />
                     </div>
                     <div>
-                      <p className="font-sans text-sm font-medium text-slate-900">
+                      <p className="font-sans text-sm font-bold text-slate-900">
                         {act.action}
                       </p>
-                      <div className="mt-1 flex flex-wrap items-center gap-2">
-                        <span className="font-mono text-xs font-medium text-slate-700 bg-slate-100/90 border border-slate-200/80 px-2 py-0.5 rounded-md">
+                      <div className="mt-1.5 flex flex-wrap items-center gap-2">
+                        <span className="font-mono text-xs font-semibold text-slate-700 bg-slate-100 border border-slate-200 px-2 py-0.5 rounded-lg">
                           #RPT-{act.report_id.slice(0, 8).toUpperCase()}
                         </span>
                       </div>
                     </div>
                   </div>
-                  <div className="font-sans text-xs font-medium text-slate-500 pl-11 sm:pl-0 sm:text-right shrink-0">
-                    <span title={formatDate(act.timestamp)} className="bg-slate-50 border border-slate-200 px-2 py-0.5 rounded-md">
+                  <div className="font-sans text-xs font-medium text-slate-500 pl-12 sm:pl-0 sm:text-right shrink-0">
+                    <span title={formatDate(act.timestamp)} className="bg-slate-100/80 border border-slate-200 px-2.5 py-1 rounded-lg font-mono text-[11px] font-semibold text-slate-600">
                       {formatRelativeTime(act.timestamp)}
                     </span>
                   </div>
@@ -287,15 +287,15 @@ export default function DashboardPage() {
               ))}
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center py-10 text-center">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-50 border border-slate-200 text-slate-400 mb-3">
+            <div className="flex flex-col items-center justify-center py-12 text-center rounded-2xl border border-dashed border-slate-200/90 bg-slate-50/50">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white border border-slate-200 text-slate-400 mb-3 shadow-xs">
                 <Inbox className="h-6 w-6" />
               </div>
-              <p className="font-heading text-sm font-semibold text-slate-700">
+              <p className="font-heading text-sm font-bold text-slate-800">
                 Belum Ada Aktivitas Terbaru
               </p>
-              <p className="mt-1 font-sans text-xs text-slate-400 max-w-sm">
-                Log audit dan pembaruan status laporan sampah yang diproses oleh petugas akan tampil di sini.
+              <p className="mt-1 font-sans text-xs text-slate-500 max-w-sm">
+                Log audit dan pembaruan status laporan sampah yang diproses oleh petugas akan tampil di sini secara waktu-nyata.
               </p>
             </div>
           )}
