@@ -78,9 +78,6 @@ class _SplashScreenState extends State<SplashScreen>
     if (!seenOnboarding) {
       nextScreen = OnboardingScreen(
         authService: widget.authService,
-        onFinish: () {
-          _routeAfterOnboarding();
-        },
       );
     } else if (widget.authService.isAuthenticated) {
       nextScreen = HomeScreen(authService: widget.authService);
@@ -107,29 +104,6 @@ class _SplashScreenState extends State<SplashScreen>
           return FadeTransition(opacity: animation, child: child);
         },
       ),
-    );
-  }
-
-  void _routeAfterOnboarding() {
-    Widget next;
-    if (widget.authService.isAuthenticated) {
-      next = HomeScreen(authService: widget.authService);
-    } else {
-      next = LoginScreen(
-        authService: widget.authService,
-        onLoginSuccess: () {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (_) => HomeScreen(authService: widget.authService),
-            ),
-          );
-        },
-      );
-    }
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (_) => next),
     );
   }
 
