@@ -49,6 +49,22 @@ code, kbd, samp, pre, .font-mono {
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+@keyframes fadeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-slide-in-1 { animation: fadeSlideIn 0.8s ease-out 0.1s both; }
+.animate-fade-slide-in-2 { animation: fadeSlideIn 0.8s ease-out 0.2s both; }
+.animate-fade-slide-in-3 { animation: fadeSlideIn 0.8s ease-out 0.3s both; }
+.animate-fade-slide-in-4 { animation: fadeSlideIn 0.8s ease-out 0.4s both; }
+
 .swms-card:hover {
   border-color: rgba(203, 213, 225, 1);
   box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.06), 0 2px 4px -2px rgba(15, 23, 42, 0.04);
