@@ -14,8 +14,15 @@ import type {
 
 const DEFAULT_API_BASE = 'http://localhost:8000/api/v1';
 
+export function getBaseApiUrl(): string {
+  const envUrl = process.env.NEXT_PUBLIC_API_URL;
+  if (!envUrl) return DEFAULT_API_BASE;
+  const clean = envUrl.trim().replace(/\/+$/, '');
+  return clean.endsWith('/api/v1') ? clean : `${clean}/api/v1`;
+}
+
 export const apiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || DEFAULT_API_BASE,
+  baseURL: getBaseApiUrl(),
   timeout: 15000,
   headers: {
     'Content-Type': 'application/json',
@@ -62,7 +69,7 @@ export function getFullImageUrl(path?: string | null, baseUrl?: string): string 
   if (path.startsWith('http://') || path.startsWith('https://')) {
     return path;
   }
-  const base = baseUrl || process.env.NEXT_PUBLIC_API_URL || DEFAULT_API_BASE;
+  const base = baseUrl || getBaseApiUrl();
   const origin = base.replace(/\/api\/v1\/?$/, '');
   const cleanPath = path.startsWith('/') ? path : `/${path}`;
   return `${origin}${cleanPath}`;
