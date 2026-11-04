@@ -1,15 +1,19 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   X,
   Upload,
+  Camera,
   MapPin,
   Sparkles,
   Loader2,
   AlertCircle,
   CheckCircle2,
   Navigation,
+  Send,
+  RefreshCw,
+  Info,
 } from 'lucide-react';
 import { reportsApi, predictApi } from '@/lib/api';
 import { formatPercentage, cn } from '@/lib/utils';
@@ -31,8 +35,8 @@ export default function CreateReportModal({
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [addressNote, setAddressNote] = useState('');
-  const [latitude, setLatitude] = useState<string>('-6.2088');
-  const [longitude, setLongitude] = useState<string>('106.8456');
+  const [latitude, setLatitude] = useState<string>('-6.208800');
+  const [longitude, setLongitude] = useState<string>('106.845600');
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | ''>('');
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -41,6 +45,7 @@ export default function CreateReportModal({
   // AI inference state
   const [isPredicting, setIsPredicting] = useState(false);
   const [aiPrediction, setAiPrediction] = useState<PredictResponseData | null>(null);
+  const [aiError, setAiError] = useState<string | null>(null);
 
   // Form submission state
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -49,7 +54,22 @@ export default function CreateReportModal({
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Set default category when categories load or modal opens
+  useEffect(() => {
+    if (categories.length > 0 && selectedCategoryId === '') {
+      setSelectedCategoryId(categories[0].id);
+    }
+  }, [categories, selectedCategoryId]);
+
   if (!isOpen) return null;
+
+  const handleSelectCategory = (catId: number) => {
+    setSelectedCategoryId(catId);
+    const cat = categories.find((c) => c.id === catId);
+    if (cat && (!title.trim() || title.startsWith('Tumpukan Sampah'))) {
+      setTitle(`Tumpukan Sampah ${cat.name}`);
+    }
+  };
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -59,25 +79,37 @@ export default function CreateReportModal({
     const objectUrl = URL.createObjectURL(file);
     setPreviewUrl(objectUrl);
     setAiPrediction(null);
+    setAiError(null);
     setFormError(null);
 
-    // Automatically trigger AI classification
+    // Automatically trigger AI classification (MobileNetV2)
     setIsPredicting(true);
     try {
       const res = await predictApi.predict(file);
       setAiPrediction(res.data);
 
-      // Auto-select category if matching category name exists
-      const predictedName = res.data.category.toLowerCase();
-      const matched = categories.find((c) =>
-        c.name.toLowerCase().includes(predictedName) || predictedName.includes(c.name.toLowerCase())
+      // Auto-match category from AI prediction
+      const predictedCategory = res.data.category.toLowerCase();
+      const matched = categories.find(
+        (c) =>
+          c.name.toLowerCase().includes(predictedCategory) ||
+          predictedCategory.includes(c.name.toLowerCase()) ||
+          (c.slug && predictedCategory.includes(c.slug.toLowerCase()))
       );
+
       if (matched) {
         setSelectedCategoryId(matched.id);
+        if (!title.trim() || title.startsWith('Tumpukan Sampah')) {
+          setTitle(`Tumpukan Sampah ${matched.name}`);
+        }
+      } else {
+        if (!title.trim() || title.startsWith('Tumpukan Sampah')) {
+          setTitle(`Tumpukan Sampah ${res.data.category}`);
+        }
       }
-    } catch {
-      // AI failure shouldn't block report submission
-      console.warn('AI preview unavailable');
+    } catch (err: unknown) {
+      console.warn('AI preview unavailable:', err);
+      setAiError('AI tidak dapat memproses gambar saat ini. Anda dapat memilih kategori secara manual.');
     } finally {
       setIsPredicting(false);
     }
@@ -89,6 +121,7 @@ export default function CreateReportModal({
       return;
     }
     setIsLocating(true);
+    setFormError(null);
     navigator.geolocation.getCurrentPosition(
       async (pos) => {
         const lat = pos.coords.latitude;
@@ -109,7 +142,7 @@ export default function CreateReportModal({
         setIsLocating(false);
       },
       () => {
-        setFormError('Gagal mendapatkan lokasi GPS. Pastikan izin lokasi aktif.');
+        setFormError('Gagal mendapatkan lokasi GPS. Pastikan izin lokasi aktif pada peramban Anda.');
         setIsLocating(false);
       },
       { enableHighAccuracy: true, timeout: 10000 }
@@ -118,12 +151,15 @@ export default function CreateReportModal({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title.trim()) {
-      setFormError('Judul laporan wajib diisi.');
+    setFormError(null);
+
+    if (!selectedFile) {
+      setFormError('Harap ambil atau unggah foto bukti sampah terlebih dahulu.');
       return;
     }
-    if (!selectedFile) {
-      setFormError('Bukti foto sampah wajib diunggah.');
+
+    if (!title.trim()) {
+      setFormError('Judul laporan wajib diisi.');
       return;
     }
 
@@ -134,30 +170,51 @@ export default function CreateReportModal({
       return;
     }
 
+    // Fallback category id if somehow not set
+    const finalCatId =
+      selectedCategoryId !== ''
+        ? selectedCategoryId
+        : categories.length > 0
+        ? categories[0].id
+        : 1;
+
     setIsSubmitting(true);
-    setFormError(null);
 
     try {
       const formData = new FormData();
       formData.append('title', title.trim());
+      formData.append('category_id', finalCatId.toString());
       formData.append('latitude', latNum.toString());
       formData.append('longitude', lngNum.toString());
-      if (description.trim()) formData.append('description', description.trim());
-      if (addressNote.trim()) formData.append('address_note', addressNote.trim());
-      if (selectedCategoryId) formData.append('category_id', selectedCategoryId.toString());
-      formData.append('image', selectedFile);
+      if (description.trim()) {
+        formData.append('description', description.trim());
+      }
+      if (addressNote.trim()) {
+        formData.append('address_note', addressNote.trim());
+      }
+      // CRITICAL: FastAPI contract requires field name 'file'
+      formData.append('file', selectedFile);
 
       await reportsApi.createReport(formData);
 
-      // Reset and close
+      // Successfully submitted
       onReportCreated();
       onClose();
     } catch (err: unknown) {
-      const msg =
-        err && typeof err === 'object' && 'response' in err
-          ? (err as { response?: { data?: { detail?: string } } }).response?.data?.detail
-          : null;
-      setFormError(typeof msg === 'string' ? msg : 'Gagal mengirim laporan. Periksa koneksi backend.');
+      let errorMsg = 'Gagal mengirimkan laporan sampah. Periksa koneksi backend Anda.';
+      const resData = (err as { response?: { data?: { detail?: unknown } } })?.response?.data;
+      if (resData?.detail) {
+        if (typeof resData.detail === 'string') {
+          errorMsg = resData.detail;
+        } else if (Array.isArray(resData.detail)) {
+          errorMsg = resData.detail
+            .map((item: { msg?: string; loc?: string[] }) => item.msg || JSON.stringify(item))
+            .join(', ');
+        } else if (typeof resData.detail === 'object') {
+          errorMsg = JSON.stringify(resData.detail);
+        }
+      }
+      setFormError(errorMsg);
     } finally {
       setIsSubmitting(false);
     }
@@ -172,9 +229,9 @@ export default function CreateReportModal({
         if (e.target === e.currentTarget && !isSubmitting) onClose();
       }}
     >
-      <div className="relative w-full max-w-xl bg-white rounded-t-3xl sm:rounded-2xl shadow-2xl border-t sm:border border-slate-200/90 overflow-hidden max-h-[92vh] sm:max-h-[90vh] flex flex-col animate-in slide-in-from-bottom duration-300 sm:zoom-in-95 sm:duration-150 sm:my-6">
-        {/* Mobile Bottom Sheet Drag Handle */}
-        <div className="w-full pt-2.5 pb-1 flex justify-center sm:hidden bg-slate-50/70 cursor-grab">
+      <div className="relative w-full max-w-xl bg-white rounded-t-3xl sm:rounded-2xl shadow-2xl border-t sm:border border-slate-200 overflow-hidden max-h-[92vh] sm:max-h-[90vh] flex flex-col animate-in slide-in-from-bottom duration-300 sm:zoom-in-95 sm:duration-150 sm:my-6">
+        {/* Mobile Bottom Sheet Tactile Drag Handle */}
+        <div className="w-full pt-3 pb-1.5 flex justify-center sm:hidden bg-slate-50/70 cursor-grab">
           <div className="w-12 h-1.5 rounded-full bg-slate-300" />
         </div>
 
@@ -182,17 +239,18 @@ export default function CreateReportModal({
         <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4 sm:px-6 bg-slate-50/70">
           <div>
             <h2 className="font-sans text-lg font-bold text-slate-900">
-              Buat Laporan Sampah Baru
+              Form Laporan Sampah
             </h2>
             <p className="font-sans text-xs text-slate-500">
-              Laporkan tumpukan sampah perkotaan dengan bantuan klasifikasi AI
+              Klasifikasi otomatis AI MobileNetV2 &amp; Geotagging GPS presisi
             </p>
           </div>
           <button
             type="button"
             onClick={onClose}
             disabled={isSubmitting}
-            className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-200/60 hover:text-slate-700 transition-colors"
+            className="rounded-lg p-2 text-slate-400 hover:bg-slate-200/60 hover:text-slate-700 transition-colors"
+            aria-label="Tutup form"
           >
             <X className="h-5 w-5" />
           </button>
@@ -201,15 +259,15 @@ export default function CreateReportModal({
         {/* Scrollable Form Body */}
         <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-4">
           {formError && (
-            <div className="flex items-center gap-2 rounded-xl border border-rose-200 bg-rose-50 p-3 text-xs text-rose-800">
-              <AlertCircle className="h-4 w-4 shrink-0 text-rose-600" />
-              <p className="font-medium">{formError}</p>
+            <div className="flex items-start gap-2.5 rounded-xl border border-rose-200 bg-rose-50 p-3.5 text-xs text-rose-800">
+              <AlertCircle className="h-4 w-4 shrink-0 text-rose-600 mt-0.5" />
+              <div className="flex-1 font-medium leading-relaxed">{formError}</div>
             </div>
           )}
 
-          {/* Photo Upload Area */}
+          {/* 1. Photo Capture Section (Dashed Border when empty, filled preview when loaded) */}
           <div className="space-y-1.5">
-            <label className="block text-xs font-semibold text-slate-700">
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-700">
               Foto Bukti Sampah <span className="text-rose-500">*</span>
             </label>
             <input
@@ -220,82 +278,182 @@ export default function CreateReportModal({
               className="hidden"
             />
             {previewUrl ? (
-              <div className="relative w-full h-48 rounded-xl overflow-hidden border border-slate-200 bg-slate-100 flex items-center justify-center group">
+              <div className="relative w-full h-52 sm:h-56 rounded-2xl overflow-hidden border border-slate-200 bg-slate-900 flex items-center justify-center group shadow-xs">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={previewUrl} alt="Preview" className="w-full h-full object-cover" />
-                <button
-                  type="button"
-                  onClick={() => fileInputRef.current?.click()}
-                  className="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-xs font-semibold gap-1.5"
-                >
-                  <Upload className="h-4 w-4" />
-                  <span>Ganti Foto</span>
-                </button>
+                <img src={previewUrl} alt="Preview Bukti Sampah" className="w-full h-full object-cover" />
+                <div className="absolute top-3 right-3">
+                  <span className="inline-flex items-center gap-1.5 bg-black/70 backdrop-blur-md text-emerald-400 text-xs font-semibold px-2.5 py-1 rounded-lg border border-white/10">
+                    <CheckCircle2 className="h-3.5 w-3.5" />
+                    <span>Foto Terpilih</span>
+                  </span>
+                </div>
+                <div className="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="inline-flex items-center gap-2 bg-white text-slate-900 text-xs font-bold px-4 py-2 rounded-xl shadow-lg hover:bg-slate-100 transition-transform active:scale-95"
+                  >
+                    <Upload className="h-4 w-4 text-emerald-600" />
+                    <span>Ganti Foto</span>
+                  </button>
+                </div>
               </div>
             ) : (
               <div
                 onClick={() => fileInputRef.current?.click()}
-                className="w-full h-36 rounded-xl border-2 border-dashed border-slate-300 hover:border-emerald-500 bg-slate-50/60 hover:bg-emerald-50/20 transition-all cursor-pointer flex flex-col items-center justify-center p-4 text-center"
+                className="w-full rounded-2xl border-2 border-dashed border-emerald-300 hover:border-emerald-500 bg-emerald-50/40 hover:bg-emerald-50/70 transition-all cursor-pointer flex flex-col items-center justify-center py-8 px-4 text-center group"
               >
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 mb-2">
-                  <Upload className="h-5 w-5" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-700 group-hover:scale-110 transition-transform mb-3 shadow-xs">
+                  <Camera className="h-6 w-6" />
                 </div>
-                <p className="text-xs font-semibold text-slate-700">Klik untuk unggah foto sampah</p>
-                <p className="text-[11px] text-slate-400 mt-0.5">JPG, PNG atau WebP (Maks 10MB)</p>
+                <p className="text-sm font-bold text-slate-900">Ambil Foto Bukti Sampah</p>
+                <p className="text-xs text-slate-500 mt-1 max-w-sm">
+                  AI MobileNetV2 akan mendeteksi otomatis kategori sampah perkotaan
+                </p>
+                <div className="mt-4 flex items-center gap-2">
+                  <span className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-3.5 py-1.5 text-xs font-bold text-white shadow-xs group-hover:bg-emerald-700">
+                    <Upload className="h-3.5 w-3.5" />
+                    <span>Pilih Foto dari Galeri / Kamera</span>
+                  </span>
+                </div>
               </div>
             )}
           </div>
 
-          {/* AI Detection Banner */}
-          {isPredicting ? (
-            <div className="flex items-center gap-2.5 p-3 rounded-xl bg-emerald-50/80 border border-emerald-200 text-xs text-emerald-800">
-              <Loader2 className="h-4 w-4 animate-spin text-emerald-600 shrink-0" />
-              <span>AI MobileNetV2 sedang menganalisis foto sampah...</span>
+          {/* 2. AI Detection Banner (Progress bar + confidence badge + 1-Tap quick chips) */}
+          {isPredicting && (
+            <div className="flex items-center gap-3 p-4 rounded-2xl bg-emerald-50/90 border border-emerald-200 text-xs text-emerald-900 animate-pulse">
+              <Loader2 className="h-5 w-5 animate-spin text-emerald-600 shrink-0" />
+              <div>
+                <p className="font-bold text-emerald-950">AI MobileNetV2 Memindai...</p>
+                <p className="text-[11px] text-emerald-700">Mengklasifikasikan jenis sampah secara real-time</p>
+              </div>
             </div>
-          ) : aiPrediction ? (
-            <div className="flex items-center justify-between p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-xs shadow-xs">
-              <div className="flex items-center gap-2">
-                <Sparkles className="h-4 w-4 text-emerald-600 shrink-0" />
-                <div>
-                  <span className="font-semibold text-emerald-900">
-                    Hasil Prediksi AI: {aiPrediction.category}
-                  </span>
-                  <p className="text-[11px] text-emerald-700">Kategori telah dipilih secara otomatis</p>
+          )}
+
+          {aiError && (
+            <div className="flex items-center gap-2.5 p-3 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-800">
+              <Info className="h-4 w-4 shrink-0 text-amber-600" />
+              <p>{aiError}</p>
+            </div>
+          )}
+
+          {aiPrediction && !isPredicting && (
+            <div className="p-4 rounded-2xl bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200/90 shadow-2xs space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-600 text-white shadow-xs">
+                    <Sparkles className="h-4 w-4" />
+                  </div>
+                  <div>
+                    <span className="text-xs font-bold text-emerald-950">
+                      Deteksi AI MobileNetV2
+                    </span>
+                    <p className="text-[11px] text-emerald-700">Kategori terdeteksi otomatis</p>
+                  </div>
+                </div>
+                <span className="font-mono text-xs font-extrabold text-emerald-800 bg-white px-2.5 py-1 rounded-lg border border-emerald-200 shadow-2xs">
+                  {formatPercentage(aiPrediction.confidence)}
+                </span>
+              </div>
+
+              {/* Progress Bar */}
+              <div className="w-full bg-white/80 rounded-full h-2 overflow-hidden border border-emerald-100">
+                <div
+                  className="bg-emerald-600 h-2 rounded-full transition-all duration-500"
+                  style={{ width: `${Math.min(100, Math.round(aiPrediction.confidence * 100))}%` }}
+                />
+              </div>
+
+              {/* 1-Tap Category Quick Chips (Mirrors Mobile UX) */}
+              <div className="pt-1">
+                <p className="text-[11px] font-bold text-slate-700 mb-1.5 flex items-center gap-1">
+                  <span>Koreksi Kategori (1-Ketuk jika AI meleset):</span>
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {categories.map((cat) => {
+                    const isSelected = selectedCategoryId === cat.id;
+                    return (
+                      <button
+                        type="button"
+                        key={cat.id}
+                        onClick={() => handleSelectCategory(cat.id)}
+                        className={cn(
+                          'inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold transition-all',
+                          isSelected
+                            ? 'bg-emerald-600 text-white shadow-xs'
+                            : 'bg-white text-slate-700 border border-slate-200 hover:border-emerald-400'
+                        )}
+                      >
+                        {isSelected && <CheckCircle2 className="h-3 w-3" />}
+                        <span>{cat.name}</span>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
-              <span className="font-mono text-xs font-bold text-emerald-800 bg-white px-2 py-0.5 rounded-md border border-emerald-200">
-                {formatPercentage(aiPrediction.confidence)}
-              </span>
             </div>
-          ) : null}
+          )}
 
-          {/* Title Input */}
+          {/* 3. Geotagging Lokasi GPS Card */}
+          <div className="p-4 rounded-2xl border border-slate-200/90 bg-slate-50/70 space-y-2.5">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-blue-50 text-blue-600 border border-blue-200">
+                  <MapPin className="h-4 w-4" />
+                </div>
+                <div>
+                  <span className="text-xs font-bold text-slate-900">Geotagging Lokasi GPS</span>
+                  <p className="text-[11px] text-slate-500">Koordinat bukti pelaporan lapangan</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={handleGetCurrentLocation}
+                disabled={isLocating}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 active:scale-95 transition-all shadow-2xs"
+              >
+                <Navigation className={cn('h-3.5 w-3.5 text-emerald-600', isLocating && 'animate-spin')} />
+                <span>{isLocating ? 'Mendeteksi...' : 'GPS Saya'}</span>
+              </button>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2 text-xs font-mono">
+              <div className="bg-white rounded-xl border border-slate-200 px-3 py-1.5 flex items-center justify-between">
+                <span className="text-slate-400 text-[10px]">LAT</span>
+                <span className="font-semibold text-slate-800">{latitude}</span>
+              </div>
+              <div className="bg-white rounded-xl border border-slate-200 px-3 py-1.5 flex items-center justify-between">
+                <span className="text-slate-400 text-[10px]">LNG</span>
+                <span className="font-semibold text-slate-800">{longitude}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* 4. Form Fields */}
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
               Judul Laporan <span className="text-rose-500">*</span>
             </label>
             <input
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Contoh: Tumpukan botol plastik di pinggir jalan"
-              className="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-xs sm:text-sm text-slate-900 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 transition-all"
+              placeholder="Contoh: Tumpukan Botol Plastik di Pinggir Jalan"
+              className="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-xs sm:text-sm text-slate-900 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 transition-all font-sans"
             />
           </div>
 
           {/* Category Dropdown */}
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
-              Kategori Sampah
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+              Kategori Sampah <span className="text-rose-500">*</span>
             </label>
             <select
               value={selectedCategoryId}
-              onChange={(e) =>
-                setSelectedCategoryId(e.target.value ? Number(e.target.value) : '')
-              }
-              className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs sm:text-sm text-slate-900 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 transition-all"
+              onChange={(e) => handleSelectCategory(Number(e.target.value))}
+              className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-xs sm:text-sm text-slate-900 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 transition-all font-sans"
             >
-              <option value="">-- Pilih Kategori (Opsional / AI Terpilih) --</option>
               {categories.map((c) => (
                 <option key={c.id} value={c.id}>
                   {c.name}
@@ -304,43 +462,9 @@ export default function CreateReportModal({
             </select>
           </div>
 
-          {/* GPS Coordinates */}
-          <div className="space-y-1.5">
-            <div className="flex items-center justify-between">
-              <label className="text-xs font-semibold text-slate-700">
-                Koordinat Lokasi GPS <span className="text-rose-500">*</span>
-              </label>
-              <button
-                type="button"
-                onClick={handleGetCurrentLocation}
-                disabled={isLocating}
-                className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600 hover:text-emerald-700 transition-colors"
-              >
-                <Navigation className={cn('h-3 w-3', isLocating && 'animate-spin')} />
-                <span>{isLocating ? 'Mendeteksi...' : 'Gunakan GPS Saat Ini'}</span>
-              </button>
-            </div>
-            <div className="grid grid-cols-2 gap-2.5">
-              <input
-                type="text"
-                value={latitude}
-                onChange={(e) => setLatitude(e.target.value)}
-                placeholder="Latitude"
-                className="rounded-xl border border-slate-300 px-3 py-2 text-xs font-mono text-slate-900 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
-              />
-              <input
-                type="text"
-                value={longitude}
-                onChange={(e) => setLongitude(e.target.value)}
-                placeholder="Longitude"
-                className="rounded-xl border border-slate-300 px-3 py-2 text-xs font-mono text-slate-900 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
-              />
-            </div>
-          </div>
-
           {/* Address Note & Description */}
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
               Patokan Alamat (Opsional)
             </label>
             <input
@@ -348,40 +472,49 @@ export default function CreateReportModal({
               value={addressNote}
               onChange={(e) => setAddressNote(e.target.value)}
               placeholder="Contoh: Dekat Pos Ronda RT 04 / Sebelah Minimarket"
-              className="w-full rounded-xl border border-slate-300 px-3 py-2 text-xs sm:text-sm text-slate-900 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              className="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-xs sm:text-sm text-slate-900 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
               Deskripsi Tambahan (Opsional)
             </label>
             <textarea
               rows={2}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Jelaskan kondisi tumpukan sampah atau tingkat keparahannya..."
-              className="w-full rounded-xl border border-slate-300 px-3 py-1.5 text-xs sm:text-sm text-slate-900 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 resize-none"
+              placeholder="Jelaskan kondisi tumpukan sampah atau perkiraan volumenya..."
+              className="w-full rounded-xl border border-slate-300 px-3.5 py-2 text-xs sm:text-sm text-slate-900 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 resize-none font-sans"
             />
           </div>
 
-          {/* Footer Submit Button */}
-          <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
+          {/* 5. Sticky Bottom Submit Action */}
+          <div className="pt-3 border-t border-slate-200/80 flex flex-col sm:flex-row items-center justify-end gap-2.5 sticky bottom-0 bg-white/95 pb-2 backdrop-blur-xs">
             <button
               type="button"
               onClick={onClose}
               disabled={isSubmitting}
-              className="rounded-xl border border-slate-300 bg-white px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors shadow-2xs"
+              className="w-full sm:w-auto rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-xs font-bold text-slate-700 hover:bg-slate-50 transition-colors shadow-2xs order-2 sm:order-1"
             >
               Batal
             </button>
             <button
               type="submit"
-              disabled={isSubmitting || !title.trim() || !selectedFile}
-              className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-5 py-2 text-xs font-semibold text-white shadow-xs hover:bg-emerald-700 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+              disabled={isSubmitting || !selectedFile || !title.trim()}
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-6 py-2.5 text-xs sm:text-sm font-bold text-white shadow-sm hover:bg-emerald-700 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed transition-all order-1 sm:order-2 min-h-[44px]"
             >
-              {isSubmitting && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
-              <span>Kirim Laporan Sampah</span>
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <span>Mengirim Laporan...</span>
+                </>
+              ) : (
+                <>
+                  <Send className="h-4 w-4" />
+                  <span>Kirim Laporan Sampah</span>
+                </>
+              )}
             </button>
           </div>
         </form>

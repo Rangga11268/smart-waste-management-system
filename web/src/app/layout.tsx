@@ -18,6 +18,11 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: 'SWMS - Smart Waste Management System',
   description: 'Smart Waste Management System (SWMS) - Eco-Tech Web Dashboard for Urban Sustainability',
+  icons: {
+    icon: '/favicon.svg',
+    shortcut: '/favicon.svg',
+    apple: '/favicon.svg',
+  },
 };
 
 export default function RootLayout({
