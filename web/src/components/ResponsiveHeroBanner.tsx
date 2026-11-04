@@ -61,16 +61,20 @@ export default function ResponsiveHeroBanner({
 
   return (
     <section className="w-full isolate min-h-screen overflow-hidden relative flex flex-col justify-between bg-slate-950 font-sans selection:bg-emerald-600 selection:text-white">
-      {/* Cinematic Background Image with Multi-Stage Dark Slate & Emerald Vignette */}
+      {/* Cinematic AI-Generated Eco-Tech Smart City Background Image */}
       <img
-        src="https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=2000&q=80"
-        alt="Urban Smart City Environment"
-        className="w-full h-full object-cover absolute inset-0 opacity-25 scale-105 pointer-events-none transition-transform duration-1000 ease-out"
+        src="/hero-bg.jpg"
+        alt="SWMS Eco-Tech Smart City"
+        className="w-full h-full object-cover absolute inset-0 opacity-40 scale-105 pointer-events-none transition-transform duration-1000 ease-out"
       />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-slate-950/90 via-slate-950/85 to-slate-950 ring-1 ring-white/10" />
+      
+      {/* Multi-Stage Dark Slate & Ambient Vignette */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-slate-950/90 via-slate-950/75 to-slate-950" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,rgba(2,6,23,0.85)_100%)]" />
 
-      {/* Subtle Radial Glow in Center */}
-      <div className="pointer-events-none absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-emerald-500/10 blur-[120px] rounded-full" />
+      {/* Luxury Ambient Glow Orbs */}
+      <div className="pointer-events-none absolute top-1/4 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-emerald-500/15 blur-[140px] rounded-full" />
+      <div className="pointer-events-none absolute top-1/3 right-1/4 translate-x-1/3 -translate-y-1/2 w-[550px] h-[300px] bg-teal-500/10 blur-[150px] rounded-full" />
 
       {/* Floating Glassmorphic Header Navigation */}
       <header className="z-20 w-full pt-4 sm:pt-6 px-4 sm:px-6 lg:px-8">
@@ -82,7 +86,7 @@ export default function ResponsiveHeroBanner({
 
           {/* Desktop Center Floating Glass Pill Nav */}
           <nav className="hidden md:flex items-center gap-2">
-            <div className="flex items-center gap-1 rounded-full bg-white/5 px-2 py-1 ring-1 ring-white/10 backdrop-blur-md">
+            <div className="flex items-center gap-1 rounded-full bg-slate-900/60 px-2 py-1.5 border border-white/10 backdrop-blur-xl shadow-2xl shadow-black/50">
               {navLinks.map((link, idx) => (
                 link.isExternal ? (
                   <a
@@ -113,7 +117,7 @@ export default function ResponsiveHeroBanner({
               {/* Action Button inside Pill */}
               <Link
                 href={isAuthenticated ? '/dashboard' : '/login'}
-                className="ml-1 inline-flex items-center gap-1.5 rounded-full bg-emerald-600 px-4 py-1.5 text-xs font-bold text-white hover:bg-emerald-500 transition-colors shadow-md shadow-emerald-600/30"
+                className="ml-1 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-500 px-4 py-1.5 text-xs font-bold text-white shadow-lg shadow-emerald-600/30 hover:shadow-emerald-500/50 hover:from-emerald-400 hover:to-teal-400 transition-all border border-emerald-400/30"
               >
                 <span>{isAuthenticated ? 'Dashboard' : 'Masuk Portal'}</span>
                 <ArrowRight className="h-3.5 w-3.5" />
@@ -125,7 +129,7 @@ export default function ResponsiveHeroBanner({
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 ring-1 ring-white/15 backdrop-blur-md text-white"
+            className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-full bg-slate-900/80 border border-white/15 backdrop-blur-md text-white shadow-lg"
             aria-expanded={mobileMenuOpen}
             aria-label="Buka menu navigasi"
           >
@@ -150,7 +154,7 @@ export default function ResponsiveHeroBanner({
               <Link
                 href={isAuthenticated ? '/dashboard' : '/login'}
                 onClick={() => setMobileMenuOpen(false)}
-                className="block text-center rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-bold text-white"
+                className="block text-center rounded-xl bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 px-4 py-2.5 text-sm font-bold text-white shadow-lg shadow-emerald-600/30"
               >
                 {isAuthenticated ? 'Buka Dashboard' : 'Masuk Portal'}
               </Link>
@@ -163,8 +167,8 @@ export default function ResponsiveHeroBanner({
       <div className="z-10 relative my-auto py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
           {/* Dual-Segment Floating Animated Badge */}
-          <div className="mb-6 inline-flex items-center gap-2.5 rounded-full bg-white/10 px-3 py-1.5 ring-1 ring-white/15 backdrop-blur-md animate-fade-slide-in-1 shadow-lg">
-            <span className="inline-flex items-center text-[11px] font-extrabold text-slate-950 bg-emerald-400 rounded-full py-0.5 px-2.5 uppercase tracking-wide">
+          <div className="mb-6 inline-flex items-center gap-2.5 rounded-full bg-slate-900/80 border border-emerald-500/30 px-3.5 py-1.5 backdrop-blur-xl shadow-[0_0_25px_-5px_rgba(16,185,129,0.3)] animate-fade-slide-in-1">
+            <span className="inline-flex items-center text-[10px] font-black text-slate-950 bg-gradient-to-r from-emerald-400 to-teal-300 rounded-full py-0.5 px-2.5 uppercase tracking-wider shadow-xs">
               {badgeLabel}
             </span>
             <span className="text-xs sm:text-sm font-medium text-slate-200">
@@ -172,11 +176,11 @@ export default function ResponsiveHeroBanner({
             </span>
           </div>
 
-          {/* Headline (Inter Sans-Serif font, Bold, Crisp, No Serif) */}
+          {/* Headline (Inter Sans-Serif font, Bold, Crisp, Luxury Gradient) */}
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-tight leading-[1.1] animate-fade-slide-in-2 font-sans">
             {title}
             <br className="hidden sm:block" />{' '}
-            <span className="text-emerald-400 font-extrabold">
+            <span className="block mt-2 sm:mt-1 bg-gradient-to-r from-emerald-300 via-teal-200 to-emerald-400 bg-clip-text text-transparent font-black drop-shadow-[0_2px_25px_rgba(16,185,129,0.35)]">
               {titleLine2}
             </span>
           </h1>
@@ -190,23 +194,23 @@ export default function ResponsiveHeroBanner({
           <div className="flex flex-col sm:flex-row sm:gap-4 mt-8 sm:mt-10 gap-3 items-center justify-center animate-fade-slide-in-4">
             <Link
               href={primaryButtonHref}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 hover:bg-emerald-500 text-sm font-bold text-white bg-emerald-600 ring-1 ring-emerald-500/60 rounded-full py-3.5 px-7 shadow-xl shadow-emerald-600/30 transition-all active:scale-[0.98]"
+              className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-2.5 overflow-hidden rounded-full bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 px-8 py-4 text-sm font-bold text-white shadow-[0_0_35px_-5px_rgba(16,185,129,0.5)] hover:shadow-[0_0_50px_0_rgba(16,185,129,0.7)] border border-emerald-400/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
             >
               <span>{primaryButtonText}</span>
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1 text-emerald-100" />
             </Link>
 
             <Link
               href={secondaryButtonHref}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-white/10 hover:bg-white/15 ring-1 ring-white/20 px-6 py-3.5 text-sm font-semibold text-white backdrop-blur-md transition-all active:scale-[0.98]"
+              className="group w-full sm:w-auto inline-flex items-center justify-center gap-2.5 rounded-full bg-slate-900/70 hover:bg-slate-800/80 border border-slate-700/80 hover:border-emerald-500/50 px-7 py-4 text-sm font-semibold text-slate-200 hover:text-white backdrop-blur-xl shadow-xl shadow-black/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
             >
-              <Play className="h-3.5 w-3.5 fill-current text-emerald-400" />
+              <Play className="h-3.5 w-3.5 fill-current text-emerald-400 group-hover:text-emerald-300 transition-colors" />
               <span>{secondaryButtonText}</span>
             </Link>
           </div>
         </div>
 
-        {/* Tech Ecosystem & Standard Grid (21st.dev Partner Pattern Adapted to Bilcode Stack) */}
+        {/* Tech Ecosystem & Standard Grid (Luxury Micro-Cards) */}
         <div className="mx-auto mt-16 sm:mt-20 max-w-5xl">
           <p className="text-xs uppercase tracking-widest text-slate-400 text-center font-bold animate-fade-slide-in-1">
             Didukung Ekosistem Arsitektur Fullstack &amp; Standar Bilcode Technology
@@ -217,9 +221,9 @@ export default function ResponsiveHeroBanner({
               return (
                 <div
                   key={idx}
-                  className="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xs text-xs font-semibold text-slate-200 hover:bg-white/10 hover:border-emerald-500/40 transition-all shadow-xs"
+                  className="w-full flex items-center justify-center gap-2.5 py-3 px-3.5 rounded-2xl bg-slate-900/60 hover:bg-slate-800/70 border border-slate-800/90 hover:border-emerald-500/40 backdrop-blur-md text-xs font-semibold text-slate-300 hover:text-white transition-all duration-300 shadow-sm hover:shadow-[0_0_20px_-5px_rgba(16,185,129,0.25)] group"
                 >
-                  <Icon className="h-4 w-4 text-emerald-400 shrink-0" />
+                  <Icon className="h-4 w-4 text-emerald-400 group-hover:text-emerald-300 transition-colors shrink-0" />
                   <span className="truncate">{tech.name}</span>
                 </div>
               );
@@ -229,7 +233,7 @@ export default function ResponsiveHeroBanner({
       </div>
 
       {/* Bottom Subtle Gradient Transition to Next Section */}
-      <div className="h-12 bg-gradient-to-b from-transparent to-slate-50 relative z-10 pointer-events-none" />
+      <div className="h-16 bg-gradient-to-b from-transparent to-slate-50 relative z-10 pointer-events-none" />
     </section>
   );
 }
