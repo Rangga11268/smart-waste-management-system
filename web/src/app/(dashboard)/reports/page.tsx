@@ -356,10 +356,10 @@ export default function ReportsPage() {
                 aria-label="Filter berdasarkan status"
               >
                 <option value="">Semua Status</option>
-                <option value="Pending">Pending</option>
-                <option value="In Progress">In Progress</option>
-                <option value="Completed">Completed</option>
-                <option value="Rejected">Rejected</option>
+                <option value="Pending">Menunggu Validasi (Pending)</option>
+                <option value="In Progress">Sedang Ditangani (In Progress)</option>
+                <option value="Completed">Selesai Ditangani (Completed)</option>
+                <option value="Rejected">Laporan Ditolak (Rejected)</option>
               </select>
             </div>
 

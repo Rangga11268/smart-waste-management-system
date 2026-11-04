@@ -26,6 +26,32 @@ import type {
   ReportLogItem,
 } from '@/types/api';
 
+const STATUS_LABELS: Record<string, string> = {
+  Pending: 'Menunggu Validasi (Pending)',
+  'In Progress': 'Sedang Ditangani (In Progress)',
+  Completed: 'Selesai Ditangani (Completed)',
+  Rejected: 'Laporan Ditolak (Rejected)',
+};
+
+const STATUS_DESCRIPTIONS: Record<string, string> = {
+  Pending: 'Laporan baru diajukan dan menunggu validasi petugas.',
+  'In Progress': 'Armada kebersihan dan petugas lapangan telah ditugaskan ke lokasi.',
+  Completed: 'Tumpukan sampah telah selesai diangkut dan area telah bersih.',
+  Rejected: 'Laporan ditolak (karena bukan sampah, foto tidak jelas, atau lokasi fiktif).',
+};
+
+function formatStatusHuman(status: string): string {
+  return STATUS_LABELS[status] || status;
+}
+
+function formatRemarksHuman(remarks?: string | null): string {
+  if (!remarks) return '';
+  if (remarks.trim().toLowerCase() === 'initial report submission') {
+    return 'Laporan awal diajukan oleh warga (Initial Submission)';
+  }
+  return remarks;
+}
+
 export interface ReportModalProps {
   report: ReportDetailData | ReportListItem | null;
   isOpen: boolean;
@@ -399,10 +425,15 @@ export default function ReportModal({
                       <option value="">-- Pilih Transisi Status --</option>
                       {allowedOptions.map((opt) => (
                         <option key={opt} value={opt}>
-                          {opt}
+                          {formatStatusHuman(opt)}
                         </option>
                       ))}
                     </select>
+                    {selectedStatus && (
+                      <p className="mt-1.5 text-[11px] text-slate-500 leading-relaxed font-medium">
+                        {STATUS_DESCRIPTIONS[selectedStatus]}
+                      </p>
+                    )}
                   </div>
 
                   <div>
@@ -466,12 +497,12 @@ export default function ReportModal({
                         <div className="flex items-center gap-1.5 font-semibold text-slate-800">
                           {log.previous_status ? (
                             <>
-                              <span className="text-slate-500">{log.previous_status}</span>
+                              <span className="text-slate-500">{formatStatusHuman(log.previous_status)}</span>
                               <ArrowRight className="h-3 w-3 text-slate-400" />
-                              <span className="text-emerald-700">{log.new_status}</span>
+                              <span className="text-emerald-700">{formatStatusHuman(log.new_status)}</span>
                             </>
                           ) : (
-                            <span className="text-emerald-700">Status Awal: {log.new_status}</span>
+                            <span className="text-emerald-700">Status Awal: {formatStatusHuman(log.new_status)}</span>
                           )}
                         </div>
                         <span className="font-mono text-[11px] text-slate-400">
@@ -480,7 +511,7 @@ export default function ReportModal({
                       </div>
                       {log.remarks && (
                         <p className="text-slate-600 pt-0.5">
-                          <span className="font-medium text-slate-700">Catatan:</span> {log.remarks}
+                          <span className="font-medium text-slate-700">Catatan:</span> {formatRemarksHuman(log.remarks)}
                         </p>
                       )}
                     </div>

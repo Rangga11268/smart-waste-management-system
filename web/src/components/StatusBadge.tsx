@@ -19,28 +19,28 @@ const statusConfig: Record<
   }
 > = {
   Pending: {
-    containerClass: 'bg-amber-50/90 text-amber-700 border-amber-200/80',
+    containerClass: 'bg-amber-50/90 text-amber-800 border-amber-300',
     dotClass: 'bg-amber-500',
     pingClass: 'bg-amber-400',
-    label: 'Pending',
+    label: 'Menunggu Validasi',
   },
   'In Progress': {
-    containerClass: 'bg-blue-50/90 text-blue-700 border-blue-200/80',
+    containerClass: 'bg-blue-50/90 text-blue-800 border-blue-300',
     dotClass: 'bg-blue-500',
     pingClass: 'bg-blue-400',
-    label: 'In Progress',
+    label: 'Sedang Ditangani',
   },
   Completed: {
-    containerClass: 'bg-emerald-50/90 text-emerald-700 border-emerald-200/80',
+    containerClass: 'bg-emerald-50/90 text-emerald-800 border-emerald-300',
     dotClass: 'bg-emerald-500',
     pingClass: 'bg-emerald-400',
-    label: 'Completed',
+    label: 'Selesai Ditangani',
   },
   Rejected: {
-    containerClass: 'bg-rose-50/90 text-rose-700 border-rose-200/80',
+    containerClass: 'bg-rose-50/90 text-rose-800 border-rose-300',
     dotClass: 'bg-rose-500',
     pingClass: 'bg-rose-400',
-    label: 'Rejected',
+    label: 'Laporan Ditolak',
   },
 };
 
@@ -72,7 +72,7 @@ export default function StatusBadge({
   return (
     <span
       className={cn(
-        'inline-flex items-center rounded-full border tracking-wide transition-colors shadow-[0_1px_2px_rgba(0,0,0,0.03)]',
+        'inline-flex items-center rounded-md border font-medium tracking-wide transition-colors shadow-2xs',
         config.containerClass,
         sizeClasses[size],
         className
