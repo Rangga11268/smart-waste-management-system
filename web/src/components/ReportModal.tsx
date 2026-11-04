@@ -209,8 +209,8 @@ export default function ReportModal({
         <div className="flex items-start justify-between border-b border-slate-200 px-5 py-4 sm:px-6 bg-slate-50/50">
           <div className="space-y-1 pr-4">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="font-mono text-xs font-semibold text-slate-500 bg-slate-200/80 px-2 py-0.5 rounded">
-                #RPT-{truncatedId}
+              <span className="font-mono text-xs font-semibold text-slate-700 bg-slate-100 border border-slate-200 px-2 py-0.5 rounded">
+                SWMS-{truncatedId}
               </span>
               <StatusBadge status={currentStatus} size="sm" />
             </div>

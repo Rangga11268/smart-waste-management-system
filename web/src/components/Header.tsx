@@ -134,7 +134,7 @@ export default function Header({ onOpenSidebar, user, onLogout, className }: Hea
         {/* Live Backend Health Indicator */}
         <div
           className={cn(
-            'hidden sm:flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium transition-colors',
+            'hidden sm:flex items-center gap-2 rounded-md border px-2.5 py-1 text-xs font-medium transition-colors',
             healthStatus === 'online' && 'border-emerald-200 bg-emerald-50 text-emerald-700',
             healthStatus === 'offline' && 'border-rose-200 bg-rose-50 text-rose-700',
             healthStatus === 'checking' && 'border-amber-200 bg-amber-50 text-amber-700'

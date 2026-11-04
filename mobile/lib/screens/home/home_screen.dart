@@ -615,55 +615,42 @@ class _HomeScreenState extends State<HomeScreen> {
                     // Status Chip at top-right & Category Badge
                     Row(
                       children: [
-                        // Category Pill with Accent Dot
+                        // Category Label (No capsule, no arbitrary dot)
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                          padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2.5),
                           decoration: BoxDecoration(
                             color: AppTheme.surfaceMuted,
-                            borderRadius: BorderRadius.circular(6),
+                            borderRadius: BorderRadius.circular(4),
+                            border: Border.all(color: AppTheme.border, width: 0.5),
                           ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Container(
-                                width: 6,
-                                height: 6,
-                                decoration: const BoxDecoration(
-                                  color: AppTheme.primary,
-                                  shape: BoxShape.circle,
-                                ),
-                              ),
-                              const SizedBox(width: 5),
-                              Text(
-                                r.category.name,
-                                style: const TextStyle(
-                                  color: AppTheme.textPrimary,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 10,
-                                ),
-                              ),
-                            ],
+                          child: Text(
+                            AppTheme.formatCategoryName(r.category.name),
+                            style: const TextStyle(
+                              color: AppTheme.textSecondary,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 10,
+                            ),
                           ),
                         ),
                         const Spacer(),
-                        // Modern Status Chip in Top Right
+                        // Status Badge (Clean subtle border, human Indonesian text)
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                          padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2.5),
                           decoration: BoxDecoration(
                             color: AppTheme.getStatusBgColor(r.status),
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(4),
                             border: Border.all(
                               color: AppTheme.getStatusBorderColor(r.status),
                               width: 1,
                             ),
                           ),
                           child: Text(
-                            r.status.toUpperCase(),
+                            AppTheme.formatStatusLabel(r.status),
                             style: TextStyle(
                               color: AppTheme.getStatusColor(r.status),
                               fontWeight: FontWeight.w700,
                               fontSize: 10,
-                              letterSpacing: 0.2,
+                              letterSpacing: 0.1,
                             ),
                           ),
                         ),

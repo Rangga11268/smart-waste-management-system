@@ -18,7 +18,7 @@ export interface StatCardProps {
   className?: string;
 }
 
-/* Vibrant, modern, high-contrast jewel tones matching executive SaaS dashboards */
+/* Unified, high-contrast Eco-Tech palette: Slate 900 anchor with crisp executive cards */
 const cardStyles = {
   black: {
     bg: 'bg-[#0f172a] border-slate-800 text-white shadow-lg shadow-slate-950/20',
@@ -29,35 +29,35 @@ const cardStyles = {
     dots: 'text-slate-400 hover:text-white',
   },
   purple: {
-    bg: 'bg-[#9333ea] border-purple-500 text-white shadow-lg shadow-purple-600/30',
-    title: 'text-white/95 font-semibold text-sm',
-    value: 'text-white',
-    pill: 'bg-white/20 text-white font-semibold border border-white/20',
-    subtitle: 'text-white/90 text-xs',
-    dots: 'text-white/75 hover:text-white',
+    bg: 'bg-white border-slate-200/90 text-slate-900 shadow-xs hover:border-slate-300',
+    title: 'text-slate-600 font-semibold text-sm',
+    value: 'text-slate-900',
+    pill: 'bg-amber-50 text-amber-800 font-semibold border border-amber-200/80',
+    subtitle: 'text-slate-500 text-xs',
+    dots: 'text-slate-400 hover:text-slate-600',
   },
   blue: {
-    bg: 'bg-[#2563eb] border-blue-500 text-white shadow-lg shadow-blue-600/30',
-    title: 'text-white/95 font-semibold text-sm',
-    value: 'text-white',
-    pill: 'bg-white/20 text-white font-semibold border border-white/20',
-    subtitle: 'text-white/90 text-xs',
-    dots: 'text-white/75 hover:text-white',
+    bg: 'bg-white border-slate-200/90 text-slate-900 shadow-xs hover:border-slate-300',
+    title: 'text-slate-600 font-semibold text-sm',
+    value: 'text-slate-900',
+    pill: 'bg-slate-100 text-slate-800 font-semibold border border-slate-200',
+    subtitle: 'text-slate-500 text-xs',
+    dots: 'text-slate-400 hover:text-slate-600',
   },
   emerald: {
-    bg: 'bg-[#0d9488] border-teal-500 text-white shadow-lg shadow-teal-700/30',
-    title: 'text-white/95 font-semibold text-sm',
-    value: 'text-white',
-    pill: 'bg-white/20 text-white font-semibold border border-white/20',
-    subtitle: 'text-white/90 text-xs',
-    dots: 'text-white/75 hover:text-white',
+    bg: 'bg-white border-slate-200/90 text-slate-900 shadow-xs hover:border-slate-300',
+    title: 'text-slate-600 font-semibold text-sm',
+    value: 'text-slate-900',
+    pill: 'bg-emerald-50 text-emerald-800 font-semibold border border-emerald-200/80',
+    subtitle: 'text-slate-500 text-xs',
+    dots: 'text-slate-400 hover:text-slate-600',
   },
   default: {
-    bg: 'bg-white border-slate-200 text-slate-900 shadow-sm',
+    bg: 'bg-white border-slate-200/90 text-slate-900 shadow-xs hover:border-slate-300',
     title: 'text-slate-600 font-semibold text-sm',
     value: 'text-slate-900',
     pill: 'bg-slate-100 text-slate-700 border border-slate-200',
-    subtitle: 'text-slate-600 text-xs',
+    subtitle: 'text-slate-500 text-xs',
     dots: 'text-slate-400 hover:text-slate-600',
   },
 };
@@ -87,7 +87,7 @@ export default function StatCard({
         </div>
         <div className="mt-5 space-y-3">
           <div className="h-10 w-24 rounded bg-slate-200" />
-          <div className="h-5 w-28 rounded-full bg-slate-200" />
+          <div className="h-5 w-28 rounded-md bg-slate-200" />
         </div>
         <div className="mt-5 pt-3 border-t border-slate-100">
           <div className="h-3 w-36 rounded bg-slate-100" />

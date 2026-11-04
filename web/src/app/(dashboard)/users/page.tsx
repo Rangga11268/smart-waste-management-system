@@ -199,10 +199,10 @@ export default function UsersPage() {
                       <div className="h-4 bg-slate-200 rounded w-40 mb-1.5" />
                       <div className="h-3 bg-slate-100 rounded w-28" />
                     </td>
-                    <td className="py-4 px-4"><div className="h-5 bg-slate-200 rounded-full w-20" /></td>
+                    <td className="py-4 px-4"><div className="h-5 bg-slate-200 rounded-md w-20" /></td>
                     <td className="py-4 px-4"><div className="h-4 bg-slate-200 rounded w-28" /></td>
                     <td className="py-4 px-4 text-center"><div className="h-4 bg-slate-200 rounded w-8 mx-auto" /></td>
-                    <td className="py-4 px-4"><div className="h-5 bg-slate-200 rounded-full w-16" /></td>
+                    <td className="py-4 px-4"><div className="h-5 bg-slate-200 rounded-md w-16" /></td>
                     <td className="py-4 px-4 sm:px-6 text-right"><div className="h-8 bg-slate-200 rounded w-16 ml-auto" /></td>
                   </tr>
                 ))
@@ -256,12 +256,12 @@ export default function UsersPage() {
                       {/* Role Badge */}
                       <td className="py-3.5 px-4">
                         {u.role === 'admin' ? (
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-md bg-slate-100 text-slate-800 border border-slate-300">
                             <ShieldCheck className="w-3.5 h-3.5" />
                             Administrator
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200">
                             <UserCheck className="w-3.5 h-3.5" />
                             Warga Pelapor
                           </span>
@@ -286,12 +286,12 @@ export default function UsersPage() {
                       {/* Active Status */}
                       <td className="py-3.5 px-4">
                         {u.is_active ? (
-                          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-50 text-emerald-700">
+                          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 text-xs font-semibold rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200">
                             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                             Aktif
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 text-xs font-medium rounded-full bg-rose-50 text-rose-700">
+                          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 text-xs font-semibold rounded-md bg-rose-50 text-rose-800 border border-rose-200">
                             <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
                             Nonaktif
                           </span>

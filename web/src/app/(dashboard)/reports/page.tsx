@@ -471,7 +471,7 @@ export default function ReportsPage() {
                       <div className="h-4 w-20 rounded bg-slate-200" />
                     </td>
                     <td className="py-4 px-3">
-                      <div className="h-6 w-20 rounded-full bg-slate-200" />
+                      <div className="h-6 w-20 rounded-md bg-slate-200" />
                     </td>
                     <td className="py-4 pl-3 pr-5 text-right">
                       <div className="h-8 w-16 ml-auto rounded-lg bg-slate-200" />
@@ -524,7 +524,7 @@ export default function ReportsPage() {
                       {/* 1. ID */}
                       <td className="py-3.5 pl-5 pr-3">
                         <span className="font-mono text-xs font-medium text-slate-700 bg-slate-100/90 border border-slate-200/80 px-2 py-0.5 rounded-md">
-                          #RPT-{truncatedId}
+                          SWMS-{truncatedId}
                         </span>
                       </td>
 

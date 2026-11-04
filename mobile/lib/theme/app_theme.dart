@@ -84,6 +84,37 @@ class AppTheme {
     }
   }
 
+  static String formatStatusLabel(String raw) {
+    switch (raw.toUpperCase().replaceAll('_', ' ')) {
+      case 'PENDING':
+        return 'Menunggu';
+      case 'IN PROGRESS':
+        return 'Diproses';
+      case 'COMPLETED':
+        return 'Selesai';
+      case 'REJECTED':
+        return 'Ditolak';
+      default:
+        return raw;
+    }
+  }
+
+  static String formatCategoryName(String raw) {
+    switch (raw.trim().toLowerCase()) {
+      case 'organic waste':
+      case 'organic':
+        return 'Sampah Organik';
+      case 'plastic waste':
+      case 'plastic':
+        return 'Sampah Plastik';
+      case 'paper waste':
+      case 'paper':
+        return 'Sampah Kertas';
+      default:
+        return raw;
+    }
+  }
+
   /// Relative human-readable time formatter (e.g., "10 menit yang lalu")
   static String formatRelativeTime(DateTime dt) {
     final localDt = dt.isUtc ? dt.toLocal() : dt;

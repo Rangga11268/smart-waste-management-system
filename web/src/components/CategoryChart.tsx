@@ -203,7 +203,7 @@ export default function CategoryChart({
                 </div>
                 <span
                   className={cn(
-                    'font-mono text-xs px-2.5 py-0.5 rounded-full font-bold',
+                    'font-mono text-xs px-2.5 py-0.5 rounded-md font-bold',
                     item.config.badgeBg,
                     item.config.badgeText
                   )}

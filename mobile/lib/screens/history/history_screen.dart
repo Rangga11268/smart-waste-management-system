@@ -116,7 +116,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   padding: const EdgeInsets.only(right: 8),
                   child: FilterChip(
                     label: Text(
-                      filter == 'ALL' ? 'Semua' : filter.replaceAll('_', ' '),
+                      filter == 'ALL' ? 'Semua' : AppTheme.formatStatusLabel(filter),
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
@@ -261,55 +261,42 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   children: [
                     Row(
                       children: [
-                        // Category Pill with Accent Dot
+                        // Category Label (No capsule, no arbitrary dot)
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                          padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2.5),
                           decoration: BoxDecoration(
                             color: AppTheme.surfaceMuted,
-                            borderRadius: BorderRadius.circular(6),
+                            borderRadius: BorderRadius.circular(4),
+                            border: Border.all(color: AppTheme.border, width: 0.5),
                           ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Container(
-                                width: 6,
-                                height: 6,
-                                decoration: const BoxDecoration(
-                                  color: AppTheme.primary,
-                                  shape: BoxShape.circle,
-                                ),
-                              ),
-                              const SizedBox(width: 5),
-                              Text(
-                                report.category.name,
-                                style: const TextStyle(
-                                  color: AppTheme.textPrimary,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 10,
-                                ),
-                              ),
-                            ],
+                          child: Text(
+                            AppTheme.formatCategoryName(report.category.name),
+                            style: const TextStyle(
+                              color: AppTheme.textSecondary,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 10,
+                            ),
                           ),
                         ),
                         const Spacer(),
-                        // Status Badge in Top Right with Semantic Border
+                        // Status Badge (Clean subtle border, human Indonesian text)
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                          padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2.5),
                           decoration: BoxDecoration(
                             color: AppTheme.getStatusBgColor(report.status),
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(4),
                             border: Border.all(
                               color: AppTheme.getStatusBorderColor(report.status),
                               width: 1,
                             ),
                           ),
                           child: Text(
-                            report.status.toUpperCase(),
+                            AppTheme.formatStatusLabel(report.status),
                             style: TextStyle(
                               color: AppTheme.getStatusColor(report.status),
                               fontWeight: FontWeight.w700,
                               fontSize: 10,
-                              letterSpacing: 0.2,
+                              letterSpacing: 0.1,
                             ),
                           ),
                         ),
