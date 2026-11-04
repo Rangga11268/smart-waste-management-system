@@ -144,9 +144,9 @@ export default function Header({ onOpenSidebar, user, onLogout, className }: Hea
           <span
             className={cn(
               'h-2 w-2 rounded-full',
-              healthStatus === 'online' && 'bg-emerald-500 animate-pulse',
+              healthStatus === 'online' && 'bg-emerald-500',
               healthStatus === 'offline' && 'bg-rose-500',
-              healthStatus === 'checking' && 'bg-amber-500 animate-pulse'
+              healthStatus === 'checking' && 'bg-amber-500'
             )}
           />
           <span className="font-mono uppercase tracking-wider text-[11px]">

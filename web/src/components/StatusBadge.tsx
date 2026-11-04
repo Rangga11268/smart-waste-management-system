@@ -81,12 +81,6 @@ export default function StatusBadge({
     >
       {showDot && (
         <span className={cn('relative flex items-center justify-center shrink-0', dotSizes[size])}>
-          <span
-            className={cn(
-              'absolute inline-flex h-full w-full rounded-full opacity-60 animate-ping',
-              config.pingClass
-            )}
-          />
           <span className={cn('relative inline-flex rounded-full', config.dotClass, dotSizes[size])} />
         </span>
       )}

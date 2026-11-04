@@ -61,10 +61,10 @@ export default function LandingPage() {
       <section className="py-16 sm:py-20 bg-slate-50 border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
-            <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 bg-emerald-100 border border-emerald-200 px-3 py-1 rounded-full">
+            <p className="text-xs font-bold uppercase tracking-wider text-emerald-700">
               Fitur Arsitektur Utama
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mt-3">
+            </p>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mt-2">
               Solusi Terpadu Hulu ke Hilir
             </h2>
             <p className="text-slate-600 text-sm sm:text-base mt-2">
@@ -131,10 +131,10 @@ export default function LandingPage() {
       <section className="py-16 sm:py-20 bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-700 bg-slate-100 border border-slate-200 px-3 py-1 rounded-full">
+            <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
               Spesifikasi Model AI
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mt-3">
+            </p>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mt-2">
               3 Kategori Klasifikasi Sampah
             </h2>
             <p className="text-slate-600 text-sm sm:text-base mt-2">
@@ -146,9 +146,9 @@ export default function LandingPage() {
             {/* Category 1: Organic */}
             <div className="rounded-3xl border border-emerald-200 bg-emerald-50/40 p-6 flex flex-col justify-between">
               <div>
-                <div className="inline-flex px-3 py-1 rounded-full bg-emerald-600 text-white text-xs font-bold uppercase tracking-wide mb-4">
-                  Kategori 01
-                </div>
+                <span className="text-xs font-bold uppercase tracking-wider text-emerald-800 block mb-2">
+                  Kategori 01 &bull; Organik
+                </span>
                 <h3 className="text-xl font-bold text-slate-900">Organic Waste</h3>
                 <p className="text-xs text-slate-600 mt-2 leading-relaxed">
                   Sisa makanan, potongan sayur, kulit buah, dan daun gugur. Diprioritaskan untuk fasilitas komposting dan biogas kota.
@@ -163,9 +163,9 @@ export default function LandingPage() {
             {/* Category 2: Plastic */}
             <div className="rounded-3xl border border-slate-200 bg-white p-6 flex flex-col justify-between shadow-xs">
               <div>
-                <div className="inline-flex px-3 py-1 rounded-full bg-blue-600 text-white text-xs font-bold uppercase tracking-wide mb-4">
-                  Kategori 02
-                </div>
+                <span className="text-xs font-bold uppercase tracking-wider text-blue-700 block mb-2">
+                  Kategori 02 &bull; Anorganik
+                </span>
                 <h3 className="text-xl font-bold text-slate-900">Plastic Waste</h3>
                 <p className="text-xs text-slate-600 mt-2 leading-relaxed">
                   Botol plastik PET, kantong kresek, kemasan sachet, dan gelas plastik. Disalurkan ke bank sampah dan industri daur ulang polimer.
@@ -180,9 +180,9 @@ export default function LandingPage() {
             {/* Category 3: Paper */}
             <div className="rounded-3xl border border-slate-200 bg-white p-6 flex flex-col justify-between shadow-xs">
               <div>
-                <div className="inline-flex px-3 py-1 rounded-full bg-amber-600 text-white text-xs font-bold uppercase tracking-wide mb-4">
-                  Kategori 03
-                </div>
+                <span className="text-xs font-bold uppercase tracking-wider text-amber-700 block mb-2">
+                  Kategori 03 &bull; Daur Ulang
+                </span>
                 <h3 className="text-xl font-bold text-slate-900">Paper Waste</h3>
                 <p className="text-xs text-slate-600 mt-2 leading-relaxed">
                   Kardus karton, kertas dokumen, majalah, dan koran bekas. Dipilah untuk pengolahan bubur kertas (pulp) ramah lingkungan.

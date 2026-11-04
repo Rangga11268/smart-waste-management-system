@@ -166,14 +166,11 @@ export default function ResponsiveHeroBanner({
       {/* Main Hero Content */}
       <div className="z-10 relative my-auto py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
-          {/* Dual-Segment Floating Animated Badge */}
-          <div className="mb-6 inline-flex items-center gap-2.5 rounded-full bg-slate-900/80 border border-emerald-500/30 px-3.5 py-1.5 backdrop-blur-xl shadow-[0_0_25px_-5px_rgba(16,185,129,0.3)] animate-fade-slide-in-1">
-            <span className="inline-flex items-center text-[10px] font-black text-slate-950 bg-gradient-to-r from-emerald-400 to-teal-300 rounded-full py-0.5 px-2.5 uppercase tracking-wider shadow-xs">
-              {badgeLabel}
-            </span>
-            <span className="text-xs sm:text-sm font-medium text-slate-200">
-              {badgeText}
-            </span>
+          {/* Clean Eyebrow Category Title (No Capsule, No Blinking Dot) */}
+          <div className="mb-6 flex items-center justify-center gap-2.5 text-xs sm:text-sm font-bold tracking-wide animate-fade-slide-in-1">
+            <span className="text-emerald-400 uppercase tracking-widest">{badgeLabel}</span>
+            <span className="text-slate-600 font-normal">/</span>
+            <span className="text-slate-300 font-medium">{badgeText}</span>
           </div>
 
           {/* Headline (Inter Sans-Serif font, Bold, Crisp, Luxury Gradient) */}

@@ -134,11 +134,10 @@ function LoginForm() {
             </Link>
           </div>
 
-          <div className="mt-12 space-y-5">
-            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-400 backdrop-blur-md">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          <div className="mt-12 space-y-4">
+            <p className="text-xs font-bold uppercase tracking-wider text-emerald-400">
               Sistem Pengelolaan Sampah Cerdas Terintegrasi
-            </div>
+            </p>
 
             <h1 className="text-3xl xl:text-4xl font-extrabold tracking-tight text-white leading-tight font-sans">
               Akselerasi Keberlanjutan Kota{' '}
@@ -188,9 +187,9 @@ function LoginForm() {
 
         {/* Bottom System Telemetry Indicator */}
         <div className="relative z-10 border-t border-slate-800/80 pt-6 mt-12 flex items-center justify-between text-xs text-slate-400">
-          <div className="flex items-center gap-2 font-mono text-[11px]">
-            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-ping" />
-            <span className="text-slate-300">FastAPI Core 8000: ONLINE</span>
+          <div className="flex items-center gap-2 font-mono text-[11px] text-slate-300">
+            <span className="h-2 w-2 rounded-full bg-emerald-500" />
+            <span>FastAPI Core 8000: ONLINE</span>
           </div>
           <span className="font-mono text-emerald-400 text-[11px]">Bilcode SWMS v1.0</span>
         </div>
@@ -207,7 +206,7 @@ function LoginForm() {
             <Logo size={42} showText={true} />
             <Link
               href="/"
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-2xs"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 bg-white px-3 py-1.5 rounded-lg border border-slate-200 shadow-2xs"
             >
               <ArrowLeft className="h-3.5 w-3.5 text-emerald-600" />
               <span>Beranda</span>
@@ -216,10 +215,9 @@ function LoginForm() {
 
           {/* Form Header */}
           <div className="mb-6">
-            <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 border border-emerald-200/80 px-3 py-1 text-xs font-bold text-emerald-800 mb-3 shadow-2xs">
-              <KeyRound className="h-3.5 w-3.5 text-emerald-600" />
-              <span>Portal Akses Resmi</span>
-            </div>
+            <p className="text-xs font-bold uppercase tracking-wider text-emerald-700 mb-2">
+              Portal Akses Resmi
+            </p>
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 font-sans">
               Masuk ke Akun Anda
             </h2>

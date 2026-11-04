@@ -10,10 +10,9 @@ export function AboutBento() {
     <section className="bg-slate-50 py-16 px-4 sm:py-24 sm:px-6 font-sans border-t border-slate-200">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-100 border border-emerald-300 text-emerald-800 text-xs font-bold uppercase tracking-wider mb-4 shadow-xs">
-            <ShieldCheck className="h-4 w-4 text-emerald-700" />
-            <span>Dampak Nyata Lapangan</span>
-          </div>
+          <p className="text-xs font-bold uppercase tracking-wider text-emerald-700 mb-2">
+            Dampak Nyata Lapangan
+          </p>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight mb-4">
             About Our Environmental Impact
           </h2>
@@ -37,9 +36,9 @@ export function AboutBento() {
               <path d="M179.692 5.79814C182.635 -1.93287 193.572 -1.93285 196.515 5.79816L229.505 92.466C231.206 96.9342 236.103 99.2928 240.657 97.8366L328.986 69.5929C336.865 67.0735 343.684 75.6242 339.474 82.7452L292.284 162.574C289.851 166.69 291.061 171.99 295.038 174.642L372.192 226.091C379.075 230.68 376.641 241.343 368.449 242.491L276.613 255.369C271.878 256.033 268.489 260.283 268.895 265.047L276.776 357.445C277.479 365.688 267.625 370.433 261.619 364.744L194.293 300.973C190.821 297.686 185.386 297.686 181.914 300.973L114.588 364.744C108.582 370.433 98.7281 365.688 99.4311 357.445L107.312 265.047C107.718 260.283 104.329 256.033 99.5941 255.369L7.7582 242.491C-0.433812 241.343 -2.86746 230.68 4.01488 226.091L81.1687 174.642C85.1465 171.99 86.3561 166.69 83.9231 162.574L36.7325 82.7452C32.523 75.6242 39.342 67.0735 47.2212 69.5929L135.55 97.8366C140.104 99.2928 145.001 96.9342 146.702 92.4659L179.692 5.79814Z" />
             </svg>
             <div className="space-y-4 sm:space-y-6 relative z-10">
-              <div className="inline-flex px-3.5 py-1.5 rounded-full bg-emerald-600 text-white text-[11px] font-black uppercase tracking-widest shadow-md shadow-emerald-600/20">
+              <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 block">
                 Citywide Reach
-              </div>
+              </span>
               <h3 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tighter leading-tight">
                 IMPACT WITHOUT
                 <br />
@@ -115,10 +114,9 @@ export function AboutBento() {
           {/* Card 4: Community Call to Action (Deep Navy/Slate Card with Emerald CTA) */}
           <Card className="md:col-span-2 rounded-3xl p-6 sm:p-8 border border-slate-800 flex flex-col sm:flex-row gap-5 items-start sm:items-center justify-between cursor-pointer bg-slate-900 text-white shadow-xl shadow-slate-950/30 hover:border-slate-700 transition-all duration-300 group overflow-hidden">
             <div className="space-y-2 relative z-10">
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-[10px] font-bold uppercase tracking-wider text-emerald-400">
-                <Activity className="h-3 w-3" />
-                <span>Partisipasi Publik</span>
-              </div>
+              <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-400 block">
+                Partisipasi Publik
+              </span>
               <h4 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white">
                 Bergabung dengan SWMS
               </h4>
