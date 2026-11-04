@@ -77,13 +77,6 @@ export default function CategoryBadge({
       )}
       data-testid="category-badge"
     >
-      {showDot && (
-        <span
-          className="mr-1.5 inline-block h-1.5 w-1.5 rounded-xs bg-current opacity-70"
-          style={customBadgeColor ? { backgroundColor: customBadgeColor } : undefined}
-          aria-hidden="true"
-        />
-      )}
       <span>{categoryName}</span>
     </span>
   );

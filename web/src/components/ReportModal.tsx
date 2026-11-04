@@ -40,6 +40,43 @@ const STATUS_DESCRIPTIONS: Record<string, string> = {
   Rejected: 'Laporan ditolak (karena bukan sampah, foto tidak jelas, atau lokasi fiktif).',
 };
 
+const STATUS_ACTION_META: Record<
+  string,
+  {
+    title: string;
+    actionBadge: string;
+    desc: string;
+    activeBorderClass: string;
+    activeBgClass: string;
+    badgeClass: string;
+  }
+> = {
+  'In Progress': {
+    title: 'Tugaskan Armada Lapangan',
+    actionBadge: 'Sedang Ditangani',
+    desc: 'Laporan valid. Kirim armada truk & petugas kebersihan ke lokasi koordinat.',
+    activeBorderClass: 'border-blue-600 ring-1 ring-blue-600',
+    activeBgClass: 'bg-blue-50/70',
+    badgeClass: 'text-blue-700 bg-blue-100/80 border-blue-300',
+  },
+  Completed: {
+    title: 'Tandai Selesai Ditangani',
+    actionBadge: 'Selesai',
+    desc: 'Tumpukan sampah telah tuntas diangkut dan area telah bersih kembali.',
+    activeBorderClass: 'border-emerald-600 ring-1 ring-emerald-600',
+    activeBgClass: 'bg-emerald-50/70',
+    badgeClass: 'text-emerald-700 bg-emerald-100/80 border-emerald-300',
+  },
+  Rejected: {
+    title: 'Tolak Laporan',
+    actionBadge: 'Ditolak',
+    desc: 'Laporan tidak valid (bukan sampah, foto buram, atau lokasi fiktif).',
+    activeBorderClass: 'border-rose-600 ring-1 ring-rose-600',
+    activeBgClass: 'bg-rose-50/70',
+    badgeClass: 'text-rose-700 bg-rose-100/80 border-rose-300',
+  },
+};
+
 const QUICK_NOTE_PRESETS: Record<string, string[]> = {
   'In Progress': [
     'Truk DLH ditugaskan menuju titik koordinat.',
@@ -61,8 +98,9 @@ function formatStatusHuman(status: string): string {
 
 function formatRemarksHuman(remarks?: string | null): string {
   if (!remarks) return '';
-  if (remarks.trim().toLowerCase() === 'initial report submission') {
-    return 'Laporan awal diajukan oleh warga (Initial Submission)';
+  const lower = remarks.trim().toLowerCase();
+  if (lower === 'initial report submission') {
+    return 'Laporan awal diajukan oleh pelapor (Initial Submission)';
   }
   return remarks;
 }
@@ -422,35 +460,66 @@ export default function ReportModal({
                   </div>
                 )}
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="space-y-3">
+                  {/* Status Selection: Action Tiles for effortless clarity */}
                   <div>
-                    <label
-                      htmlFor="status-select"
-                      className="block text-xs font-semibold text-slate-700 mb-1"
-                    >
-                      Pilih Status Baru <span className="text-rose-500">*</span>
+                    <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                      Pilih Tindakan / Transisi Status <span className="text-rose-500">*</span>
                     </label>
-                    <select
-                      id="status-select"
-                      value={selectedStatus}
-                      onChange={(e) => setSelectedStatus(e.target.value)}
-                      disabled={isSubmitting}
-                      className="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-xs text-slate-900 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 disabled:bg-slate-100"
-                    >
-                      <option value="">-- Pilih Transisi Status --</option>
-                      {allowedOptions.map((opt) => (
-                        <option key={opt} value={opt}>
-                          {formatStatusHuman(opt)}
-                        </option>
-                      ))}
-                    </select>
-                    {selectedStatus && (
-                      <p className="mt-1.5 text-[11px] text-slate-500 leading-relaxed font-medium">
-                        {STATUS_DESCRIPTIONS[selectedStatus]}
-                      </p>
-                    )}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                      {allowedOptions.map((opt) => {
+                        const isSelected = selectedStatus === opt;
+                        const meta = STATUS_ACTION_META[opt] || {
+                          title: formatStatusHuman(opt),
+                          actionBadge: opt,
+                          desc: STATUS_DESCRIPTIONS[opt] || '',
+                          activeBorderClass: 'border-emerald-600 ring-1 ring-emerald-600',
+                          activeBgClass: 'bg-emerald-50/70',
+                          badgeClass: 'text-emerald-700 bg-emerald-100/80 border-emerald-300',
+                        };
+
+                        return (
+                          <button
+                            key={opt}
+                            type="button"
+                            disabled={isSubmitting}
+                            onClick={() => {
+                              setSelectedStatus(opt);
+                              if (
+                                !adminNotes ||
+                                Object.values(QUICK_NOTE_PRESETS).flat().includes(adminNotes)
+                              ) {
+                                setAdminNotes(QUICK_NOTE_PRESETS[opt]?.[0] || '');
+                              }
+                            }}
+                            className={cn(
+                              'flex flex-col text-left p-3 rounded-xl border transition-all text-xs cursor-pointer',
+                              isSelected
+                                ? cn(meta.activeBgClass, meta.activeBorderClass, 'shadow-xs')
+                                : 'border-slate-200 bg-slate-50/50 hover:bg-slate-100 hover:border-slate-300'
+                            )}
+                          >
+                            <div className="flex items-center justify-between gap-1 mb-1">
+                              <span className="font-bold text-slate-900">{meta.title}</span>
+                              <span
+                                className={cn(
+                                  'text-[10px] font-semibold px-2 py-0.5 rounded-md border',
+                                  meta.badgeClass
+                                )}
+                              >
+                                {meta.actionBadge}
+                              </span>
+                            </div>
+                            <span className="text-[11px] text-slate-500 leading-snug">
+                              {meta.desc}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
                   </div>
 
+                  {/* Disposition Note Field & Presets */}
                   <div>
                     <label
                       htmlFor="admin-notes"
@@ -465,18 +534,27 @@ export default function ReportModal({
                       onChange={(e) => setAdminNotes(e.target.value)}
                       disabled={isSubmitting}
                       placeholder="Instruksi penugasan armada atau alasan disposisi..."
-                      className="w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs text-slate-900 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 disabled:bg-slate-100 resize-none"
+                      className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs text-slate-900 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 disabled:bg-slate-100 resize-none"
                     />
+
                     {/* Quick Preset Chips */}
                     {selectedStatus && QUICK_NOTE_PRESETS[selectedStatus] && (
-                      <div className="mt-1.5 flex flex-wrap gap-1">
+                      <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
+                        <span className="text-[10px] font-semibold text-slate-400 mr-1">
+                          Preset Cepat:
+                        </span>
                         {QUICK_NOTE_PRESETS[selectedStatus].map((preset) => (
                           <button
                             key={preset}
                             type="button"
                             onClick={() => setAdminNotes(preset)}
-                            className="text-[10px] text-slate-600 bg-slate-100 hover:bg-emerald-50 hover:text-emerald-800 border border-slate-200/90 hover:border-emerald-300 px-2 py-0.5 rounded transition-all truncate max-w-full"
-                            title="Klik untuk mengisi catatan cepat"
+                            className={cn(
+                              'text-[10px] px-2.5 py-1 rounded-md border transition-all truncate max-w-full font-medium',
+                              adminNotes === preset
+                                ? 'bg-emerald-600 text-white border-emerald-600 shadow-xs'
+                                : 'text-slate-600 bg-slate-100 hover:bg-emerald-50 hover:text-emerald-800 border-slate-200/90 hover:border-emerald-300'
+                            )}
+                            title="Klik untuk memilih catatan preset"
                           >
                             + {preset}
                           </button>
@@ -490,7 +568,7 @@ export default function ReportModal({
                   <button
                     type="submit"
                     disabled={isSubmitting || !selectedStatus}
-                    className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-xs font-semibold text-white shadow-xs hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                    className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2 text-xs font-semibold text-white shadow-xs hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                   >
                     {isSubmitting && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
                     <span>Perbarui Status</span>
@@ -500,7 +578,7 @@ export default function ReportModal({
             )}
           </div>
 
-          {/* Audit Trail History Timeline */}
+          {/* Audit Trail History Timeline - Nordic Minimalist Cards without dots */}
           <div className="space-y-3">
             <div className="flex items-center gap-2 border-b border-slate-200 pb-2">
               <Clock className="h-4 w-4 text-slate-400" />
@@ -519,33 +597,45 @@ export default function ReportModal({
             ) : logs.length === 0 ? (
               <p className="text-xs text-slate-400 italic">Belum ada riwayat status tercatat.</p>
             ) : (
-              <div className="relative pl-6 space-y-4 before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-200">
-                {logs.map((log) => (
-                  <div key={log.id} className="relative">
-                    <span className="absolute -left-6 top-1.5 h-2.5 w-2.5 rounded-xs bg-emerald-600 shadow-2xs" />
-                    <div className="rounded-lg border border-slate-200 bg-slate-50/50 p-2.5 text-xs space-y-1">
-                      <div className="flex flex-wrap items-center justify-between gap-1">
-                        <div className="flex items-center gap-1.5 font-semibold text-slate-800">
+              <div className="space-y-2.5">
+                {logs.map((log, idx) => (
+                  <div
+                    key={log.id}
+                    className="rounded-xl border border-slate-200/90 bg-slate-50/70 p-3 text-xs space-y-1.5 border-l-4 border-l-emerald-600 shadow-2xs"
+                  >
+                    <div className="flex flex-wrap items-center justify-between gap-1.5">
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                          Tahap {idx + 1}
+                        </span>
+                        <div className="flex items-center gap-1.5 font-bold text-slate-800">
                           {log.previous_status ? (
                             <>
-                              <span className="text-slate-500">{formatStatusHuman(log.previous_status)}</span>
-                              <ArrowRight className="h-3 w-3 text-slate-400" />
-                              <span className="text-emerald-700">{formatStatusHuman(log.new_status)}</span>
+                              <span className="text-slate-500 font-medium">
+                                {formatStatusHuman(log.previous_status)}
+                              </span>
+                              <ArrowRight className="h-3 w-3 text-slate-400 shrink-0" />
+                              <span className="text-emerald-700 font-bold">
+                                {formatStatusHuman(log.new_status)}
+                              </span>
                             </>
                           ) : (
-                            <span className="text-emerald-700">Status Awal: {formatStatusHuman(log.new_status)}</span>
+                            <span className="text-emerald-700 font-bold">
+                              Status Awal: {formatStatusHuman(log.new_status)}
+                            </span>
                           )}
                         </div>
-                        <span className="font-mono text-[11px] text-slate-400">
-                          {formatDate(log.created_at)}
-                        </span>
                       </div>
-                      {log.remarks && (
-                        <p className="text-slate-600 pt-0.5">
-                          <span className="font-medium text-slate-700">Catatan:</span> {formatRemarksHuman(log.remarks)}
-                        </p>
-                      )}
+                      <span className="font-mono text-[11px] text-slate-500">
+                        {formatDate(log.created_at)}
+                      </span>
                     </div>
+                    {log.remarks && (
+                      <p className="text-slate-600 pt-1 border-t border-slate-200/60 leading-relaxed">
+                        <span className="font-semibold text-slate-700">Catatan Petugas:</span>{' '}
+                        {formatRemarksHuman(log.remarks)}
+                      </p>
+                    )}
                   </div>
                 ))}
               </div>

@@ -48,7 +48,6 @@ export default function StatusBadge({
   status,
   size = 'md',
   className,
-  showDot = false,
 }: StatusBadgeProps) {
   const config = statusConfig[status] || {
     containerClass: 'bg-slate-50 text-slate-700 border-slate-200',
@@ -73,9 +72,6 @@ export default function StatusBadge({
       )}
       data-testid="status-badge"
     >
-      {showDot && (
-        <span className="mr-1.5 inline-block h-1.5 w-1.5 rounded-xs bg-current opacity-70" />
-      )}
       <span>{config.label}</span>
     </span>
   );
