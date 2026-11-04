@@ -1,6 +1,10 @@
 # Entity Relationship Diagram (ERD) & Database Schema
 ## Smart Waste Management System (SWMS)
 
+> 🎨 **Diagram Design Hub:** Versi visual editorial beresolusi tinggi (self-contained SVG/HTML) tersedia di:
+> - 📐 **ERD Relational Schema Standalone:** [`docs/diagrams/erd-database.html`](diagrams/erd-database.html)
+> - 🌐 **Interactive Diagram Hub:** [`docs/diagrams/index.html`](diagrams/index.html)
+
 ---
 
 ### 1. Visual Entity Relationship Diagram (Mermaid)

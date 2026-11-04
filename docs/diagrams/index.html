@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SWMS Architectural Diagrams Hub · Bilcode Technology</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Geist:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #f8fafc;
+      --paper-card: #ffffff;
+      --ink: #0f172a;
+      --muted: #475569;
+      --soft: #94a3b8;
+      --rule: #e2e8f0;
+      --rule-solid: #cbd5e1;
+      --accent: #059669;
+      --accent-tint: #ecfdf5;
+      --link: #0284c7;
+      --font-serif: 'Instrument Serif', Georgia, serif;
+      --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'Geist Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: #ffffff;
+      border-bottom: 1px solid var(--rule);
+      padding: 20px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .badge-hub {
+      background: var(--accent-tint);
+      color: var(--accent);
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      padding: 4px 8px;
+      border-radius: 4px;
+      border: 1px solid #a7f3d0;
+    }
+
+    .title-hub {
+      font-family: var(--font-serif);
+      font-size: 24px;
+      font-weight: 400;
+      color: var(--ink);
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 8px;
+      background: #f1f5f9;
+      padding: 4px;
+      border-radius: 6px;
+    }
+
+    .tab-btn {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 500;
+      padding: 8px 16px;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      border-radius: 4px;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tab-btn:hover {
+      color: var(--ink);
+    }
+
+    .tab-btn.active {
+      background: #ffffff;
+      color: var(--ink);
+      font-weight: 600;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+
+    main {
+      flex: 1;
+      padding: 28px 32px 48px;
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .view-frame-wrapper {
+      background: #ffffff;
+      border: 1px solid var(--rule);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03);
+      position: relative;
+    }
+
+    .frame-toolbar {
+      background: #f8fafc;
+      border-bottom: 1px solid var(--rule);
+      padding: 10px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .diagram-meta {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      color: var(--muted);
+    }
+
+    .external-btn {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--link);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 8px;
+      background: #ffffff;
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+    }
+
+    .external-btn:hover {
+      background: #f1f5f9;
+    }
+
+    iframe {
+      width: 100%;
+      height: 820px;
+      border: none;
+      display: block;
+      background: #ffffff;
+    }
+
+    .meta-cards-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr 0.9fr;
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .meta-card {
+      background: #ffffff;
+      border: 1px solid var(--rule);
+      border-radius: 6px;
+      padding: 16px 20px;
+    }
+
+    .meta-card-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .meta-card-p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="brand-group">
+    <span class="badge-hub">BILCODE TECH · SWMS</span>
+    <h1 class="title-hub">Architecture &amp; System Schematics</h1>
+  </div>
+
+  <div class="nav-tabs">
+    <button class="tab-btn active" onclick="loadDiagram('c4-architecture.html', 'C4 Container Architecture', this)">
+      <span>01</span> Architecture (C4)
+    </button>
+    <button class="tab-btn" onclick="loadDiagram('erd-database.html', 'Entity Relationship Diagram', this)">
+      <span>02</span> Data Schema (ERD)
+    </button>
+    <button class="tab-btn" onclick="loadDiagram('report-lifecycle-state.html', 'Report State Machine', this)">
+      <span>03</span> State Machine
+    </button>
+    <button class="tab-btn" onclick="loadDiagram('citizen-reporting-sequence.html', 'Citizen Reporting Sequence', this)">
+      <span>04</span> Citizen AI Sequence
+    </button>
+    <button class="tab-btn" onclick="loadDiagram('cloud-deployment.html', 'Cloud Deployment Topology', this)">
+      <span>05</span> Cloud Deployment
+    </button>
+  </div>
+</header>
+
+<main>
+  <div class="view-frame-wrapper">
+    <div class="frame-toolbar">
+      <div class="diagram-meta" id="currentDiagramLabel">Displaying: C4 Container Architecture (Standalone SVG)</div>
+      <a id="externalLink" href="c4-architecture.html" target="_blank" class="external-btn">
+        Open Raw File ↗
+      </a>
+    </div>
+    <iframe id="diagramFrame" src="c4-architecture.html"></iframe>
+  </div>
+
+  <div class="meta-cards-grid">
+    <div class="meta-card">
+      <div class="meta-card-title">Editorial Design Tokens</div>
+      <p class="meta-card-p">Crafted using the <strong>Diagram Design</strong> editorial standard: Instrument Serif titles, Geist labels, Geist Mono technical tags, and an Eco-Tech palette (<code style="font-family: var(--font-mono); font-size:11px;">#059669</code> primary).</p>
+    </div>
+    <div class="meta-card">
+      <div class="meta-card-title">Strict Connector Rules</div>
+      <p class="meta-card-p">Zero diagonal shortcuts. All paths enforce orthogonal routing (<code style="font-family: var(--font-mono); font-size:11px;">r=8</code> elbows), masked label backdrops, and independent fan attach points.</p>
+    </div>
+    <div class="meta-card">
+      <div class="meta-card-title">Standalone Integrity</div>
+      <p class="meta-card-p">Every diagram is completely self-contained with inline SVG, WCAG accessibility contracts (<code style="font-family: var(--font-mono); font-size:11px;">role="img"</code>), and responsive overflow handling.</p>
+    </div>
+  </div>
+</main>
+
+<script>
+  function loadDiagram(file, label, btn) {
+    document.getElementById('diagramFrame').src = file;
+    document.getElementById('currentDiagramLabel').textContent = 'Displaying: ' + label + ' (Standalone SVG)';
+    document.getElementById('externalLink').href = file;
+
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+</script>
+
+</body>
+</html>

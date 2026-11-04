@@ -1,6 +1,11 @@
 # System Workflows & Sequence Diagrams (FLOWS)
 ## Smart Waste Management System (SWMS)
 
+> 🎨 **Diagram Design Hub:** Versi visual editorial beresolusi tinggi (self-contained SVG/HTML) tersedia di:
+> - 🔄 **State Machine Standalone:** [`docs/diagrams/report-lifecycle-state.html`](diagrams/report-lifecycle-state.html)
+> - ⚡ **Citizen Reporting Sequence Standalone:** [`docs/diagrams/citizen-reporting-sequence.html`](diagrams/citizen-reporting-sequence.html)
+> - 🌐 **Interactive Diagram Hub:** [`docs/diagrams/index.html`](diagrams/index.html)
+
 > Dokumen ini memetakan seluruh alur kerja operasional, transisi *state machine*, diagram sekuens (*sequence diagram*), dan penanganan kondisi kritis (*edge cases*) untuk memastikan sistem bekerja presisi dari hulu ke hilir.
 
 ---

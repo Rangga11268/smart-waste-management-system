@@ -1,6 +1,11 @@
 # System Architecture Document (SAD)
 ## Smart Waste Management System (SWMS)
 
+> 🎨 **Diagram Design Hub:** Versi visual editorial beresolusi tinggi (self-contained SVG/HTML) tersedia di:
+> - 🌐 **Interactive Diagram Hub:** [`docs/diagrams/index.html`](diagrams/index.html)
+> - 📐 **C4 Architecture Standalone:** [`docs/diagrams/c4-architecture.html`](diagrams/c4-architecture.html)
+> - ☁️ **Cloud Deployment Standalone:** [`docs/diagrams/cloud-deployment.html`](diagrams/cloud-deployment.html)
+
 ---
 
 ## 1. C4 Container Architecture Diagram
