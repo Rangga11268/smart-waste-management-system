@@ -17,7 +17,7 @@ export default function Logo({
   const isInverted = variant === 'inverted';
 
   return (
-    <div className={cn('inline-flex items-center gap-3', className)}>
+    <div className={cn('inline-flex items-center gap-2.5 sm:gap-3 select-none shrink-0', className)}>
       <svg
         width={size}
         height={size}
@@ -85,11 +85,11 @@ export default function Logo({
       </svg>
 
       {showText && (
-        <div className="flex flex-col">
+        <div className="flex flex-col whitespace-nowrap min-w-0">
           <div className="flex items-center gap-1.5">
             <span
               className={cn(
-                'text-lg font-extrabold tracking-tight leading-none',
+                'text-base sm:text-lg font-extrabold tracking-tight leading-none',
                 isInverted ? 'text-white' : 'text-slate-900'
               )}
             >
@@ -97,7 +97,7 @@ export default function Logo({
             </span>
             <span
               className={cn(
-                'rounded px-1.5 py-0.5 text-[10px] font-bold tracking-wider uppercase',
+                'rounded px-1.5 py-0.5 text-[9px] sm:text-[10px] font-bold tracking-wider uppercase leading-none',
                 isInverted
                   ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-400/30'
                   : 'bg-emerald-50 text-emerald-700 border border-emerald-200/80'
@@ -108,7 +108,7 @@ export default function Logo({
           </div>
           <span
             className={cn(
-              'text-[10px] font-semibold tracking-wider uppercase mt-1',
+              'text-[9px] sm:text-[10px] font-semibold tracking-wider uppercase mt-1 hidden sm:block whitespace-nowrap',
               isInverted ? 'text-slate-300' : 'text-slate-500'
             )}
           >

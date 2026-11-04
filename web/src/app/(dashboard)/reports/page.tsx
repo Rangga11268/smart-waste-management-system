@@ -248,41 +248,44 @@ export default function ReportsPage() {
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2.5 self-start sm:self-auto">
-          <button
-            type="button"
-            onClick={handleExportCSV}
-            disabled={reports.length === 0}
-            className="inline-flex items-center gap-2 rounded-xl border border-slate-200/80 bg-white px-3.5 py-2 text-xs sm:text-sm font-semibold text-slate-700 shadow-2xs hover:bg-slate-50 hover:text-slate-900 active:scale-[0.98] transition-all disabled:opacity-50"
-            title="Unduh seluruh data laporan saat ini ke format file CSV"
-          >
-            <FileSpreadsheet className="h-4 w-4 text-emerald-600" />
-            <span className="hidden sm:inline">Ekspor CSV</span>
-          </button>
+        {/* Action Buttons - Reflowed for mobile with equal height and clear hierarchy */}
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full sm:w-auto">
           <button
             type="button"
             onClick={() => setIsCreateModalOpen(true)}
-            className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2 text-xs sm:text-sm font-semibold text-white shadow-[0_2px_10px_-3px_rgba(6,78,59,0.15)] hover:bg-emerald-700 active:scale-[0.98] transition-all"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-xs sm:text-sm font-bold text-white shadow-sm hover:bg-emerald-700 active:scale-[0.98] transition-all min-h-[44px] order-1 sm:order-2 text-center"
           >
             <Plus className="h-4 w-4" />
             <span>Buat Laporan Baru</span>
           </button>
-          <button
-            type="button"
-            onClick={() => fetchReports(false)}
-            disabled={isRefreshing || isLoading}
-            className="inline-flex items-center gap-2 rounded-xl border border-slate-200/80 bg-white px-3.5 py-2 text-xs sm:text-sm font-semibold text-slate-700 shadow-[0_2px_10px_-3px_rgba(6,78,59,0.05)] hover:bg-slate-50 hover:text-slate-900 active:scale-[0.98] transition-all disabled:opacity-50"
-          >
-            <RotateCw className={`h-3.5 w-3.5 ${isRefreshing ? 'animate-spin' : ''}`} />
-            <span className="hidden sm:inline">Segarkan</span>
-          </button>
+          <div className="grid grid-cols-2 sm:flex sm:items-center gap-2 order-2 sm:order-1">
+            <button
+              type="button"
+              onClick={handleExportCSV}
+              disabled={reports.length === 0}
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200/80 bg-white px-3.5 py-2.5 text-xs sm:text-sm font-semibold text-slate-700 shadow-2xs hover:bg-slate-50 hover:text-slate-900 active:scale-[0.98] transition-all disabled:opacity-50 min-h-[44px] text-center"
+              title="Unduh seluruh data laporan saat ini ke format file CSV"
+            >
+              <FileSpreadsheet className="h-4 w-4 text-emerald-600" />
+              <span>Ekspor CSV</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => fetchReports(false)}
+              disabled={isRefreshing || isLoading}
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200/80 bg-white px-3.5 py-2.5 text-xs sm:text-sm font-semibold text-slate-700 shadow-2xs hover:bg-slate-50 hover:text-slate-900 active:scale-[0.98] transition-all disabled:opacity-50 min-h-[44px] text-center"
+            >
+              <RotateCw className={`h-3.5 w-3.5 ${isRefreshing ? 'animate-spin text-emerald-600' : ''}`} />
+              <span>Segarkan</span>
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Filter & Search Bar */}
       <div className="rounded-2xl border border-slate-200/90 bg-white p-4 sm:p-5 shadow-[0_1px_3px_rgba(15,23,42,0.04)] space-y-3.5">
-        {/* Quick Status Filter Tabs */}
-        <div className="flex flex-wrap items-center gap-1.5 border-b border-slate-100 pb-3">
+        {/* Quick Status Filter Tabs - Smooth horizontal scroll on mobile with no awkward orphan chips */}
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-2 scrollbar-none border-b border-slate-100 -mx-4 px-4 sm:mx-0 sm:px-0">
           {[
             { label: 'Semua Status', value: '' },
             { label: 'Menunggu Validasi', value: 'Pending' },
@@ -300,7 +303,7 @@ export default function ReportsPage() {
                   setPage(1);
                 }}
                 className={cn(
-                  'px-3 py-1.5 rounded-xl text-xs font-bold transition-all',
+                  'px-3.5 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap shrink-0 min-h-[38px] flex items-center justify-center',
                   isTabActive
                     ? 'bg-slate-900 text-white shadow-xs'
                     : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
@@ -312,12 +315,12 @@ export default function ReportsPage() {
           })}
 
           {user && (
-            <div className="ml-auto flex items-center gap-1.5 pl-3 border-l border-slate-200">
+            <div className="flex items-center gap-1.5 pl-2 sm:pl-3 border-l border-slate-200 shrink-0">
               <button
                 type="button"
                 onClick={() => setOnlyMyReports(!onlyMyReports)}
                 className={cn(
-                  'px-3 py-1.5 rounded-xl text-xs font-bold transition-all',
+                  'px-3.5 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap min-h-[38px] flex items-center justify-center',
                   onlyMyReports
                     ? 'bg-emerald-600 text-white shadow-xs'
                     : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'

@@ -111,11 +111,11 @@ export default function DashboardPage() {
           </p>
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex items-center gap-2.5">
+        {/* Action Buttons - Reflowed evenly for mobile */}
+        <div className="grid grid-cols-2 sm:flex sm:items-center gap-2.5 w-full sm:w-auto">
           <Link
             href="/reports"
-            className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-xs sm:text-sm font-bold text-white shadow-sm hover:bg-emerald-700 active:scale-[0.98] transition-all"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-xs sm:text-sm font-bold text-white shadow-sm hover:bg-emerald-700 active:scale-[0.98] transition-all min-h-[44px] text-center"
           >
             <span>Tinjau Laporan</span>
             <ArrowRight className="h-4 w-4" />
@@ -124,13 +124,13 @@ export default function DashboardPage() {
             type="button"
             onClick={() => fetchStats(true)}
             disabled={isRefreshing || isLoading}
-            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-xs sm:text-sm font-semibold text-slate-700 shadow-2xs hover:bg-slate-50 hover:text-slate-900 active:scale-[0.98] disabled:opacity-50 transition-all"
+            className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-xs sm:text-sm font-semibold text-slate-700 shadow-2xs hover:bg-slate-50 hover:text-slate-900 active:scale-[0.98] disabled:opacity-50 transition-all min-h-[44px] text-center"
             aria-label="Segarkan data statistik"
           >
             <RotateCw
               className={cn('h-4 w-4 transition-transform', isRefreshing && 'animate-spin text-emerald-600')}
             />
-            <span className="hidden sm:inline">Segarkan</span>
+            <span>Segarkan</span>
           </button>
         </div>
       </div>

@@ -8,6 +8,7 @@ import {
   ChevronRight,
   LogOut,
 } from 'lucide-react';
+import Logo from '@/components/Logo';
 import { cn } from '@/lib/utils';
 import type { UserProfile } from '@/types/api';
 
@@ -93,33 +94,38 @@ export default function Header({ onOpenSidebar, user, onLogout, className }: Hea
         className
       )}
     >
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 sm:gap-3 min-w-0">
         {/* Mobile Hamburger Toggle */}
         <button
           onClick={onOpenSidebar}
-          className="rounded-xl p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-800 md:hidden transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+          className="rounded-xl p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-800 md:hidden transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center shrink-0"
           aria-label="Buka menu navigasi"
         >
           <Menu className="h-5 w-5" />
         </button>
 
+        {/* Brand Icon on Mobile */}
+        <Link href="/dashboard" className="flex items-center shrink-0 md:hidden" aria-label="SWMS Dashboard">
+          <Logo size={26} showText={false} />
+        </Link>
+
         {/* Breadcrumb Navigation */}
-        <nav aria-label="Breadcrumb" className="flex items-center space-x-1.5 text-sm">
+        <nav aria-label="Breadcrumb" className="flex items-center space-x-1.5 text-xs sm:text-sm min-w-0 truncate">
           <Link
             href="/dashboard"
-            className="font-medium text-slate-500 hover:text-emerald-600 transition-colors"
+            className="font-bold text-slate-700 hover:text-emerald-600 transition-colors shrink-0"
           >
             SWMS
           </Link>
           {breadcrumbs.map((crumb, idx) => (
             <React.Fragment key={crumb.href}>
-              <ChevronRight className="h-4 w-4 text-slate-400 shrink-0" />
+              <ChevronRight className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-slate-400 shrink-0" />
               {idx === breadcrumbs.length - 1 ? (
-                <span className="font-sans font-semibold text-slate-900">{crumb.label}</span>
+                <span className="font-sans font-semibold text-slate-900 truncate">{crumb.label}</span>
               ) : (
                 <Link
                   href={crumb.href}
-                  className="font-medium text-slate-500 hover:text-emerald-600 transition-colors"
+                  className="font-medium text-slate-500 hover:text-emerald-600 transition-colors shrink-0 hidden xs:inline"
                 >
                   {crumb.label}
                 </Link>

@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 try:
-    from app.api.deps import get_current_admin, get_db
+    from app.api.deps import get_current_user, get_db
     from app.models.category import Category
     from app.models.log import ReportLog
     from app.models.report import WasteReport
@@ -18,7 +18,7 @@ try:
         RecentActivity,
     )
 except ImportError:
-    from backend.app.api.deps import get_current_admin, get_db
+    from backend.app.api.deps import get_current_user, get_db
     from backend.app.models.category import Category
     from backend.app.models.log import ReportLog
     from backend.app.models.report import WasteReport
@@ -36,7 +36,7 @@ router = APIRouter()
 
 @router.get("/stats", response_model=DashboardStatsResponse, summary="Get dashboard statistics")
 def get_dashboard_stats(
-    current_user: User = Depends(get_current_admin),
+    current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ) -> DashboardStatsResponse:
     """Calculate and return aggregate report metrics, category distributions, and recent audit activity."""
