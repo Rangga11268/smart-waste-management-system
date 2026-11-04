@@ -86,7 +86,7 @@ export default function ResponsiveHeroBanner({
 
           {/* Desktop Center Floating Glass Pill Nav */}
           <nav className="hidden md:flex items-center gap-2">
-            <div className="flex items-center gap-1 rounded-full bg-slate-900/60 px-2 py-1.5 border border-white/10 backdrop-blur-xl shadow-2xl shadow-black/50">
+            <div className="flex items-center gap-1 rounded-2xl bg-slate-900/70 px-2 py-1.5 border border-white/10 backdrop-blur-xl shadow-2xl shadow-black/50">
               {navLinks.map((link, idx) => (
                 link.isExternal ? (
                   <a
@@ -103,7 +103,7 @@ export default function ResponsiveHeroBanner({
                   <Link
                     key={idx}
                     href={link.href}
-                    className={`px-3.5 py-1.5 text-xs font-semibold transition-colors rounded-full ${
+                    className={`px-3.5 py-1.5 text-xs font-semibold transition-colors rounded-xl ${
                       link.isActive
                         ? 'text-white bg-white/10 shadow-xs'
                         : 'text-slate-300 hover:text-white hover:bg-white/5'
@@ -117,7 +117,7 @@ export default function ResponsiveHeroBanner({
               {/* Action Button inside Pill */}
               <Link
                 href={isAuthenticated ? '/dashboard' : '/login'}
-                className="ml-1 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-500 px-4 py-1.5 text-xs font-bold text-white shadow-lg shadow-emerald-600/30 hover:shadow-emerald-500/50 hover:from-emerald-400 hover:to-teal-400 transition-all border border-emerald-400/30"
+                className="ml-1 inline-flex items-center gap-1.5 rounded-xl bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-500 px-4 py-1.5 text-xs font-bold text-white shadow-lg shadow-emerald-600/30 hover:shadow-emerald-500/50 hover:from-emerald-400 hover:to-teal-400 transition-all border border-emerald-400/30"
               >
                 <span>{isAuthenticated ? 'Dashboard' : 'Masuk Portal'}</span>
                 <ArrowRight className="h-3.5 w-3.5" />
@@ -129,7 +129,7 @@ export default function ResponsiveHeroBanner({
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-full bg-slate-900/80 border border-white/15 backdrop-blur-md text-white shadow-lg"
+            className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-xl bg-slate-900/80 border border-white/15 backdrop-blur-md text-white shadow-lg"
             aria-expanded={mobileMenuOpen}
             aria-label="Buka menu navigasi"
           >
@@ -191,7 +191,7 @@ export default function ResponsiveHeroBanner({
           <div className="flex flex-col sm:flex-row sm:gap-4 mt-8 sm:mt-10 gap-3 items-center justify-center animate-fade-slide-in-4">
             <Link
               href={primaryButtonHref}
-              className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-2.5 overflow-hidden rounded-full bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 px-8 py-4 text-sm font-bold text-white shadow-[0_0_35px_-5px_rgba(16,185,129,0.5)] hover:shadow-[0_0_50px_0_rgba(16,185,129,0.7)] border border-emerald-400/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+              className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-2.5 overflow-hidden rounded-xl bg-gradient-to-r from-emerald-500 via-emerald-600 to-teal-600 px-8 py-4 text-sm font-bold text-white shadow-[0_0_35px_-5px_rgba(16,185,129,0.5)] hover:shadow-[0_0_50px_0_rgba(16,185,129,0.7)] border border-emerald-400/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
             >
               <span>{primaryButtonText}</span>
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1 text-emerald-100" />
@@ -199,7 +199,7 @@ export default function ResponsiveHeroBanner({
 
             <Link
               href={secondaryButtonHref}
-              className="group w-full sm:w-auto inline-flex items-center justify-center gap-2.5 rounded-full bg-slate-900/70 hover:bg-slate-800/80 border border-slate-700/80 hover:border-emerald-500/50 px-7 py-4 text-sm font-semibold text-slate-200 hover:text-white backdrop-blur-xl shadow-xl shadow-black/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+              className="group w-full sm:w-auto inline-flex items-center justify-center gap-2.5 rounded-xl bg-slate-900/70 hover:bg-slate-800/80 border border-slate-700/80 hover:border-emerald-500/50 px-7 py-4 text-sm font-semibold text-slate-200 hover:text-white backdrop-blur-xl shadow-xl shadow-black/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
             >
               <Play className="h-3.5 w-3.5 fill-current text-emerald-400 group-hover:text-emerald-300 transition-colors" />
               <span>{secondaryButtonText}</span>

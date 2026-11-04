@@ -48,7 +48,7 @@ export default function StatusBadge({
   status,
   size = 'md',
   className,
-  showDot = true,
+  showDot = false,
 }: StatusBadgeProps) {
   const config = statusConfig[status] || {
     containerClass: 'bg-slate-50 text-slate-700 border-slate-200',
@@ -58,15 +58,9 @@ export default function StatusBadge({
   };
 
   const sizeClasses = {
-    sm: 'text-[11px] px-2 py-0.5 gap-1.5 font-medium',
-    md: 'text-xs px-2.5 py-1 gap-1.5 font-medium',
-    lg: 'text-sm px-3 py-1.5 gap-2 font-medium',
-  };
-
-  const dotSizes = {
-    sm: 'w-1.5 h-1.5',
-    md: 'w-2 h-2',
-    lg: 'w-2.5 h-2.5',
+    sm: 'text-[11px] px-2 py-0.5 font-medium',
+    md: 'text-xs px-2.5 py-1 font-medium',
+    lg: 'text-sm px-3 py-1.5 font-medium',
   };
 
   return (
@@ -80,9 +74,7 @@ export default function StatusBadge({
       data-testid="status-badge"
     >
       {showDot && (
-        <span className={cn('relative flex items-center justify-center shrink-0', dotSizes[size])}>
-          <span className={cn('relative inline-flex rounded-full', config.dotClass, dotSizes[size])} />
-        </span>
+        <span className="mr-1.5 inline-block h-1.5 w-1.5 rounded-xs bg-current opacity-70" />
       )}
       <span>{config.label}</span>
     </span>

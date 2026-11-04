@@ -491,7 +491,7 @@ export default function ReportModal({
               <div className="relative pl-6 space-y-4 before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-200">
                 {logs.map((log) => (
                   <div key={log.id} className="relative">
-                    <span className="absolute -left-6 top-1 h-3 w-3 rounded-full border-2 border-white bg-emerald-500 shadow-xs" />
+                    <span className="absolute -left-6 top-1.5 h-2.5 w-2.5 rounded-xs bg-emerald-600 shadow-2xs" />
                     <div className="rounded-lg border border-slate-200 bg-slate-50/50 p-2.5 text-xs space-y-1">
                       <div className="flex flex-wrap items-center justify-between gap-1">
                         <div className="flex items-center gap-1.5 font-semibold text-slate-800">
@@ -544,7 +544,7 @@ export default function ReportModal({
             <button
               type="button"
               onClick={() => setIsLightboxOpen(false)}
-              className="absolute -top-12 right-0 rounded-full bg-white/20 p-2 text-white hover:bg-white/30 transition-colors"
+              className="absolute -top-12 right-0 rounded-xl bg-white/20 p-2 text-white hover:bg-white/30 transition-colors"
               aria-label="Tutup foto perbesar"
             >
               <X className="h-6 w-6" />

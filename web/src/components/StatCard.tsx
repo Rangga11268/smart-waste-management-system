@@ -119,13 +119,7 @@ export default function StatCard({
               <Icon className="h-4 w-4" />
             </div>
           ) : (
-            <button
-              type="button"
-              className={cn('rounded-lg p-1.5 transition-colors min-h-[32px] min-w-[32px] flex items-center justify-center', style.dots)}
-              aria-label="Opsi metrik"
-            >
-              <MoreHorizontal className="h-4 w-4" />
-            </button>
+            <span className="text-xs font-mono text-slate-400">#METRIK</span>
           )}
         </div>
       </div>

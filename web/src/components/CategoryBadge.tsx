@@ -46,7 +46,7 @@ export default function CategoryBadge({
   category,
   size = 'md',
   className,
-  showDot = true,
+  showDot = false,
 }: CategoryBadgeProps) {
   const categoryName = typeof category === 'string' ? category : category.name;
   const customBadgeColor = typeof category === 'object' ? category.badge_color : undefined;
@@ -60,21 +60,15 @@ export default function CategoryBadge({
   };
 
   const sizeClasses = {
-    sm: 'text-[11px] px-2 py-0.5 gap-1.5 font-medium',
-    md: 'text-xs px-2.5 py-1 gap-1.5 font-medium',
-    lg: 'text-sm px-3 py-1.5 gap-2 font-medium',
-  };
-
-  const dotSizes = {
-    sm: 'w-1.5 h-1.5',
-    md: 'w-2 h-2',
-    lg: 'w-2.5 h-2.5',
+    sm: 'text-[11px] px-2 py-0.5 font-medium',
+    md: 'text-xs px-2.5 py-1 font-medium',
+    lg: 'text-sm px-3 py-1.5 font-medium',
   };
 
   return (
     <span
       className={cn(
-        'inline-flex items-center rounded-lg border tracking-wide transition-colors shadow-[0_1px_2px_rgba(0,0,0,0.02)]',
+        'inline-flex items-center rounded-md border tracking-wide transition-colors shadow-[0_1px_2px_rgba(0,0,0,0.02)]',
         styleConfig.bgClass,
         styleConfig.textClass,
         styleConfig.borderClass,
@@ -85,7 +79,7 @@ export default function CategoryBadge({
     >
       {showDot && (
         <span
-          className={cn('rounded-full shrink-0', styleConfig.dotClass, dotSizes[size])}
+          className="mr-1.5 inline-block h-1.5 w-1.5 rounded-xs bg-current opacity-70"
           style={customBadgeColor ? { backgroundColor: customBadgeColor } : undefined}
           aria-hidden="true"
         />

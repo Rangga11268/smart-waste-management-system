@@ -96,8 +96,7 @@ export default function DashboardPage() {
             <h1 className="font-sans text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
               Pusat Kendali Operasional
             </h1>
-            <span className="inline-flex items-center gap-1.5 rounded-md border border-emerald-300 bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-800">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" />
+            <span className="inline-flex items-center rounded-md border border-emerald-300/80 bg-emerald-50 px-2 py-0.5 text-xs font-semibold text-emerald-800">
               Live Telemetri (WIB)
             </span>
             {activeUsers !== null && (

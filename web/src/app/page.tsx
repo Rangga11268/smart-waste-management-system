@@ -147,7 +147,7 @@ export default function LandingPage() {
             <div className="rounded-3xl border border-emerald-200 bg-emerald-50/40 p-6 flex flex-col justify-between">
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider text-emerald-800 block mb-2">
-                  Kategori 01 &bull; Organik
+                  Kategori 01 / Organik
                 </span>
                 <h3 className="text-xl font-bold text-slate-900">Organic Waste</h3>
                 <p className="text-xs text-slate-600 mt-2 leading-relaxed">
@@ -164,7 +164,7 @@ export default function LandingPage() {
             <div className="rounded-3xl border border-slate-200 bg-white p-6 flex flex-col justify-between shadow-xs">
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider text-blue-700 block mb-2">
-                  Kategori 02 &bull; Anorganik
+                  Kategori 02 / Anorganik
                 </span>
                 <h3 className="text-xl font-bold text-slate-900">Plastic Waste</h3>
                 <p className="text-xs text-slate-600 mt-2 leading-relaxed">
@@ -181,7 +181,7 @@ export default function LandingPage() {
             <div className="rounded-3xl border border-slate-200 bg-white p-6 flex flex-col justify-between shadow-xs">
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider text-amber-700 block mb-2">
-                  Kategori 03 &bull; Daur Ulang
+                  Kategori 03 / Daur Ulang
                 </span>
                 <h3 className="text-xl font-bold text-slate-900">Paper Waste</h3>
                 <p className="text-xs text-slate-600 mt-2 leading-relaxed">

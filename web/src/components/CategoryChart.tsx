@@ -76,7 +76,7 @@ export default function CategoryChart({
           <div className="h-5 w-48 rounded bg-slate-200" />
           <div className="h-4 w-24 rounded bg-slate-200" />
         </div>
-        <div className="h-4 w-full rounded-full bg-slate-200 mb-6" />
+        <div className="h-3 w-full rounded-md bg-slate-200 mb-6" />
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           {[1, 2, 3].map((i) => (
             <div key={i} className="rounded-2xl border border-slate-200 p-5 space-y-3">
@@ -152,7 +152,7 @@ export default function CategoryChart({
 
       {/* Proportional Segmented Progress Bar */}
       <div className="relative mb-6">
-        <div className="h-4 w-full rounded-full bg-slate-100 border border-slate-200/80 overflow-hidden flex shadow-inner">
+        <div className="h-3 w-full rounded-md bg-slate-100 border border-slate-200/80 overflow-hidden flex shadow-inner">
           {totalReports > 0 ? (
             segments.map((item) => {
               if (item.width <= 0) return null;
@@ -192,11 +192,7 @@ export default function CategoryChart({
             >
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                  <span
-                    className="h-3 w-3 rounded-full shrink-0 shadow-xs ring-2 ring-white"
-                    style={{ backgroundColor: item.config.hex }}
-                    aria-hidden="true"
-                  />
+                  
                   <span className={cn('font-sans text-xs font-bold tracking-tight', item.config.textClass)}>
                     {item.name}
                   </span>
@@ -222,9 +218,9 @@ export default function CategoryChart({
               </div>
 
               {/* Progress Line */}
-              <div className="mt-3.5 h-2 w-full rounded-full bg-white/80 overflow-hidden border border-slate-200/60">
+              <div className="mt-3.5 h-2 w-full rounded-md bg-white/80 overflow-hidden border border-slate-200/60">
                 <div
-                  className="h-full rounded-full transition-all duration-500"
+                  className="h-full rounded-md transition-all duration-500"
                   style={{
                     width: `${Math.min(100, Math.max(0, item.percentage))}%`,
                     backgroundColor: item.config.hex,

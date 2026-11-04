@@ -127,7 +127,7 @@ function LoginForm() {
 
             <Link
               href="/"
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-300 hover:text-white transition-all bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-full border border-white/10 backdrop-blur-md shadow-xs"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-300 hover:text-white transition-all bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-xl border border-white/10 backdrop-blur-md shadow-xs"
             >
               <ArrowLeft className="h-3.5 w-3.5 text-emerald-400" />
               <span>Beranda</span>
@@ -188,8 +188,7 @@ function LoginForm() {
         {/* Bottom System Telemetry Indicator */}
         <div className="relative z-10 border-t border-slate-800/80 pt-6 mt-12 flex items-center justify-between text-xs text-slate-400">
           <div className="flex items-center gap-2 font-mono text-[11px] text-slate-300">
-            <span className="h-2 w-2 rounded-full bg-emerald-500" />
-            <span>FastAPI Core 8000: ONLINE</span>
+                        <span>FastAPI Core 8000: ONLINE</span>
           </div>
           <span className="font-mono text-emerald-400 text-[11px]">Bilcode SWMS v1.0</span>
         </div>
@@ -355,7 +354,7 @@ function LoginForm() {
                 <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
                   Pintasan Pengujian Cepat
                 </span>
-                <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-2 py-0.5 rounded-full">
+                <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-2 py-0.5 rounded-xl">
                   1-Klik Auto-Fill
                 </span>
               </div>

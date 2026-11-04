@@ -76,8 +76,8 @@ export function AboutBento() {
               <p className="text-xs sm:text-sm text-emerald-100 font-normal leading-snug">
                 Peningkatan efisiensi waktu penanganan armada kebersihan kota
               </p>
-              <div className="h-2 w-full bg-white/20 rounded-full overflow-hidden mt-3">
-                <div className="h-full w-4/5 bg-white rounded-full shadow-[0_0_12px_rgba(255,255,255,0.9)]" />
+              <div className="h-2 w-full bg-white/20 rounded-md overflow-hidden mt-3">
+                <div className="h-full w-4/5 bg-white rounded-md shadow-[0_0_12px_rgba(255,255,255,0.9)]" />
               </div>
             </div>
           </Card>

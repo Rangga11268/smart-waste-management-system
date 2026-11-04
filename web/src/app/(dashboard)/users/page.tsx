@@ -229,7 +229,7 @@ export default function UsersPage() {
                       {/* Name & Email with Avatar */}
                       <td className="py-3.5 px-4 sm:px-6">
                         <div className="flex items-center gap-3">
-                          <div className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs ${
+                          <div className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-xs ${
                             u.role === 'admin'
                               ? 'bg-indigo-100 text-indigo-700'
                               : 'bg-emerald-100 text-emerald-700'
@@ -286,14 +286,12 @@ export default function UsersPage() {
                       {/* Active Status */}
                       <td className="py-3.5 px-4">
                         {u.is_active ? (
-                          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 text-xs font-semibold rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200">
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                            Aktif
+                          <span className="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200">
+                                                        Aktif
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1.5 px-2 py-0.5 text-xs font-semibold rounded-md bg-rose-50 text-rose-800 border border-rose-200">
-                            <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
-                            Nonaktif
+                          <span className="inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-md bg-rose-50 text-rose-800 border border-rose-200">
+                                                        Nonaktif
                           </span>
                         )}
                       </td>
@@ -337,7 +335,7 @@ export default function UsersPage() {
             {/* Modal Body */}
             <div className="p-6 space-y-5">
               <div className="flex items-center gap-4">
-                <div className={`w-14 h-14 rounded-full flex items-center justify-center font-bold text-lg ${
+                <div className={`w-14 h-14 rounded-xl flex items-center justify-center font-bold text-lg ${
                   selectedUser.role === 'admin'
                     ? 'bg-indigo-100 text-indigo-700'
                     : 'bg-emerald-100 text-emerald-700'
