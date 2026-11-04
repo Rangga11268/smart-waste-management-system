@@ -83,7 +83,7 @@ export default function DashboardPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between pb-6 mb-2 border-b border-slate-200/80">
         <div>
           <div className="flex items-center gap-3">
-            <h1 className="font-heading text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
+            <h1 className="font-sans text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
               Pusat Kendali Operasional
             </h1>
             <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-50 px-2.5 py-0.5 text-xs font-bold text-emerald-800">
@@ -132,7 +132,7 @@ export default function DashboardPage() {
           <div className="flex items-start gap-3">
             <AlertTriangle className="h-5 w-5 text-rose-600 shrink-0 mt-0.5" />
             <div className="flex-1">
-              <h3 className="font-heading text-sm font-bold text-rose-900">
+              <h3 className="font-sans text-sm font-bold text-rose-900">
                 Gagal Memuat Statistik Dashboard
               </h3>
               <p className="mt-1 font-sans text-xs text-rose-700">{error}</p>
@@ -222,7 +222,7 @@ export default function DashboardPage() {
               <History className="h-5 w-5" />
             </div>
             <div>
-              <h3 id="recent-activity-heading" className="font-heading text-xl font-extrabold text-slate-900 tracking-tight">
+              <h3 id="recent-activity-heading" className="font-sans text-xl font-extrabold text-slate-900 tracking-tight">
                 Aktivitas Terbaru
               </h3>
               <p className="font-sans text-xs sm:text-sm text-slate-500 mt-0.5">
@@ -291,7 +291,7 @@ export default function DashboardPage() {
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white border border-slate-200 text-slate-400 mb-3 shadow-xs">
                 <Inbox className="h-6 w-6" />
               </div>
-              <p className="font-heading text-sm font-bold text-slate-800">
+              <p className="font-sans text-sm font-bold text-slate-800">
                 Belum Ada Aktivitas Terbaru
               </p>
               <p className="mt-1 font-sans text-xs text-slate-500 max-w-sm">

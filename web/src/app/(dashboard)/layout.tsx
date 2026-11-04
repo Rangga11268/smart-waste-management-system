@@ -47,7 +47,7 @@ function DashboardShell({ children }: { children: React.ReactNode }) {
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-emerald-200 bg-emerald-50 text-emerald-600 shadow-xs">
             <Loader2 className="h-6 w-6 animate-spin" />
           </div>
-          <p className="font-heading text-sm font-semibold text-slate-700">
+          <p className="font-sans text-sm font-semibold text-slate-700">
             Memuat Sistem SWMS...
           </p>
           <p className="text-xs text-slate-400">Memverifikasi sesi pengguna</p>

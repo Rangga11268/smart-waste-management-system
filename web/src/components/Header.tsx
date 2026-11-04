@@ -115,7 +115,7 @@ export default function Header({ onOpenSidebar, user, onLogout, className }: Hea
             <React.Fragment key={crumb.href}>
               <ChevronRight className="h-4 w-4 text-slate-400 shrink-0" />
               {idx === breadcrumbs.length - 1 ? (
-                <span className="font-heading font-semibold text-slate-900">{crumb.label}</span>
+                <span className="font-sans font-semibold text-slate-900">{crumb.label}</span>
               ) : (
                 <Link
                   href={crumb.href}
@@ -160,7 +160,7 @@ export default function Header({ onOpenSidebar, user, onLogout, className }: Hea
 
         {/* User Summary Widget (Clean & Non-Redundant) */}
         <div className="flex items-center gap-2.5 border-l border-slate-200 pl-3 sm:pl-4">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 font-heading text-xs font-extrabold text-slate-800 border border-slate-200 shadow-2xs">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 font-sans text-xs font-extrabold text-slate-800 border border-slate-200 shadow-2xs">
             {displayName
               .split(' ')
               .map((n) => n[0])

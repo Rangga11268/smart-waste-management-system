@@ -135,7 +135,7 @@ export default function CategoryChart({
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
         <div>
-          <h3 className="font-heading text-xl font-extrabold text-slate-900 tracking-tight">
+          <h3 className="font-sans text-xl font-extrabold text-slate-900 tracking-tight">
             Distribusi Kategori Sampah
           </h3>
           <p className="font-sans text-xs sm:text-sm text-slate-500 mt-0.5">
@@ -213,7 +213,7 @@ export default function CategoryChart({
               </div>
 
               <div className="mt-4 flex items-baseline justify-between">
-                <span className="font-heading text-3xl font-black tracking-tight text-slate-900">
+                <span className="font-sans text-3xl font-black tracking-tight text-slate-900">
                   {formattedPct}
                 </span>
                 <span className="font-sans text-xs font-medium text-slate-500">

@@ -156,7 +156,7 @@ function LoginForm() {
           </div>
 
           <div className="mb-8">
-            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 font-heading">
+            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 font-sans">
               Selamat Datang
             </h2>
             <p className="mt-2 text-sm text-slate-600">

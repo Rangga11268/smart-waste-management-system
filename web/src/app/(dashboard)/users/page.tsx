@@ -87,7 +87,7 @@ export default function UsersPage() {
       {/* Page Title & Refresh */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="font-heading text-2xl font-bold text-slate-900 tracking-tight">
+          <h1 className="font-sans text-2xl font-bold text-slate-900 tracking-tight">
             Manajemen Pengguna
           </h1>
           <p className="text-sm text-slate-500 mt-1">
@@ -112,7 +112,7 @@ export default function UsersPage() {
           </div>
           <div>
             <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">Total Pengguna</p>
-            <p className="font-heading text-2xl font-bold text-slate-900">{totalUsers}</p>
+            <p className="font-sans text-2xl font-bold text-slate-900">{totalUsers}</p>
           </div>
         </div>
 
@@ -122,7 +122,7 @@ export default function UsersPage() {
           </div>
           <div>
             <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">Administrator</p>
-            <p className="font-heading text-2xl font-bold text-slate-900">{adminCount}</p>
+            <p className="font-sans text-2xl font-bold text-slate-900">{adminCount}</p>
           </div>
         </div>
 
@@ -132,7 +132,7 @@ export default function UsersPage() {
           </div>
           <div>
             <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">Warga Pelapor</p>
-            <p className="font-heading text-2xl font-bold text-slate-900">{citizenCount}</p>
+            <p className="font-sans text-2xl font-bold text-slate-900">{citizenCount}</p>
           </div>
         </div>
 
@@ -142,7 +142,7 @@ export default function UsersPage() {
           </div>
           <div>
             <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">Akun Aktif</p>
-            <p className="font-heading text-2xl font-bold text-slate-900">{activeCount}</p>
+            <p className="font-sans text-2xl font-bold text-slate-900">{activeCount}</p>
           </div>
         </div>
       </div>
@@ -323,7 +323,7 @@ export default function UsersPage() {
           <div className="bg-white rounded-2xl max-w-md w-full border border-slate-200 shadow-xl overflow-hidden">
             {/* Modal Header */}
             <div className="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
-              <h2 className="font-heading text-lg font-bold text-slate-900">
+              <h2 className="font-sans text-lg font-bold text-slate-900">
                 Detail Pengguna
               </h2>
               <button
@@ -345,7 +345,7 @@ export default function UsersPage() {
                   {selectedUser.full_name.split(' ').map((n) => n[0]).slice(0, 2).join('').toUpperCase()}
                 </div>
                 <div>
-                  <h3 className="font-heading font-bold text-slate-900 text-base">
+                  <h3 className="font-sans font-bold text-slate-900 text-base">
                     {selectedUser.full_name}
                   </h3>
                   <p className="text-sm text-slate-500">{selectedUser.email}</p>

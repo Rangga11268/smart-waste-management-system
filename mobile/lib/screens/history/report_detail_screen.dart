@@ -75,6 +75,71 @@ class _ReportDetailScreenState extends State<ReportDetailScreen> {
     return '$base/$url';
   }
 
+  Widget _buildStepItem({
+    required String stepNum,
+    required String label,
+    required bool isActive,
+    required bool isDone,
+    bool isRejected = false,
+  }) {
+    Color bg = Colors.grey.shade200;
+    Color fg = Colors.grey.shade600;
+    if (isRejected) {
+      bg = AppTheme.statusRejected.withValues(alpha: 0.15);
+      fg = AppTheme.statusRejected;
+    } else if (isActive || isDone) {
+      bg = AppTheme.primary;
+      fg = Colors.white;
+    }
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: 24,
+          height: 24,
+          decoration: BoxDecoration(
+            color: bg,
+            shape: BoxShape.circle,
+          ),
+          child: Center(
+            child: isDone && !isRejected
+                ? const Icon(Icons.check, size: 14, color: Colors.white)
+                : Text(
+                    stepNum,
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold,
+                      color: fg,
+                    ),
+                  ),
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 10,
+            fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
+            color: isRejected
+                ? AppTheme.statusRejected
+                : (isActive ? AppTheme.textPrimary : AppTheme.textSecondary),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStepDivider({required bool isDone}) {
+    return Expanded(
+      child: Container(
+        height: 2,
+        margin: const EdgeInsets.only(bottom: 14, left: 4, right: 4),
+        color: isDone ? AppTheme.primary : Colors.grey.shade300,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final report = _report;
@@ -162,6 +227,46 @@ class _ReportDetailScreenState extends State<ReportDetailScreen> {
                                 ),
                               ),
                             ],
+                          ),
+                          const SizedBox(height: 12),
+
+                          // Visual Status Stepper Tracker
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(color: AppTheme.border),
+                            ),
+                            child: Row(
+                              children: [
+                                _buildStepItem(
+                                  stepNum: '1',
+                                  label: 'Diajukan',
+                                  isActive: true,
+                                  isDone: true,
+                                ),
+                                _buildStepDivider(
+                                  isDone: report.status == 'IN_PROGRESS' || report.status == 'COMPLETED',
+                                ),
+                                _buildStepItem(
+                                  stepNum: '2',
+                                  label: 'Diproses',
+                                  isActive: report.status == 'IN_PROGRESS' || report.status == 'COMPLETED',
+                                  isDone: report.status == 'IN_PROGRESS' || report.status == 'COMPLETED',
+                                ),
+                                _buildStepDivider(
+                                  isDone: report.status == 'COMPLETED',
+                                ),
+                                _buildStepItem(
+                                  stepNum: report.status == 'REJECTED' ? '✕' : '3',
+                                  label: report.status == 'REJECTED' ? 'Ditolak' : 'Selesai',
+                                  isActive: report.status == 'COMPLETED' || report.status == 'REJECTED',
+                                  isDone: report.status == 'COMPLETED',
+                                  isRejected: report.status == 'REJECTED',
+                                ),
+                              ],
+                            ),
                           ),
                           const SizedBox(height: 14),
 

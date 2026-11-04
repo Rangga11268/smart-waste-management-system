@@ -176,7 +176,7 @@ export default function CreateReportModal({
         {/* Header */}
         <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4 sm:px-6 bg-slate-50/70">
           <div>
-            <h2 className="font-heading text-lg font-bold text-slate-900">
+            <h2 className="font-sans text-lg font-bold text-slate-900">
               Buat Laporan Sampah Baru
             </h2>
             <p className="font-sans text-xs text-slate-500">

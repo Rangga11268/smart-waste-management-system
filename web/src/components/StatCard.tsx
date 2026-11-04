@@ -18,46 +18,46 @@ export interface StatCardProps {
   className?: string;
 }
 
-/* Deep, high-contrast, comfortable backgrounds that meet WCAG standards without eye strain */
+/* Vibrant, modern, high-contrast jewel tones matching executive SaaS dashboards */
 const cardStyles = {
   black: {
-    bg: 'bg-slate-900 border-slate-800 text-white shadow-md shadow-slate-900/10',
-    title: 'text-slate-300 font-semibold',
+    bg: 'bg-[#0f172a] border-slate-800 text-white shadow-lg shadow-slate-950/20',
+    title: 'text-slate-300 font-semibold text-sm',
     value: 'text-white',
-    pill: 'bg-slate-800 text-slate-200 border border-slate-700',
-    subtitle: 'text-slate-300',
+    pill: 'bg-white/10 text-white font-semibold border border-white/10',
+    subtitle: 'text-slate-300 text-xs',
     dots: 'text-slate-400 hover:text-white',
   },
   purple: {
-    bg: 'bg-[#18112e] border-purple-900/50 text-white shadow-md shadow-purple-950/20',
-    title: 'text-purple-200 font-semibold',
+    bg: 'bg-[#9333ea] border-purple-500 text-white shadow-lg shadow-purple-600/30',
+    title: 'text-white/95 font-semibold text-sm',
     value: 'text-white',
-    pill: 'bg-purple-900/60 text-purple-200 border border-purple-700/60',
-    subtitle: 'text-purple-200/90',
-    dots: 'text-purple-300 hover:text-white',
+    pill: 'bg-white/20 text-white font-semibold border border-white/20',
+    subtitle: 'text-white/90 text-xs',
+    dots: 'text-white/75 hover:text-white',
   },
   blue: {
-    bg: 'bg-[#0e1d3d] border-blue-900/50 text-white shadow-md shadow-blue-950/20',
-    title: 'text-sky-200 font-semibold',
+    bg: 'bg-[#2563eb] border-blue-500 text-white shadow-lg shadow-blue-600/30',
+    title: 'text-white/95 font-semibold text-sm',
     value: 'text-white',
-    pill: 'bg-blue-900/60 text-sky-200 border border-blue-700/60',
-    subtitle: 'text-sky-200/90',
-    dots: 'text-sky-300 hover:text-white',
+    pill: 'bg-white/20 text-white font-semibold border border-white/20',
+    subtitle: 'text-white/90 text-xs',
+    dots: 'text-white/75 hover:text-white',
   },
   emerald: {
-    bg: 'bg-[#09221b] border-emerald-900/50 text-white shadow-md shadow-emerald-950/20',
-    title: 'text-emerald-200 font-semibold',
+    bg: 'bg-[#0d9488] border-teal-500 text-white shadow-lg shadow-teal-700/30',
+    title: 'text-white/95 font-semibold text-sm',
     value: 'text-white',
-    pill: 'bg-emerald-900/60 text-emerald-200 border border-emerald-700/60',
-    subtitle: 'text-emerald-200/90',
-    dots: 'text-emerald-300 hover:text-white',
+    pill: 'bg-white/20 text-white font-semibold border border-white/20',
+    subtitle: 'text-white/90 text-xs',
+    dots: 'text-white/75 hover:text-white',
   },
   default: {
     bg: 'bg-white border-slate-200 text-slate-900 shadow-sm',
-    title: 'text-slate-600 font-semibold',
+    title: 'text-slate-600 font-semibold text-sm',
     value: 'text-slate-900',
     pill: 'bg-slate-100 text-slate-700 border border-slate-200',
-    subtitle: 'text-slate-600',
+    subtitle: 'text-slate-600 text-xs',
     dots: 'text-slate-400 hover:text-slate-600',
   },
 };
@@ -76,7 +76,7 @@ export default function StatCard({
     return (
       <div
         className={cn(
-          'rounded-3xl border border-slate-200/80 bg-white p-6 shadow-sm animate-pulse',
+          'rounded-2xl border border-slate-200/80 bg-white p-6 shadow-sm animate-pulse',
           className
         )}
         data-testid="stat-card-skeleton"
@@ -102,7 +102,7 @@ export default function StatCard({
   return (
     <div
       className={cn(
-        'group relative flex flex-col justify-between rounded-3xl border p-6 transition-all duration-200 hover:-translate-y-1 hover:shadow-xl',
+        'group relative flex flex-col justify-between rounded-2xl border p-6 transition-all duration-200 hover:-translate-y-1 hover:shadow-xl',
         style.bg,
         className
       )}
@@ -110,7 +110,7 @@ export default function StatCard({
     >
       {/* Top Header: Title & Action/Icon */}
       <div className="flex items-center justify-between">
-        <span className={cn('text-sm tracking-wide', style.title)}>
+        <span className={cn('tracking-wide', style.title)}>
           {title}
         </span>
         <div className="flex items-center gap-1.5">
@@ -130,29 +130,27 @@ export default function StatCard({
         </div>
       </div>
 
-      {/* Main Metric Value (Uncramped with Dedicated Breathing Room) */}
-      <div className="mt-5">
-        <div className={cn('text-4xl sm:text-5xl font-black tracking-tight leading-none', style.value)}>
+      {/* Main Metric Value & Trend Badge (Side by Side like reference image) */}
+      <div className="mt-4 flex items-baseline gap-3 flex-wrap">
+        <div className={cn('text-3xl sm:text-4xl font-extrabold tracking-tight leading-none', style.value)}>
           {value}
         </div>
         {trend && (
-          <div className="mt-3">
-            <span
-              className={cn(
-                'inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-bold',
-                style.pill
-              )}
-            >
-              {trend.value}
-            </span>
-          </div>
+          <span
+            className={cn(
+              'inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-xs font-semibold',
+              style.pill
+            )}
+          >
+            {trend.value}
+          </span>
         )}
       </div>
 
       {/* Footer Comparison Subtitle */}
       {subtitle && (
-        <div className="mt-5 pt-3.5 border-t border-white/10 flex items-center justify-between text-xs">
-          <span className={cn('line-clamp-1 font-medium', style.subtitle)}>
+        <div className="mt-4 text-xs font-medium">
+          <span className={cn('line-clamp-1', style.subtitle)}>
             {subtitle}
           </span>
         </div>
