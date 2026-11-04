@@ -13,26 +13,19 @@ SWMS bridges civic participation and municipal waste management by enabling citi
 
 ## Architecture Overview
 
-SWMS employs a decoupled monorepo architecture:
+SWMS employs a decoupled multi-tier architecture connecting mobile citizen reporting, municipal web administration, a unified FastAPI backend, an in-memory PyTorch transfer learning classifier, and cloud PostgreSQL persistence.
 
-```
-[ Mobile App (Flutter) ]       [ Web Dashboard (Next.js 14) ]
-  - Camera & GPS Geotag          - Admin triage & status management
-  - AI Waste Classification      - Geographic waste clustering & stats
-            │                                 │
-            └───────────────┬─────────────────┘
-                            │ REST API (JSON / Multipart)
-                            ▼
-               [ Backend Gateway (FastAPI) ]
-                 - JWT Authentication & RBAC
-                 - Report CRUD & Audit Trail
-                 - In-Memory PyTorch Inference Engine
-                            │
-               ┌────────────┴────────────┐
-               ▼                         ▼
-      [ PostgreSQL DB ]          [ Local / Cloud Storage ]
-        (Neon / Supabase)          (Evidence Photos)
-```
+<p align="center">
+  <img src="docs/diagrams/c4-architecture.svg" alt="C4 Container Architecture" width="100%" />
+</p>
+
+> 💡 **Interactive Architecture & Diagrams Hub:**  
+> Jelajahi seluruh diagram visual beresolusi tinggi (C4, ERD, State Machine, Sequence, Cloud Deployment) secara interaktif di [**`docs/diagrams/index.html`**](docs/diagrams/index.html) atau tinjau langsung versi visual mandiri:
+> - 📐 [**C4 Container Architecture (HTML)**](docs/diagrams/c4-architecture.html) · [*(Raw SVG)*](docs/diagrams/c4-architecture.svg)
+> - 🗄️ [**Entity-Relationship Diagram & DB Schema (HTML)**](docs/diagrams/erd-database.html) · [*(Raw SVG)*](docs/diagrams/erd-database.svg)
+> - 🔄 [**Waste Report Lifecycle State Machine (HTML)**](docs/diagrams/report-lifecycle-state.html) · [*(Raw SVG)*](docs/diagrams/report-lifecycle-state.svg)
+> - ⚡ [**Citizen AI & Geotagged Sequence (HTML)**](docs/diagrams/citizen-reporting-sequence.html) · [*(Raw SVG)*](docs/diagrams/citizen-reporting-sequence.svg)
+> - ☁️ [**Cloud Deployment Topology (HTML)**](docs/diagrams/cloud-deployment.html) · [*(Raw SVG)*](docs/diagrams/cloud-deployment.svg)
 
 ---
 
