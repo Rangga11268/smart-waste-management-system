@@ -190,6 +190,12 @@ class TestAlembicBatchMigrationValidation:
         assert res_final.returncode == 0
         assert "6a3d4361fa05" in (res_final.stderr + res_final.stdout)
 
+        # 4. Re-seed default users and categories so dev server remains fully operational
+        from app.core.database import SessionLocal
+        from app.core.seed import seed_database
+        with SessionLocal() as db:
+            seed_database(db)
+
     def test_alembic_script_renders_batch_alter_table(self):
         """Verify migration revision 6a3d4361fa05 employs batch_alter_table for SQLite compatibility."""
         version_file = BACKEND_DIR / "alembic" / "versions" / "6a3d4361fa05_create_initial_swms_tables.py"
