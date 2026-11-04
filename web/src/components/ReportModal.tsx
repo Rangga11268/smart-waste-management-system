@@ -40,6 +40,21 @@ const STATUS_DESCRIPTIONS: Record<string, string> = {
   Rejected: 'Laporan ditolak (karena bukan sampah, foto tidak jelas, atau lokasi fiktif).',
 };
 
+const QUICK_NOTE_PRESETS: Record<string, string[]> = {
+  'In Progress': [
+    'Truk DLH ditugaskan menuju titik koordinat.',
+    'Laporan valid, regu kebersihan lapangan meluncur.',
+  ],
+  Completed: [
+    'Sampah telah diangkut ke TPST dan area telah bersih.',
+    'Penanganan tuntas 100% oleh armada lapangan.',
+  ],
+  Rejected: [
+    'Foto bukti buram atau objek bukan sampah.',
+    'Lokasi di luar jangkauan operasional dinas.',
+  ],
+};
+
 function formatStatusHuman(status: string): string {
   return STATUS_LABELS[status] || status;
 }
@@ -452,6 +467,22 @@ export default function ReportModal({
                       placeholder="Instruksi penugasan armada atau alasan disposisi..."
                       className="w-full rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs text-slate-900 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 disabled:bg-slate-100 resize-none"
                     />
+                    {/* Quick Preset Chips */}
+                    {selectedStatus && QUICK_NOTE_PRESETS[selectedStatus] && (
+                      <div className="mt-1.5 flex flex-wrap gap-1">
+                        {QUICK_NOTE_PRESETS[selectedStatus].map((preset) => (
+                          <button
+                            key={preset}
+                            type="button"
+                            onClick={() => setAdminNotes(preset)}
+                            className="text-[10px] text-slate-600 bg-slate-100 hover:bg-emerald-50 hover:text-emerald-800 border border-slate-200/90 hover:border-emerald-300 px-2 py-0.5 rounded transition-all truncate max-w-full"
+                            title="Klik untuk mengisi catatan cepat"
+                          >
+                            + {preset}
+                          </button>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
 
