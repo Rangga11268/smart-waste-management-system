@@ -51,7 +51,10 @@ class _HomeScreenState extends State<HomeScreen> {
     });
 
     try {
-      final statsData = await _apiService.getDashboardStats();
+      final isAdmin = widget.authService.currentUser?.role == 'admin';
+      final statsData = isAdmin
+          ? await _apiService.getDashboardStats()
+          : await _apiService.getUserStats();
       final reportsData = await _apiService.getReports(limit: 6);
 
       if (mounted) {
@@ -376,10 +379,11 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildStatsGrid() {
-    final total = _stats['total_reports'] ?? 0;
-    final pending = _stats['pending_reports'] ?? 0;
-    final inProgress = _stats['in_progress_reports'] ?? 0;
-    final completed = _stats['completed_reports'] ?? 0;
+    final summary = _stats['summary'] as Map<String, dynamic>?;
+    final total = _stats['total_reports'] ?? summary?['total_reports'] ?? 0;
+    final pending = _stats['pending_reports'] ?? summary?['pending_count'] ?? 0;
+    final inProgress = _stats['in_progress_reports'] ?? summary?['in_progress_count'] ?? 0;
+    final completed = _stats['completed_reports'] ?? summary?['completed_count'] ?? 0;
 
     return Container(
       decoration: BoxDecoration(

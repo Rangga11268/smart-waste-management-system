@@ -94,12 +94,12 @@ async def health_check() -> Dict[str, Any]:
 
 
 # Static media serving for uploaded evidence photos
-uploads_dir = Path("backend/uploads") if Path("backend/uploads").is_dir() else backend_dir / "uploads"
-uploads_dir.mkdir(parents=True, exist_ok=True)
-(uploads_dir / "reports").mkdir(parents=True, exist_ok=True)
+uploads_parent_dir = Path(settings.UPLOAD_DIR).parent
+uploads_parent_dir.mkdir(parents=True, exist_ok=True)
+Path(settings.UPLOAD_DIR).mkdir(parents=True, exist_ok=True)
 app.mount(
     "/uploads",
-    StaticFiles(directory="backend/uploads" if Path("backend/uploads").is_dir() else str(uploads_dir)),
+    StaticFiles(directory=str(uploads_parent_dir)),
     name="uploads",
 )
 

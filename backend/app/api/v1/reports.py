@@ -36,6 +36,7 @@ def reverse_geocode(lat: float, lon: float) -> Optional[str]:
 
 try:
     from app.api.deps import get_current_admin, get_current_user, get_db
+    from app.core.config import settings
     from app.models.category import Category
     from app.models.log import ReportLog
     from app.models.report import WasteReport
@@ -55,6 +56,7 @@ try:
     )
 except ImportError:
     from backend.app.api.deps import get_current_admin, get_current_user, get_db
+    from backend.app.core.config import settings
     from backend.app.models.category import Category
     from backend.app.models.log import ReportLog
     from backend.app.models.report import WasteReport
@@ -143,7 +145,7 @@ async def submit_report(
 
     # 4. Save file to disk
     unique_filename = f"{uuid.uuid4().hex}{ext}"
-    reports_dir = project_root / "backend" / "uploads" / "reports"
+    reports_dir = Path(settings.UPLOAD_DIR)
     reports_dir.mkdir(parents=True, exist_ok=True)
     file_path = reports_dir / unique_filename
     with open(file_path, "wb") as f:

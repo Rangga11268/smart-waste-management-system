@@ -14,10 +14,8 @@ import {
   Users,
   Compass,
   ExternalLink,
-  Cpu,
   Clock,
   Radio,
-  Truck,
   Camera,
   Check,
 } from 'lucide-react';
@@ -58,100 +56,6 @@ export default function LandingPage() {
         secondaryButtonHref="/reports"
         isAuthenticated={isAuthenticated}
       />
-
-      {/* Live Command Center Preview Section */}
-      <section className="py-16 sm:py-20 bg-slate-900 text-white border-b border-slate-800 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-10">
-            <span className="text-xs font-bold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 rounded-full">
-              Pusat Komando Terpadu
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight mt-3">
-              Telemetri Laporan Waktu-Nyata
-            </h2>
-            <p className="text-slate-400 text-sm sm:text-base mt-2">
-              Setiap laporan warga diproses seketika dengan penandaan koordinat satelit dan validasi akurasi AI.
-            </p>
-          </div>
-
-          <div className="max-w-4xl mx-auto">
-            <div className="rounded-3xl border border-slate-800 bg-slate-950 p-5 sm:p-7 shadow-2xl shadow-slate-950/40 relative overflow-hidden">
-              {/* Header Bar */}
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between pb-4 border-b border-slate-800 gap-2">
-                <div className="flex items-center gap-2.5">
-                  <span className="h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse" />
-                  <span className="font-mono text-xs font-semibold text-slate-300">
-                    SWMS LIVE TELEMETRY CONSOLE • KOTA JAKARTA PUSAT
-                  </span>
-                </div>
-                <div className="flex items-center gap-2 self-start sm:self-auto font-mono text-[11px] text-slate-400">
-                  <span className="bg-slate-900 border border-slate-800 px-2 py-0.5 rounded text-emerald-400">
-                    API 200 OK
-                  </span>
-                  <span>LATENSI: 78ms</span>
-                </div>
-              </div>
-
-              {/* Simulated Live Report Stream Row */}
-              <div className="mt-5 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
-                {/* Visual Report Card */}
-                <div className="md:col-span-7 bg-slate-900/90 rounded-2xl border border-slate-800 p-4 space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="font-mono text-xs text-slate-400">#RPT-2026-08819</span>
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30 text-xs font-bold">
-                      <Truck className="h-3 w-3" />
-                      Sedang Ditangani
-                    </span>
-                  </div>
-
-                  <div>
-                    <h3 className="font-bold text-sm sm:text-base text-white">
-                      Tumpukan Botol Plastik &amp; Kemasan di Saluran Air
-                    </h3>
-                    <p className="text-xs text-slate-400 mt-1 flex items-center gap-1.5">
-                      <MapPin className="h-3.5 w-3.5 text-emerald-400 shrink-0" />
-                      <span>Jl. Jend. Sudirman Kav 21, Jakarta Pusat (-6.208763, 106.845598)</span>
-                    </p>
-                  </div>
-
-                  <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-800/80">
-                    <span className="inline-flex items-center gap-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2.5 py-1 rounded-lg text-xs font-semibold">
-                      <Cpu className="h-3 w-3" />
-                      AI: Plastic Waste (97.4%)
-                    </span>
-                    <span className="text-[11px] text-slate-400 font-mono">
-                      MobileNetV2 Inferred &lt;100ms
-                    </span>
-                  </div>
-                </div>
-
-                {/* Dispatch & Metric Summary Panel */}
-                <div className="md:col-span-5 grid grid-cols-2 gap-3">
-                  <div className="bg-slate-900/90 rounded-2xl border border-slate-800 p-3.5">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Armada DLH</span>
-                    <span className="text-base font-extrabold text-white mt-1 block">Truck #04</span>
-                    <span className="text-[11px] text-emerald-400 mt-0.5 block">En Route (3 Menit)</span>
-                  </div>
-                  <div className="bg-slate-900/90 rounded-2xl border border-slate-800 p-3.5">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">Status Validasi</span>
-                    <span className="text-base font-extrabold text-white mt-1 block">Diverifikasi</span>
-                    <span className="text-[11px] text-slate-400 mt-0.5 block">Audit Trail Recorded</span>
-                  </div>
-                  <div className="col-span-2 bg-emerald-950/40 rounded-2xl border border-emerald-900/50 p-3 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
-                      <span className="text-xs text-emerald-200 font-medium">Auto Reverse Geocoding Selesai</span>
-                    </div>
-                    <span className="font-mono text-[10px] text-emerald-400 bg-emerald-900/60 px-2 py-0.5 rounded">
-                      GPS LOCKED
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* 3 Core Architecture Pillars Section */}
       <section className="py-16 sm:py-20 bg-slate-50 border-b border-slate-200">

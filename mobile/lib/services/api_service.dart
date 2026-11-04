@@ -160,7 +160,7 @@ class ApiService {
     }
   }
 
-  // 6. Fetch Dashboard Stats
+  // 6. Fetch Dashboard Stats (Admin Only)
   Future<Map<String, dynamic>> getDashboardStats() async {
     try {
       final uri = Uri.parse('${AppConfig.baseUrl}/dashboard/stats');
@@ -170,6 +170,29 @@ class ApiService {
         final body = jsonDecode(response.body);
         return body['data'] as Map<String, dynamic>? ?? {};
       }
+    } catch (_) {}
+    return {
+      'total_reports': 0,
+      'pending_reports': 0,
+      'in_progress_reports': 0,
+      'completed_reports': 0,
+    };
+  }
+
+  // 7. Calculate Citizen Report Stats (Safe for non-admin users)
+  Future<Map<String, dynamic>> getUserStats() async {
+    try {
+      final reports = await getReports(limit: 100);
+      final total = reports.length;
+      final pending = reports.where((r) => r.status.toLowerCase() == 'pending').length;
+      final inProgress = reports.where((r) => r.status.toLowerCase() == 'in progress').length;
+      final completed = reports.where((r) => r.status.toLowerCase() == 'completed').length;
+      return {
+        'total_reports': total,
+        'pending_reports': pending,
+        'in_progress_reports': inProgress,
+        'completed_reports': completed,
+      };
     } catch (_) {}
     return {
       'total_reports': 0,
