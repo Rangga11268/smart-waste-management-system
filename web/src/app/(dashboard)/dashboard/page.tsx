@@ -18,6 +18,7 @@ import {
 import StatCard from '@/components/StatCard';
 import CategoryChart from '@/components/CategoryChart';
 import { dashboardApi, reportsApi } from '@/lib/api';
+import { useAuth } from '@/lib/auth';
 import { formatDate, formatRelativeTime, cn } from '@/lib/utils';
 import type { DashboardStatsData } from '@/types/api';
 
@@ -32,10 +33,49 @@ function formatActionHuman(action: string): string {
 }
 
 export default function DashboardPage() {
+  const { user } = useAuth();
+  const isAdmin = user?.role === 'admin';
+
   const [stats, setStats] = useState<DashboardStatsData | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+
+  const calculateStatsFromReports = async () => {
+    const reportsRes = await reportsApi.getReports({ limit: 100 });
+    const list = reportsRes.data || [];
+    const total = list.length;
+    const pending = list.filter((r) => r.status?.toLowerCase() === 'pending').length;
+    const inProgress = list.filter((r) => r.status?.toLowerCase() === 'in progress').length;
+    const completed = list.filter((r) => r.status?.toLowerCase() === 'completed').length;
+    const rejected = list.filter((r) => r.status?.toLowerCase() === 'rejected').length;
+
+    // Group categories for chart
+    const catMap: Record<string, number> = {};
+    list.forEach((r) => {
+      const catName = r.category?.name || 'Lainnya';
+      catMap[catName] = (catMap[catName] || 0) + 1;
+    });
+    const categoryDistribution = Object.entries(catMap).map(([category, count]) => ({
+      category,
+      count,
+      percentage: total > 0 ? (count / total) * 100 : 0,
+    }));
+
+    setStats({
+      summary: {
+        total_reports: total,
+        pending_count: pending,
+        in_progress_count: inProgress,
+        completed_count: completed,
+        rejected_count: rejected,
+        active_users: 1,
+        completion_rate_percent: total > 0 ? (completed / total) * 100 : 0,
+      },
+      category_distribution: categoryDistribution,
+      recent_activities: [],
+    });
+  };
 
   const fetchStats = useCallback(async (isRefresh = false) => {
     if (isRefresh) {
@@ -45,46 +85,26 @@ export default function DashboardPage() {
     }
     setError(null);
 
+    // If logged in as regular citizen (non-admin), avoid hitting admin-only endpoint directly
+    if (user && user.role !== 'admin') {
+      try {
+        await calculateStatsFromReports();
+      } catch (_) {
+        setError('Gagal memuat ringkasan laporan sampah.');
+      } finally {
+        setIsLoading(false);
+        setIsRefreshing(false);
+      }
+      return;
+    }
+
     try {
       const response = await dashboardApi.getStats();
       setStats(response.data);
     } catch (err: unknown) {
-      // Resilient fallback: If /dashboard/stats is 403 or unavailable,
-      // calculate real-time stats directly from /reports so citizens never see a blocked screen
+      // Resilient fallback: calculate real-time stats directly from /reports so users never see a blocked screen
       try {
-        const reportsRes = await reportsApi.getReports({ limit: 100 });
-        const list = reportsRes.data || [];
-        const total = list.length;
-        const pending = list.filter((r) => r.status?.toLowerCase() === 'pending').length;
-        const inProgress = list.filter((r) => r.status?.toLowerCase() === 'in progress').length;
-        const completed = list.filter((r) => r.status?.toLowerCase() === 'completed').length;
-        const rejected = list.filter((r) => r.status?.toLowerCase() === 'rejected').length;
-
-        // Group categories for chart
-        const catMap: Record<string, number> = {};
-        list.forEach((r) => {
-          const catName = r.category?.name || 'Lainnya';
-          catMap[catName] = (catMap[catName] || 0) + 1;
-        });
-        const categoryDistribution = Object.entries(catMap).map(([category, count]) => ({
-          category,
-          count,
-          percentage: total > 0 ? (count / total) * 100 : 0,
-        }));
-
-        setStats({
-          summary: {
-            total_reports: total,
-            pending_count: pending,
-            in_progress_count: inProgress,
-            completed_count: completed,
-            rejected_count: rejected,
-            active_users: 1,
-            completion_rate_percent: total > 0 ? (completed / total) * 100 : 0,
-          },
-          category_distribution: categoryDistribution,
-          recent_activities: [],
-        });
+        await calculateStatsFromReports();
         return;
       } catch (_) {
         // If reports also fails, then show message
@@ -103,7 +123,7 @@ export default function DashboardPage() {
       setIsLoading(false);
       setIsRefreshing(false);
     }
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     fetchStats();
@@ -135,12 +155,12 @@ export default function DashboardPage() {
         <div>
           <div className="flex items-center gap-3">
             <h1 className="font-sans text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
-              Pusat Kendali Operasional
+              {isAdmin ? 'Pusat Kendali Operasional' : 'Pusat Pemantauan Sampah'}
             </h1>
             <span className="inline-flex items-center rounded-md border border-emerald-300/80 bg-emerald-50 px-2 py-0.5 text-xs font-semibold text-emerald-800">
-              Live Telemetri (WIB)
+              {isAdmin ? 'Live Telemetri (DLH)' : 'Layanan Warga Aktif'}
             </span>
-            {activeUsers !== null && (
+            {activeUsers !== null && isAdmin && (
               <span className="hidden lg:inline-flex items-center gap-1.5 rounded-md border border-slate-200 bg-white px-2.5 py-1 text-xs font-semibold text-slate-700 shadow-2xs">
                 <Users className="h-3.5 w-3.5 text-slate-500" />
                 {activeUsers} Pengguna Aktif
@@ -148,7 +168,9 @@ export default function DashboardPage() {
             )}
           </div>
           <p className="mt-1 font-sans text-sm text-slate-500">
-            Pemantauan metrik laporan sampah perkotaan, inferensi AI MobileNetV2, dan respon armada lapangan terintegrasi.
+            {isAdmin
+              ? 'Pemantauan metrik laporan sampah perkotaan, inferensi AI MobileNetV2, dan respon armada lapangan terintegrasi.'
+              : 'Pantau status laporan sampah perkotaan, verifikasi tim dinas kebersihan, dan progres penanganan armada.'}
           </p>
         </div>
 

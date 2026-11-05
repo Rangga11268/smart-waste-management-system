@@ -1,37 +1,34 @@
 'use client';
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   Search,
   Filter,
   RotateCcw,
   RotateCw,
-  Eye,
   ChevronLeft,
   ChevronRight,
   Inbox,
   AlertCircle,
-  Loader2,
   FileSpreadsheet,
   Plus,
   MapPin,
-  ExternalLink,
+  ArrowRight,
 } from 'lucide-react';
 import StatusBadge from '@/components/StatusBadge';
 import CategoryBadge from '@/components/CategoryBadge';
-import ReportModal from '@/components/ReportModal';
 import CreateReportModal from '@/components/CreateReportModal';
 import { useAuth } from '@/lib/auth';
 import { reportsApi, categoriesApi, getFullImageUrl } from '@/lib/api';
-import { formatDate, formatRelativeTime, getGoogleMapsUrl, cn } from '@/lib/utils';
+import { formatRelativeTime, cn } from '@/lib/utils';
 import type {
   ReportListItem,
-  ReportDetailData,
   WasteCategory,
-  ReportStatus,
 } from '@/types/api';
 
 export default function ReportsPage() {
+  const router = useRouter();
   const { user } = useAuth();
 
   // Reports and pagination state
@@ -56,9 +53,7 @@ export default function ReportsPage() {
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Review & Create modal states
-  const [selectedReport, setSelectedReport] = useState<ReportListItem | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  // Create report modal state
   const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
 
   // Fallback images map for failed image loads
@@ -161,37 +156,6 @@ export default function ReportsPage() {
     setStatusFilter('');
     setCategoryFilter('');
     setPage(1);
-  };
-
-  // Open detail review modal
-  const handleOpenReviewModal = (report: ReportListItem) => {
-    setSelectedReport(report);
-    setIsModalOpen(true);
-  };
-
-  // Close review modal
-  const handleCloseReviewModal = () => {
-    setIsModalOpen(false);
-    setSelectedReport(null);
-  };
-
-  // Handle report status updated from modal
-  const handleReportUpdated = (updatedReport: ReportDetailData) => {
-    // 1. Immediately update local report in table list
-    setReports((prevReports) =>
-      prevReports.map((r) =>
-        r.id === updatedReport.id
-          ? {
-              ...r,
-              status: updatedReport.status,
-              category: updatedReport.category || r.category,
-            }
-          : r
-      )
-    );
-
-    // 2. Refresh silently to keep pagination counts and server state in perfect sync
-    fetchReports(false);
   };
 
   const hasActiveFilters = useMemo(
@@ -477,10 +441,7 @@ export default function ReportsPage() {
               return (
                 <div
                   key={`mob-${report.id}`}
-                  onClick={() => {
-                    setSelectedReport(report);
-                    setIsModalOpen(true);
-                  }}
+                  onClick={() => router.push(`/reports/${report.id}`)}
                   className="p-4 active:bg-slate-50 hover:bg-slate-50/60 transition-colors cursor-pointer space-y-2.5"
                 >
                   <div className="flex gap-3">
@@ -533,20 +494,17 @@ export default function ReportsPage() {
           )}
         </div>
 
-        {/* Desktop View: Full 9-Column Table */}
+        {/* Desktop View: Streamlined 6-Column Triage Table */}
         <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="border-b border-slate-200/80 bg-slate-50/75 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
-                <th className="py-3.5 pl-5 pr-3 w-24">ID</th>
-                <th className="py-3.5 px-3 w-16">Thumbnail</th>
-                <th className="py-3.5 px-3 max-w-[200px]">Judul Laporan</th>
-                <th className="py-3.5 px-3 w-32">Kategori</th>
-                <th className="py-3.5 px-3 max-w-[130px]">Pelapor</th>
-                <th className="py-3.5 px-3 w-[220px] max-w-[220px]">Lokasi & Alamat</th>
-                <th className="py-3.5 px-3 w-28">Waktu</th>
+                <th className="py-3.5 pl-5 pr-3">Kasus / Laporan</th>
+                <th className="py-3.5 px-3 w-36">Kategori</th>
+                <th className="py-3.5 px-3 min-w-[200px]">Lokasi</th>
                 <th className="py-3.5 px-3 w-36">Status</th>
-                <th className="py-3.5 pl-3 pr-5 text-right w-20">Aksi</th>
+                <th className="py-3.5 px-3 w-28">Waktu</th>
+                <th className="py-3.5 pl-3 pr-5 text-right w-24">Aksi</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 font-sans text-xs">
@@ -555,16 +513,19 @@ export default function ReportsPage() {
                 Array.from({ length: 5 }).map((_, idx) => (
                   <tr key={`skeleton-${idx}`} className="animate-pulse">
                     <td className="py-4 pl-5 pr-3">
-                      <div className="h-4 w-16 rounded bg-slate-200" />
-                    </td>
-                    <td className="py-4 px-3">
-                      <div className="h-12 w-12 rounded-lg bg-slate-200" />
-                    </td>
-                    <td className="py-4 px-3">
-                      <div className="space-y-2">
-                        <div className="h-4 w-44 rounded bg-slate-200" />
-                        <div className="h-3 w-28 rounded bg-slate-100" />
+                      <div className="flex items-center gap-3">
+                        <div className="h-11 w-11 rounded-lg bg-slate-200 shrink-0" />
+                        <div className="space-y-2">
+                          <div className="h-4 w-40 rounded bg-slate-200" />
+                          <div className="h-3 w-24 rounded bg-slate-100" />
+                        </div>
                       </div>
+                    </td>
+                    <td className="py-4 px-3">
+                      <div className="h-6 w-24 rounded-md bg-slate-200" />
+                    </td>
+                    <td className="py-4 px-3">
+                      <div className="h-4 w-36 rounded bg-slate-200" />
                     </td>
                     <td className="py-4 px-3">
                       <div className="h-6 w-24 rounded-md bg-slate-200" />
@@ -572,24 +533,15 @@ export default function ReportsPage() {
                     <td className="py-4 px-3">
                       <div className="h-4 w-20 rounded bg-slate-200" />
                     </td>
-                    <td className="py-4 px-3">
-                      <div className="h-4 w-28 rounded bg-slate-200" />
-                    </td>
-                    <td className="py-4 px-3">
-                      <div className="h-4 w-20 rounded bg-slate-200" />
-                    </td>
-                    <td className="py-4 px-3">
-                      <div className="h-6 w-20 rounded-md bg-slate-200" />
-                    </td>
                     <td className="py-4 pl-3 pr-5 text-right">
-                      <div className="h-8 w-16 ml-auto rounded-lg bg-slate-200" />
+                      <div className="h-4 w-12 ml-auto rounded bg-slate-200" />
                     </td>
                   </tr>
                 ))
               ) : reports.length === 0 ? (
                 // Empty State
                 <tr>
-                  <td colSpan={9} className="py-16 text-center">
+                  <td colSpan={6} className="py-16 text-center">
                     <div className="flex flex-col items-center justify-center">
                       <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-400 mb-3">
                         <Inbox className="h-6 w-6" />
@@ -627,114 +579,71 @@ export default function ReportsPage() {
                   return (
                     <tr
                       key={report.id}
-                      className="hover:bg-slate-50/80 transition-all duration-150 group"
+                      onClick={() => router.push(`/reports/${report.id}`)}
+                      className="hover:bg-slate-50/90 transition-colors cursor-pointer group"
                     >
-                      {/* 1. ID */}
+                      {/* 1. Kasus / Laporan */}
                       <td className="py-3.5 pl-5 pr-3">
-                        <span className="font-mono text-xs font-medium text-slate-700 bg-slate-100/90 border border-slate-200/80 px-2 py-0.5 rounded-md">
-                          SWMS-{truncatedId}
-                        </span>
-                      </td>
-
-                      {/* 2. Thumbnail */}
-                      <td className="py-3.5 px-3">
-                        <div className="w-12 h-12 rounded-lg border border-slate-200 overflow-hidden bg-slate-100 shrink-0">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
-                            src={imgSrc}
-                            alt={report.title}
-                            className="w-12 h-12 object-cover rounded-lg border border-slate-200"
-                            onError={() =>
-                              setImageErrors((prev) => ({ ...prev, [report.id]: true }))
-                            }
-                          />
-                        </div>
-                      </td>
-
-                      {/* 3. Judul & Catatan */}
-                      <td className="py-3.5 px-3 max-w-[200px]">
-                        <div className="font-semibold text-slate-900 truncate" title={report.title}>
-                          {report.title}
-                        </div>
-                        <div className="text-[11px] text-slate-400 truncate mt-0.5">
-                          {report.reporter?.full_name ? `Oleh: ${report.reporter.full_name}` : '-'}
-                        </div>
-                      </td>
-
-                      {/* 4. Kategori */}
-                      <td className="py-3.5 px-3 whitespace-nowrap">
-                        <CategoryBadge category={report.category} size="sm" />
-                      </td>
-
-                      {/* 5. Pelapor */}
-                      <td className="py-3.5 px-3 max-w-[130px] text-slate-700 font-medium truncate" title={report.reporter?.full_name || report.reporter?.email || 'Warga'}>
-                        {report.reporter?.full_name || report.reporter?.email || 'Warga'}
-                      </td>
-
-                      {/* 6. Lokasi & Alamat */}
-                      <td className="py-3.5 px-3 w-[220px] max-w-[220px]">
-                        <div className="flex flex-col gap-1 w-full max-w-[220px]">
-                          {report.address_note ? (
-                            <div
-                              className="flex items-center gap-1.5 min-w-0"
-                              title={report.address_note}
-                            >
-                              <MapPin className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
-                              <span className="font-semibold text-slate-800 text-xs truncate block">
-                                {report.address_note}
+                        <div className="flex items-center gap-3">
+                          <div className="w-11 h-11 rounded-lg border border-slate-200 overflow-hidden bg-slate-100 shrink-0">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={imgSrc}
+                              alt={report.title}
+                              className="w-full h-full object-cover"
+                              onError={() =>
+                                setImageErrors((prev) => ({ ...prev, [report.id]: true }))
+                              }
+                            />
+                          </div>
+                          <div className="min-w-0 max-w-[240px]">
+                            <div className="font-semibold text-slate-900 truncate group-hover:text-emerald-700 transition-colors" title={report.title}>
+                              {report.title}
+                            </div>
+                            <div className="flex items-center gap-1.5 text-[11px] text-slate-500 mt-0.5">
+                              <span className="font-mono text-[10px] text-slate-500">
+                                #SWMS-{truncatedId}
+                              </span>
+                              <span>•</span>
+                              <span className="truncate max-w-[120px]">
+                                {report.reporter?.full_name || 'Warga'}
                               </span>
                             </div>
-                          ) : (
-                            <span className="text-slate-400 italic text-[11px] flex items-center gap-1">
-                              <MapPin className="h-3 w-3 text-slate-300 shrink-0" />
-                              <span>Alamat GPS</span>
-                            </span>
-                          )}
-                          <div className="flex items-center gap-1.5 shrink-0">
-                            <span className="font-mono text-[10px] font-medium text-slate-600 bg-slate-100 border border-slate-200/80 px-1.5 py-0.5 rounded">
-                              {report.latitude.toFixed(4)}, {report.longitude.toFixed(4)}
-                            </span>
-                            <a
-                              href={getGoogleMapsUrl(report.latitude, report.longitude)}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center gap-0.5 text-[11px] font-semibold text-emerald-600 hover:text-emerald-700 hover:underline"
-                              title="Buka titik koordinat di Google Maps"
-                            >
-                              <span>Peta</span>
-                              <ExternalLink className="h-2.5 w-2.5" />
-                            </a>
                           </div>
                         </div>
                       </td>
 
-                      {/* 7. Waktu & Tanggal */}
-                      <td className="py-3.5 px-3 text-xs whitespace-nowrap">
-                        <div className="flex flex-col">
-                          <span className="font-semibold text-slate-700">
-                            {formatRelativeTime(report.created_at)}
-                          </span>
-                          <span className="text-[10px] text-slate-400 font-mono">
-                            {formatDate(report.created_at)}
+                      {/* 2. Kategori */}
+                      <td className="py-3.5 px-3 whitespace-nowrap">
+                        <CategoryBadge category={report.category} size="sm" />
+                      </td>
+
+                      {/* 3. Lokasi */}
+                      <td className="py-3.5 px-3 max-w-[260px]">
+                        <div className="flex items-center gap-1.5 min-w-0" title={report.address_note || 'Titik Koordinat GPS'}>
+                          <MapPin className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
+                          <span className="text-xs text-slate-700 truncate font-medium">
+                            {report.address_note || `${report.latitude.toFixed(4)}, ${report.longitude.toFixed(4)}`}
                           </span>
                         </div>
                       </td>
 
-                      {/* 8. Status */}
+                      {/* 4. Status */}
                       <td className="py-3.5 px-3 whitespace-nowrap">
                         <StatusBadge status={report.status} size="sm" />
                       </td>
 
-                      {/* 9. Aksi */}
+                      {/* 5. Waktu */}
+                      <td className="py-3.5 px-3 text-xs text-slate-500 whitespace-nowrap">
+                        {formatRelativeTime(report.created_at)}
+                      </td>
+
+                      {/* 6. Aksi */}
                       <td className="py-3.5 pl-3 pr-5 text-right whitespace-nowrap">
-                        <button
-                          type="button"
-                          onClick={() => handleOpenReviewModal(report)}
-                          className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-200 bg-emerald-50 px-2.5 py-1.5 text-xs font-semibold text-emerald-700 hover:bg-emerald-100 hover:border-emerald-300 active:scale-[0.98] transition-all shadow-2xs group-hover:shadow-xs"
-                        >
-                          <Eye className="h-3.5 w-3.5" />
-                          <span>Tinjau</span>
-                        </button>
+                        <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-700 group-hover:text-emerald-800 group-hover:translate-x-0.5 transition-all">
+                          <span>Detail</span>
+                          <ArrowRight className="h-3.5 w-3.5" />
+                        </span>
                       </td>
                     </tr>
                   );
@@ -777,14 +686,6 @@ export default function ReportsPage() {
           </div>
         </div>
       </div>
-
-      {/* Review Modal Dialog */}
-      <ReportModal
-        report={selectedReport}
-        isOpen={isModalOpen}
-        onClose={handleCloseReviewModal}
-        onStatusUpdated={handleReportUpdated}
-      />
 
       {/* Create Report Modal Dialog */}
       <CreateReportModal
