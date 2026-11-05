@@ -164,15 +164,16 @@ export default function ReportDetailPage() {
     setActionSuccess(null);
 
     try {
-      const res = await reportsApi.updateStatus(report.id, {
+      await reportsApi.updateStatus(report.id, {
         status: selectedStatus,
         admin_notes: adminNotes.trim() ? adminNotes.trim() : undefined,
       });
 
       setActionSuccess(`Status laporan berhasil diubah menjadi "${selectedStatus}".`);
-      setReport(res.data);
       setSelectedStatus(null);
       setAdminNotes('');
+      // Refresh the full report details to obtain updated logs, timestamps, and status
+      await fetchDetail();
     } catch (err: unknown) {
       const msg =
         err && typeof err === 'object' && 'response' in err
@@ -620,11 +621,11 @@ export default function ReportDetailPage() {
               </div>
             </div>
 
-            {report.logs.length === 0 ? (
+            {(!report.logs || report.logs.length === 0) ? (
               <p className="text-xs text-slate-400 italic py-2">Belum ada riwayat transisi status tercatat.</p>
             ) : (
               <div className="space-y-3 relative before:absolute before:inset-0 before:left-3.5 before:w-0.5 before:bg-slate-200 before:z-0">
-                {report.logs.map((log: ReportLogItem, idx: number) => (
+                {(report.logs || []).map((log: ReportLogItem, idx: number) => (
                   <div
                     key={log.id}
                     className="relative z-10 pl-7 space-y-1 text-xs"

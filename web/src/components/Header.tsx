@@ -24,16 +24,13 @@ export default function Header({ onOpenSidebar, user, onLogout, className }: Hea
   const [healthStatus, setHealthStatus] = useState<'checking' | 'online' | 'offline'>('checking');
   const [lastCheck, setLastCheck] = useState<Date | null>(null);
 
-  // Ping backend health check endpoint
+  // Ping backend health check endpoint via internal proxy
   useEffect(() => {
     let isMounted = true;
 
     async function checkHealth() {
       try {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
-        // Backend root health is at http://localhost:8000/health
-        const baseOrigin = apiUrl.replace(/\/api\/v1\/?$/, '');
-        const res = await fetch(`${baseOrigin}/health`, {
+        const res = await fetch('/api/health-check', {
           method: 'GET',
           cache: 'no-store',
         });
