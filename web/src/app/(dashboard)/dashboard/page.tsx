@@ -14,6 +14,8 @@ import {
   Activity,
   Inbox,
   Users,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 import StatCard from '@/components/StatCard';
 import CategoryChart from '@/components/CategoryChart';
@@ -24,12 +26,46 @@ import type { DashboardStatsData } from '@/types/api';
 
 function formatActionHuman(action: string): string {
   return action
-    .replace('Status changed to In Progress', 'Status diperbarui: Sedang Ditangani (In Progress)')
-    .replace('Status changed to Completed', 'Status diperbarui: Selesai Ditangani (Completed)')
-    .replace('Status changed to Rejected', 'Status diperbarui: Laporan Ditolak (Rejected)')
-    .replace('Status changed to Pending', 'Status diperbarui: Menunggu Validasi (Pending)')
-    .replace('Report created (Pending)', 'Laporan awal diajukan oleh warga (Pending)')
-    .replace(/Report created \((.*?)\)/, 'Laporan awal diajukan ($1)');
+    .replace('Status changed to In Progress', 'Sedang Ditangani (In Progress)')
+    .replace('Status changed to Completed', 'Selesai Ditangani (Completed)')
+    .replace('Status changed to Rejected', 'Laporan Ditolak (Rejected)')
+    .replace('Status changed to Pending', 'Menunggu Validasi (Pending)')
+    .replace('Report created (Pending)', 'Laporan Baru Masuk (Pending)')
+    .replace(/Report created \((.*?)\)/, 'Laporan Baru ($1)');
+}
+
+function getActivityMeta(action: string) {
+  const lower = action.toLowerCase();
+  if (lower.includes('completed') || lower.includes('selesai')) {
+    return {
+      label: 'Selesai',
+      badgeClass: 'bg-emerald-50 text-emerald-700 border-emerald-200/80',
+      iconClass: 'bg-emerald-100 text-emerald-700 border-emerald-200',
+      Icon: CheckCircle2,
+    };
+  }
+  if (lower.includes('in progress') || lower.includes('sedang ditangani')) {
+    return {
+      label: 'Dalam Proses',
+      badgeClass: 'bg-blue-50 text-blue-700 border-blue-200/80',
+      iconClass: 'bg-blue-100 text-blue-700 border-blue-200',
+      Icon: Truck,
+    };
+  }
+  if (lower.includes('rejected') || lower.includes('ditolak')) {
+    return {
+      label: 'Ditolak',
+      badgeClass: 'bg-rose-50 text-rose-700 border-rose-200/80',
+      iconClass: 'bg-rose-100 text-rose-700 border-rose-200',
+      Icon: AlertTriangle,
+    };
+  }
+  return {
+    label: 'Menunggu',
+    badgeClass: 'bg-purple-50 text-purple-700 border-purple-200/80',
+    iconClass: 'bg-purple-100 text-purple-700 border-purple-200',
+    Icon: Clock,
+  };
 }
 
 export default function DashboardPage() {
@@ -147,6 +183,13 @@ export default function DashboardPage() {
   }
 
   const recentActivities = stats?.recent_activities ?? [];
+  const [activityPage, setActivityPage] = useState<number>(1);
+  const activitiesPerPage = 5;
+  const totalActivityPages = Math.max(1, Math.ceil(recentActivities.length / activitiesPerPage));
+  const paginatedActivities = recentActivities.slice(
+    (activityPage - 1) * activitiesPerPage,
+    activityPage * activitiesPerPage
+  );
 
   return (
     <div className="space-y-6 sm:space-y-8">
@@ -285,6 +328,12 @@ export default function DashboardPage() {
         <CategoryChart
           distribution={stats?.category_distribution ?? []}
           totalReports={totalReports}
+          statusSummary={{
+            pending: pendingCount,
+            inProgress: inProgressCount,
+            completed: completedCount,
+            rejected: rejectedCount,
+          }}
           isLoading={isLoading}
         />
       </section>
@@ -335,35 +384,95 @@ export default function DashboardPage() {
               ))}
             </div>
           ) : recentActivities.length > 0 ? (
-            <div className="divide-y divide-slate-100">
-              {recentActivities.map((act, idx) => (
-                <div
-                  key={`${act.report_id}-${idx}`}
-                  className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-4 px-3 rounded-2xl hover:bg-slate-50/80 transition-all duration-150 gap-2"
-                >
-                  <div className="flex items-start gap-3.5">
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-200 mt-0.5 shadow-xs">
-                      <Activity className="h-4 w-4" />
-                    </div>
-                    <div>
-                      <p className="font-sans text-sm font-bold text-slate-900">
-                        {formatActionHuman(act.action)}
-                      </p>
-                      <div className="mt-1.5 flex flex-wrap items-center gap-2">
-                        <span className="font-mono text-xs font-semibold text-slate-700 bg-slate-100 border border-slate-200 px-2 py-0.5 rounded-md">
-                          ID: SWMS-{act.report_id.slice(0, 8).toUpperCase()}
+            <>
+              <div className="divide-y divide-slate-100">
+                {paginatedActivities.map((act, idx) => {
+                  const meta = getActivityMeta(act.action);
+                  const Icon = meta.Icon;
+                  return (
+                    <div
+                      key={`${act.report_id}-${idx}-${activityPage}`}
+                      className="flex flex-col sm:flex-row sm:items-center sm:justify-between py-3.5 px-3 rounded-2xl hover:bg-slate-50/80 transition-all duration-150 gap-2"
+                    >
+                      <div className="flex items-center gap-3.5">
+                        <div
+                          className={cn(
+                            'flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border shadow-xs',
+                            meta.iconClass
+                          )}
+                        >
+                          <Icon className="h-4 w-4" />
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span
+                              className={cn(
+                                'px-2 py-0.5 rounded-md font-sans text-[11px] font-bold border',
+                                meta.badgeClass
+                              )}
+                            >
+                              {meta.label}
+                            </span>
+                            <p className="font-sans text-sm font-bold text-slate-800">
+                              {formatActionHuman(act.action)}
+                            </p>
+                          </div>
+                          <div className="mt-1 flex items-center gap-2">
+                            <span className="font-mono text-xs font-semibold text-slate-600 bg-slate-100 border border-slate-200/80 px-2 py-0.5 rounded-md">
+                              ID: SWMS-{act.report_id.slice(0, 8).toUpperCase()}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="font-sans text-xs font-medium text-slate-500 pl-12 sm:pl-0 sm:text-right shrink-0">
+                        <span
+                          title={formatDate(act.timestamp)}
+                          className="bg-slate-100/80 border border-slate-200 px-2.5 py-1 rounded-lg font-mono text-[11px] font-semibold text-slate-600"
+                        >
+                          {formatRelativeTime(act.timestamp)}
                         </span>
                       </div>
                     </div>
-                  </div>
-                  <div className="font-sans text-xs font-medium text-slate-500 pl-12 sm:pl-0 sm:text-right shrink-0">
-                    <span title={formatDate(act.timestamp)} className="bg-slate-100/80 border border-slate-200 px-2.5 py-1 rounded-lg font-mono text-[11px] font-semibold text-slate-600">
-                      {formatRelativeTime(act.timestamp)}
+                  );
+                })}
+              </div>
+
+              {/* Compact Pagination Bar */}
+              {recentActivities.length > activitiesPerPage && (
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-4 mt-3 border-t border-slate-100">
+                  <p className="font-sans text-xs font-medium text-slate-500">
+                    Menampilkan <span className="font-bold text-slate-700">{(activityPage - 1) * activitiesPerPage + 1}</span> -{' '}
+                    <span className="font-bold text-slate-700">
+                      {Math.min(activityPage * activitiesPerPage, recentActivities.length)}
+                    </span>{' '}
+                    dari <span className="font-bold text-slate-700">{recentActivities.length}</span> aktivitas
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      disabled={activityPage === 1}
+                      onClick={() => setActivityPage((p) => Math.max(1, p - 1))}
+                      className="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-2xs hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                    >
+                      <ChevronLeft className="h-3.5 w-3.5" />
+                      <span>Sebelumnya</span>
+                    </button>
+                    <span className="px-2 font-mono text-xs font-bold text-slate-700">
+                      {activityPage} / {totalActivityPages}
                     </span>
+                    <button
+                      type="button"
+                      disabled={activityPage >= totalActivityPages}
+                      onClick={() => setActivityPage((p) => Math.min(totalActivityPages, p + 1))}
+                      className="inline-flex items-center gap-1 rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-2xs hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                    >
+                      <span>Berikutnya</span>
+                      <ChevronRight className="h-3.5 w-3.5" />
+                    </button>
                   </div>
                 </div>
-              ))}
-            </div>
+              )}
+            </>
           ) : (
             <div className="flex flex-col items-center justify-center py-12 text-center rounded-2xl border border-dashed border-slate-200/90 bg-slate-50/50">
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white border border-slate-200 text-slate-400 mb-3 shadow-xs">
