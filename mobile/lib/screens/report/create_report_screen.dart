@@ -580,18 +580,22 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
                   child: const Icon(Icons.auto_awesome, color: Colors.white, size: 16),
                 ),
                 const SizedBox(width: 8),
-                const Text(
-                  'Deteksi AI MobileNetV2',
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w700,
-                    color: AppTheme.onPrimaryContainer,
+                const Expanded(
+                  child: Text(
+                    'Deteksi AI MobileNetV2',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                      color: AppTheme.onPrimaryContainer,
+                    ),
                   ),
                 ),
-                const Spacer(),
+                const SizedBox(width: 8),
                 // Highlighted Category & Confidence Badge
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
                     color: res.confidence >= 0.85
                         ? AppTheme.primary
@@ -605,8 +609,8 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w800,
-                      fontSize: 11,
-                      letterSpacing: 0.3,
+                      fontSize: 10.5,
+                      letterSpacing: 0.2,
                     ),
                   ),
                 ),
@@ -649,12 +653,16 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
               children: [
                 Icon(Icons.touch_app_rounded, size: 15, color: AppTheme.primaryDark),
                 SizedBox(width: 6),
-                Text(
-                  'Koreksi Kategori (1-Ketuk jika AI meleset):',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                    color: AppTheme.textPrimary,
+                Expanded(
+                  child: Text(
+                    'Koreksi Kategori (1-Ketuk jika AI meleset):',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      color: AppTheme.textPrimary,
+                    ),
                   ),
                 ),
               ],
@@ -761,24 +769,30 @@ class _CreateReportScreenState extends State<CreateReportScreen> {
                   child: const Icon(Icons.location_on, color: AppTheme.statusInProgress, size: 18),
                 ),
                 const SizedBox(width: 10),
-                const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Geotagging Lokasi GPS',
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w700,
-                        color: AppTheme.textPrimary,
+                const Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Geotagging Lokasi GPS',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w700,
+                          color: AppTheme.textPrimary,
+                        ),
                       ),
-                    ),
-                    Text(
-                      'Koordinat bukti laporan lapangan',
-                      style: TextStyle(fontSize: 11, color: AppTheme.textTertiary),
-                    ),
-                  ],
+                      Text(
+                        'Koordinat bukti laporan lapangan',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(fontSize: 11, color: AppTheme.textTertiary),
+                      ),
+                    ],
+                  ),
                 ),
-                const Spacer(),
+                const SizedBox(width: 8),
                 if (_isLoadingGps)
                   const SizedBox(
                     width: 20,
