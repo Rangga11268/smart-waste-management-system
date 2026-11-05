@@ -256,6 +256,23 @@ export default function ReportsPage() {
         </div>
       </div>
 
+      {createdToast && (
+        <div className="flex items-center justify-between gap-3 rounded-2xl border border-emerald-300 bg-emerald-50 px-4 py-3 text-xs sm:text-sm font-semibold text-emerald-800 shadow-sm animate-fade-slide-in-1">
+          <div className="flex items-center gap-2.5">
+            <CheckCircle2 className="h-5 w-5 text-emerald-600 shrink-0" />
+            <span>{createdToast}</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setCreatedToast(null)}
+            className="text-emerald-700 hover:text-emerald-950 font-bold text-base px-2 py-0.5 rounded-lg hover:bg-emerald-100 transition-colors"
+            aria-label="Tutup notifikasi"
+          >
+            &times;
+          </button>
+        </div>
+      )}
+
       {/* Filter & Search Bar */}
       <div className="rounded-2xl border border-slate-200/90 bg-white p-4 sm:p-5 shadow-[0_1px_3px_rgba(15,23,42,0.04)] space-y-3.5">
         {/* Quick Status Filter Tabs - Smooth horizontal scroll on mobile with no awkward orphan chips */}
@@ -712,6 +729,8 @@ export default function ReportsPage() {
         categories={categories}
         onReportCreated={() => {
           fetchReports(true);
+          setCreatedToast('Laporan sampah baru berhasil dikirim dan masuk ke antrean triage dinas!');
+          setTimeout(() => setCreatedToast(null), 5000);
         }}
       />
     </div>
