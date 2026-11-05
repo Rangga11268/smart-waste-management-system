@@ -1,13 +1,41 @@
-# Smart Waste Management System (SWMS)
+<p align="center">
+  <img src="docs/assets/logo.svg" alt="SWMS Logo Lockup" width="380" />
+</p>
 
-[![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![Next.js](https://img.shields.io/badge/Web-Next.js%2014-000000?logo=next.js&logoColor=white)](https://nextjs.org/)
-[![Flutter](https://img.shields.io/badge/Mobile-Flutter-02569B?logo=flutter&logoColor=white)](https://flutter.dev/)
-[![PyTorch](https://img.shields.io/badge/ML-PyTorch%20MobileNetV2-EE4C2C?logo=pytorch&logoColor=white)](https://pytorch.org/)
+<p align="center">
+  <strong>Smart Waste Management System (SWMS)</strong> — Eco-Tech Urban Platform<br/>
+  <i>End-to-end intelligent waste reporting and monitoring system developed for the Bilcode Technology Fullstack Developer Technical Assessment.</i>
+</p>
 
-An end-to-end intelligent waste reporting and monitoring system developed for the Bilcode Technology Fullstack Developer Technical Coding Test take-home assessment.
+<p align="center">
+  <a href="https://fastapi.tiangolo.com/"><img src="https://img.shields.io/badge/Backend-FastAPI-009688?logo=fastapi&logoColor=white" alt="FastAPI" /></a>
+  <a href="https://nextjs.org/"><img src="https://img.shields.io/badge/Web-Next.js%2014-000000?logo=next.js&logoColor=white" alt="Next.js" /></a>
+  <a href="https://flutter.dev/"><img src="https://img.shields.io/badge/Mobile-Flutter-02569B?logo=flutter&logoColor=white" alt="Flutter" /></a>
+  <a href="https://pytorch.org/"><img src="https://img.shields.io/badge/ML-PyTorch%20MobileNetV2-EE4C2C?logo=pytorch&logoColor=white" alt="PyTorch" /></a>
+  <a href="https://web-ruby-omega-37.vercel.app"><img src="https://img.shields.io/badge/Production-Live%20Vercel-10b981" alt="Production" /></a>
+</p>
 
 SWMS bridges civic participation and municipal waste management by enabling citizens to report waste piles via mobile camera with automated AI classification (Organic, Plastic, Paper) and GPS geotagging, while municipal sanitation operators track, triage, and manage reports through a real-time web dashboard.
+
+---
+
+## 🌿 Identitas Brand & Filosofi Logo
+
+Identitas visual SWMS dirancang secara khusus dengan simbol **Tri-Radial Botanical Loop** yang menggabungkan motif daun botani dengan siklus Möbius ekonomi sirkular:
+
+<p align="center">
+  <img src="docs/assets/logo-philosophy.svg" alt="Filosofi & Anatomi Desain Logo SWMS" width="100%" />
+</p>
+
+### Anatomi & Makna Filosofis Logo:
+1. **Daun 1 (Lime-to-Fresh Green, Sudut 0°): Partisipasi Warga (*Citizen Action*)**  
+   Melambangkan kesadaran masyarakat urban yang proaktif dalam menjaga kebersihan lingkungan kota melalui kemudahan pelaporan berbasis foto dan kamera ponsel pintar.
+2. **Daun 2 (Emerald-to-Teal, Sudut 120°): Kecerdasan Buatan (*AI Intelligence*)**  
+   Melambangkan integrasi model visi komputer *MobileNetV2* berakurasi 92.8% yang secara instan mengenali dan memilah jenis sampah (*Organic*, *Plastic*, *Paper*) tanpa intervensi manual yang rumit.
+3. **Daun 3 (Deep Forest Green, Sudut 240°): Logistik & Armada Lapangan (*Sanitation Operations*)**  
+   Melambangkan keandalan armada dinas kebersihan dan petugas DLH yang merespons laporan secara tepat sasaran hingga penanganan tuntas di TPST.
+4. **Pusat Inti & Kurva Sirkular (*Circular Zero-Waste Loop*):**  
+   Bentuk rotasi 3-sumbu nir-putus merepresentasikan komitmen keberlanjutan lingkungan hidup (*Reduce, Reuse, Recycle*) serta sinergi harmonis antara Warga, Teknologi Cerdas, dan Pemerintah dalam satu kesatuan ekosistem terpadu.
 
 ---
 

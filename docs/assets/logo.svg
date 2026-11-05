@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 128" width="480" height="128">
+  <title>SWMS Logo Lockup</title>
+  <defs>
+    <linearGradient id="lockupLeafA" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4ADE80"/>
+      <stop offset="100%" stop-color="#16A34A"/>
+    </linearGradient>
+    <linearGradient id="lockupLeafB" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10B981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+    <linearGradient id="lockupLeafC" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#059669"/>
+      <stop offset="100%" stop-color="#047857"/>
+    </linearGradient>
+  </defs>
+  <!-- Mark (Left) scaled to 100x100 -->
+  <g transform="translate(64,64) scale(0.48)">
+    <path d="M 0,-104 C 42,-104 84,-72 84,-24 C 84,16 54,48 16,62 C 34,36 38,10 32,-16 C 26,-42 12,-74 0,-104 Z" fill="url(#lockupLeafA)"/>
+    <g transform="rotate(120)">
+      <path d="M 0,-104 C 42,-104 84,-72 84,-24 C 84,16 54,48 16,62 C 34,36 38,10 32,-16 C 26,-42 12,-74 0,-104 Z" fill="url(#lockupLeafB)"/>
+    </g>
+    <g transform="rotate(240)">
+      <path d="M 0,-104 C 42,-104 84,-72 84,-24 C 84,16 54,48 16,62 C 34,36 38,10 32,-16 C 26,-42 12,-74 0,-104 Z" fill="url(#lockupLeafC)"/>
+    </g>
+    <circle cx="0" cy="0" r="10" fill="#10B981"/>
+  </g>
+
+  <!-- Typography (Right) -->
+  <g transform="translate(136, 52)">
+    <text font-family="'Space Grotesk', -apple-system, sans-serif" font-size="44" font-weight="800" letter-spacing="-1" fill="#0F172A">
+      SWMS
+    </text>
+    <text y="28" font-family="'Inter', sans-serif" font-size="13" font-weight="600" letter-spacing="1.5" fill="#059669">
+      SMART WASTE MANAGEMENT
+    </text>
+    <text y="46" font-family="'Inter', sans-serif" font-size="11" font-weight="500" letter-spacing="0.5" fill="#64748B">
+      Eco-Tech Urban Platform
+    </text>
+  </g>
+</svg>
