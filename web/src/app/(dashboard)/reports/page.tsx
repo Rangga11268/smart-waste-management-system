@@ -347,8 +347,8 @@ export default function ReportsPage() {
 
           {/* Filter Dropdowns Container */}
           <div className="flex flex-wrap items-center gap-2.5">
-            {/* Status Filter */}
-            <div className="flex items-center gap-1.5 min-w-[140px]">
+            {/* Status Filter Dropdown (Hidden on mobile since status filter tabs above already handle this) */}
+            <div className="hidden sm:flex items-center gap-1.5 min-w-[140px]">
               <select
                 value={statusFilter}
                 onChange={(e) => {
@@ -367,7 +367,7 @@ export default function ReportsPage() {
             </div>
 
             {/* Category Filter */}
-            <div className="flex items-center gap-1.5 min-w-[160px]">
+            <div className="flex-1 sm:flex-initial flex items-center gap-1.5 min-w-[140px]">
               <select
                 value={categoryFilter}
                 onChange={(e) => {
@@ -427,9 +427,114 @@ export default function ReportsPage() {
         </div>
       )}
 
-      {/* Paginated Reports Table */}
+      {/* Reports Display Container */}
       <div className="rounded-2xl border border-slate-200/80 bg-white shadow-[0_2px_10px_-3px_rgba(6,78,59,0.05)] overflow-hidden">
-        <div className="overflow-x-auto">
+        {/* Mobile View: Touch-Friendly Card List (No Horizontal Table Scroll) */}
+        <div className="block md:hidden divide-y divide-slate-100">
+          {isLoading ? (
+            Array.from({ length: 3 }).map((_, idx) => (
+              <div key={`mob-skel-${idx}`} className="p-4 space-y-3 animate-pulse">
+                <div className="flex gap-3">
+                  <div className="h-16 w-16 rounded-xl bg-slate-200 shrink-0" />
+                  <div className="flex-1 space-y-2">
+                    <div className="h-4 w-24 rounded bg-slate-200" />
+                    <div className="h-4 w-44 rounded bg-slate-200" />
+                    <div className="h-3 w-32 rounded bg-slate-100" />
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : displayedReports.length === 0 ? (
+            <div className="py-12 px-4 text-center">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-400 mx-auto mb-3">
+                <Inbox className="h-6 w-6" />
+              </div>
+              <h3 className="font-sans text-sm font-bold text-slate-800">
+                Tidak Ada Laporan Sampah Ditemukan
+              </h3>
+              <p className="mt-1 text-xs text-slate-500 max-w-xs mx-auto">
+                {hasActiveFilters
+                  ? 'Tidak ada laporan yang cocok dengan filter Anda.'
+                  : 'Belum ada data laporan sampah warga yang tercatat.'}
+              </p>
+              {hasActiveFilters && (
+                <button
+                  type="button"
+                  onClick={handleResetFilters}
+                  className="mt-3 inline-flex items-center gap-1.5 rounded-xl border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 shadow-2xs"
+                >
+                  <RotateCcw className="h-3 w-3" />
+                  <span>Reset Filter</span>
+                </button>
+              )}
+            </div>
+          ) : (
+            displayedReports.map((report) => {
+              const truncatedId = report.id.slice(0, 8).toUpperCase();
+              const isImgError = imageErrors[report.id];
+              const imgSrc = isImgError ? '/placeholder.png' : getFullImageUrl(report.image_url);
+
+              return (
+                <div
+                  key={`mob-${report.id}`}
+                  onClick={() => {
+                    setSelectedReport(report);
+                    setIsModalOpen(true);
+                  }}
+                  className="p-4 active:bg-slate-50 hover:bg-slate-50/60 transition-colors cursor-pointer space-y-2.5"
+                >
+                  <div className="flex gap-3">
+                    {/* Thumbnail */}
+                    <div className="w-16 h-16 rounded-xl border border-slate-200 overflow-hidden bg-slate-100 shrink-0">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={imgSrc}
+                        alt={report.title}
+                        className="w-full h-full object-cover"
+                        onError={() => setImageErrors((prev) => ({ ...prev, [report.id]: true }))}
+                      />
+                    </div>
+
+                    {/* Content */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between gap-1 mb-1">
+                        <span className="font-mono text-[10px] font-bold text-slate-600 bg-slate-100 border border-slate-200 px-1.5 py-0.5 rounded">
+                          SWMS-{truncatedId}
+                        </span>
+                        <StatusBadge status={report.status} size="sm" />
+                      </div>
+
+                      <h4 className="font-bold text-slate-900 text-xs sm:text-sm line-clamp-1">
+                        {report.title}
+                      </h4>
+
+                      <div className="mt-1 flex items-center gap-1.5 flex-wrap">
+                        <CategoryBadge category={report.category} size="sm" />
+                        <span className="text-[11px] text-slate-500 truncate">
+                          • {report.reporter?.full_name || 'Warga'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Location & Time Footer */}
+                  <div className="flex items-center justify-between pt-1 border-t border-slate-100 text-[11px] text-slate-500">
+                    <div className="flex items-center gap-1 truncate max-w-[65%]">
+                      <MapPin className="h-3 w-3 text-emerald-600 shrink-0" />
+                      <span className="truncate">{report.address_note || `${report.latitude.toFixed(4)}, ${report.longitude.toFixed(4)}`}</span>
+                    </div>
+                    <span className="text-slate-400 font-medium shrink-0">
+                      {formatRelativeTime(report.created_at)}
+                    </span>
+                  </div>
+                </div>
+              );
+            })
+          )}
+        </div>
+
+        {/* Desktop View: Full 9-Column Table */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="border-b border-slate-200/80 bg-slate-50/75 text-[11px] font-semibold uppercase tracking-wider text-slate-500">

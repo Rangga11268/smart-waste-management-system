@@ -127,7 +127,7 @@ export default function CategoryChart({
   return (
     <div
       className={cn(
-        'rounded-3xl border border-slate-200/90 bg-white p-6 sm:p-8 shadow-sm transition-all',
+        'rounded-3xl border border-slate-200/90 bg-white p-4 sm:p-7 shadow-xs transition-all',
         className
       )}
       data-testid="category-chart"
@@ -178,14 +178,14 @@ export default function CategoryChart({
       </div>
 
       {/* Modern High-Contrast Category Cards Grid */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3 sm:gap-4">
         {normalizedItems.map((item) => {
           const formattedPct = totalReports > 0 ? `${item.percentage.toFixed(1)}%` : '0%';
           return (
             <div
               key={item.name}
               className={cn(
-                'group relative rounded-2xl border p-5 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md',
+                'group relative rounded-2xl border p-4 sm:p-5 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md',
                 item.config.cardBorder,
                 item.config.cardBg
               )}

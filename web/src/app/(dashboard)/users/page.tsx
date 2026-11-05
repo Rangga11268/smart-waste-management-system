@@ -105,44 +105,44 @@ export default function UsersPage() {
       </div>
 
       {/* KPI Metric Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4">
-          <div className="w-12 h-12 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
-            <Users className="w-6 h-6" />
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 lg:grid-cols-4 sm:gap-4">
+        <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200/90 shadow-2xs flex items-center gap-3 sm:gap-4">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold shrink-0">
+            <Users className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
-          <div>
-            <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">Total Pengguna</p>
-            <p className="font-sans text-2xl font-bold text-slate-900">{totalUsers}</p>
-          </div>
-        </div>
-
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4">
-          <div className="w-12 h-12 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold">
-            <ShieldCheck className="w-6 h-6" />
-          </div>
-          <div>
-            <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">Administrator</p>
-            <p className="font-sans text-2xl font-bold text-slate-900">{adminCount}</p>
+          <div className="min-w-0">
+            <p className="text-[10px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider truncate">Total Pengguna</p>
+            <p className="font-sans text-xl sm:text-2xl font-extrabold text-slate-900 leading-tight">{totalUsers}</p>
           </div>
         </div>
 
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4">
-          <div className="w-12 h-12 rounded-lg bg-sky-50 text-sky-600 flex items-center justify-center font-bold">
-            <UserCheck className="w-6 h-6" />
+        <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200/90 shadow-2xs flex items-center gap-3 sm:gap-4">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold shrink-0">
+            <ShieldCheck className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
-          <div>
-            <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">Warga Pelapor</p>
-            <p className="font-sans text-2xl font-bold text-slate-900">{citizenCount}</p>
+          <div className="min-w-0">
+            <p className="text-[10px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider truncate">Administrator</p>
+            <p className="font-sans text-xl sm:text-2xl font-extrabold text-slate-900 leading-tight">{adminCount}</p>
           </div>
         </div>
 
-        <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4">
-          <div className="w-12 h-12 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
-            <span className="font-mono text-sm font-bold">100%</span>
+        <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200/90 shadow-2xs flex items-center gap-3 sm:gap-4">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center font-bold shrink-0">
+            <UserCheck className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
-          <div>
-            <p className="text-xs font-medium text-slate-500 uppercase tracking-wider">Akun Aktif</p>
-            <p className="font-sans text-2xl font-bold text-slate-900">{activeCount}</p>
+          <div className="min-w-0">
+            <p className="text-[10px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider truncate">Warga Pelapor</p>
+            <p className="font-sans text-xl sm:text-2xl font-extrabold text-slate-900 leading-tight">{citizenCount}</p>
+          </div>
+        </div>
+
+        <div className="bg-white p-3.5 sm:p-5 rounded-2xl border border-slate-200/90 shadow-2xs flex items-center gap-3 sm:gap-4">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold shrink-0">
+            <span className="font-mono text-xs sm:text-sm font-extrabold">100%</span>
+          </div>
+          <div className="min-w-0">
+            <p className="text-[10px] sm:text-xs font-semibold text-slate-500 uppercase tracking-wider truncate">Akun Aktif</p>
+            <p className="font-sans text-xl sm:text-2xl font-extrabold text-slate-900 leading-tight">{activeCount}</p>
           </div>
         </div>
       </div>
@@ -176,9 +176,99 @@ export default function UsersPage() {
         </div>
       </div>
 
-      {/* Users Table */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-        <div className="overflow-x-auto">
+      {/* Users Display Container */}
+      <div className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs overflow-hidden">
+        {/* Mobile View: Touch-Friendly User Cards (No Horizontal Table Scroll) */}
+        <div className="block md:hidden divide-y divide-slate-100">
+          {loading ? (
+            Array.from({ length: 3 }).map((_, i) => (
+              <div key={`user-skel-${i}`} className="p-4 space-y-2 animate-pulse">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-slate-200 shrink-0" />
+                  <div className="flex-1 space-y-1.5">
+                    <div className="h-4 bg-slate-200 rounded w-36" />
+                    <div className="h-3 bg-slate-100 rounded w-48" />
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : users.length === 0 ? (
+            <div className="py-12 px-4 text-center text-slate-500">
+              <AlertCircle className="w-8 h-8 text-slate-400 mx-auto mb-2" />
+              Tidak ada pengguna yang cocok dengan kriteria pencarian.
+            </div>
+          ) : (
+            users.map((u) => {
+              const initials = u.full_name
+                ? u.full_name
+                    .split(' ')
+                    .map((n) => n[0])
+                    .slice(0, 2)
+                    .join('')
+                    .toUpperCase()
+                : 'U';
+
+              return (
+                <div
+                  key={`mob-user-${u.id}`}
+                  onClick={() => setSelectedUser(u)}
+                  className="p-4 active:bg-slate-50 hover:bg-slate-50/60 transition-colors cursor-pointer space-y-3"
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div
+                        className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold text-xs shrink-0 shadow-2xs ${
+                          u.role === 'admin'
+                            ? 'bg-indigo-100 text-indigo-700'
+                            : 'bg-emerald-100 text-emerald-700'
+                        }`}
+                      >
+                        {initials}
+                      </div>
+                      <div className="min-w-0">
+                        <p className="font-bold text-slate-900 text-sm truncate flex items-center gap-1.5">
+                          <span className="truncate">{u.full_name}</span>
+                          {currentUser?.id === u.id && (
+                            <span className="text-[10px] bg-emerald-50 text-emerald-700 border border-emerald-200 px-1.5 py-0.2 rounded font-semibold shrink-0">
+                              Anda
+                            </span>
+                          )}
+                        </p>
+                        <p className="text-xs text-slate-500 truncate flex items-center gap-1 mt-0.5">
+                          <Mail className="w-3 h-3 text-slate-400 shrink-0" />
+                          <span className="truncate">{u.email}</span>
+                        </p>
+                      </div>
+                    </div>
+
+                    <span
+                      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider shrink-0 border ${
+                        u.role === 'admin'
+                          ? 'bg-indigo-50 text-indigo-700 border-indigo-200'
+                          : 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                      }`}
+                    >
+                      {u.role === 'admin' ? 'Admin' : 'Warga'}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-100">
+                    <span className="flex items-center gap-1 text-[11px]">
+                      <Phone className="w-3 h-3 text-slate-400" />
+                      {u.phone_number || '-'}
+                    </span>
+                    <span className="font-mono text-[11px] font-semibold text-slate-600 bg-slate-100 px-2 py-0.5 rounded">
+                      {u.total_reports ?? 0} Laporan
+                    </span>
+                  </div>
+                </div>
+              );
+            })
+          )}
+        </div>
+
+        {/* Desktop View: Full Multi-Column Table */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-slate-50/80 border-b border-slate-200 text-xs font-semibold text-slate-600 uppercase tracking-wider">

@@ -98,19 +98,21 @@ export default function Header({ onOpenSidebar, user, onLogout, className }: Hea
         {/* Mobile Hamburger Toggle */}
         <button
           onClick={onOpenSidebar}
-          className="rounded-xl p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-800 md:hidden transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center shrink-0"
+          className="rounded-xl p-2 text-slate-600 hover:bg-slate-100 hover:text-slate-900 md:hidden transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center shrink-0"
           aria-label="Buka menu navigasi"
         >
           <Menu className="h-5 w-5" />
         </button>
 
-        {/* Brand Icon on Mobile */}
-        <Link href="/dashboard" className="flex items-center shrink-0 md:hidden" aria-label="SWMS Dashboard">
-          <Logo size={26} showText={false} />
+        {/* Brand on Mobile: Crisp 3-Leaf Mark + SWMS [ECO] */}
+        <Link href="/dashboard" className="flex items-center gap-2 shrink-0 md:hidden" aria-label="SWMS Dashboard">
+          <Logo size={28} showText={false} />
+          <span className="font-sans text-sm font-extrabold text-slate-900 tracking-tight">SWMS</span>
+          <span className="rounded bg-emerald-50 text-emerald-700 border border-emerald-200/80 px-1 py-0.2 text-[9px] font-bold uppercase tracking-wider">ECO</span>
         </Link>
 
-        {/* Breadcrumb Navigation */}
-        <nav aria-label="Breadcrumb" className="flex items-center space-x-1.5 text-xs sm:text-sm min-w-0 truncate">
+        {/* Desktop Breadcrumb Navigation */}
+        <nav aria-label="Breadcrumb" className="hidden md:flex items-center space-x-1.5 text-xs sm:text-sm min-w-0 truncate">
           <Link
             href="/dashboard"
             className="font-bold text-slate-700 hover:text-emerald-600 transition-colors shrink-0"

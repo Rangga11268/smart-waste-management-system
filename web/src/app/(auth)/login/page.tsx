@@ -202,7 +202,7 @@ function LoginForm() {
         <div className="mx-auto w-full max-w-md relative z-10">
           {/* Mobile Header with Logo & Back Link */}
           <div className="lg:hidden flex items-center justify-between mb-8">
-            <Logo size={42} showText={true} />
+            <Logo size={34} showText={true} />
             <Link
               href="/"
               className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 bg-white px-3 py-1.5 rounded-lg border border-slate-200 shadow-2xs"

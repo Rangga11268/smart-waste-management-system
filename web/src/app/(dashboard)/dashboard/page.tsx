@@ -204,7 +204,7 @@ export default function DashboardPage() {
         <h2 id="primary-metrics-heading" className="sr-only">
           Metrik Utama Dashboard
         </h2>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 sm:gap-6">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 lg:grid-cols-4 sm:gap-5">
           {/* Card 1: Total Reports (Inspired by Dark Sleek Card) */}
           <StatCard
             title="Total Laporan"

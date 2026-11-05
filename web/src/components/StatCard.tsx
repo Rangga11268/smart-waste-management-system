@@ -102,37 +102,37 @@ export default function StatCard({
   return (
     <div
       className={cn(
-        'group relative flex flex-col justify-between rounded-2xl border p-6 transition-all duration-200 hover:-translate-y-1 hover:shadow-xl',
+        'group relative flex flex-col justify-between rounded-2xl border p-3.5 sm:p-5 lg:p-6 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg',
         style.bg,
         className
       )}
       data-testid="stat-card"
     >
       {/* Top Header: Title & Action/Icon */}
-      <div className="flex items-center justify-between">
-        <span className={cn('tracking-wide', style.title)}>
+      <div className="flex items-center justify-between gap-1">
+        <span className={cn('tracking-wide text-xs sm:text-sm font-semibold truncate', style.title)}>
           {title}
         </span>
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1.5 shrink-0">
           {Icon ? (
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/10 backdrop-blur-xs">
-              <Icon className="h-4 w-4" />
+            <div className="flex h-6 w-6 sm:h-7 sm:w-7 items-center justify-center rounded-lg bg-white/10 backdrop-blur-xs">
+              <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
             </div>
           ) : (
-            <span className="text-xs font-mono text-slate-400">#METRIK</span>
+            <span className="text-[10px] sm:text-xs font-mono text-slate-400">#METRIK</span>
           )}
         </div>
       </div>
 
-      {/* Main Metric Value & Trend Badge (Side by Side like reference image) */}
-      <div className="mt-4 flex items-baseline gap-3 flex-wrap">
-        <div className={cn('text-3xl sm:text-4xl font-extrabold tracking-tight leading-none', style.value)}>
+      {/* Main Metric Value & Trend Badge (Side by Side) */}
+      <div className="mt-2.5 sm:mt-4 flex items-baseline gap-2 sm:gap-3 flex-wrap">
+        <div className={cn('text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight leading-none', style.value)}>
           {value}
         </div>
         {trend && (
           <span
             className={cn(
-              'inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-xs font-semibold',
+              'inline-flex items-center gap-0.5 sm:gap-1 rounded px-1.5 py-0.5 text-[10px] sm:text-xs font-bold leading-none',
               style.pill
             )}
           >
@@ -143,7 +143,7 @@ export default function StatCard({
 
       {/* Footer Comparison Subtitle */}
       {subtitle && (
-        <div className="mt-4 text-xs font-medium">
+        <div className="mt-2 sm:mt-4 text-[10px] sm:text-xs font-medium">
           <span className={cn('line-clamp-1', style.subtitle)}>
             {subtitle}
           </span>
