@@ -44,8 +44,8 @@ const navItems: NavItem[] = [
 
 const secondaryNavItems: NavItem[] = [
   {
-    name: 'API Documentation',
-    href: process.env.NEXT_PUBLIC_API_DOCS_URL || 'http://localhost:8000/docs',
+    name: 'Dokumentasi API (Swagger)',
+    href: '/docs',
     icon: FileText,
     external: true,
   },

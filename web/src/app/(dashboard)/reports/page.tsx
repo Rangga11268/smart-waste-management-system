@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
   Search,
   Filter,
@@ -15,6 +15,7 @@ import {
   Plus,
   MapPin,
   ArrowRight,
+  CheckCircle2,
 } from 'lucide-react';
 import StatusBadge from '@/components/StatusBadge';
 import CategoryBadge from '@/components/CategoryBadge';
@@ -29,6 +30,7 @@ import type {
 
 export default function ReportsPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { user } = useAuth();
 
   // Reports and pagination state
@@ -55,6 +57,14 @@ export default function ReportsPage() {
 
   // Create report modal state
   const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
+  const [createdToast, setCreatedToast] = useState<string | null>(null);
+
+  // Check URL query param to auto-open create modal (e.g. from Dashboard button)
+  useEffect(() => {
+    if (searchParams?.get('action') === 'new') {
+      setIsCreateModalOpen(true);
+    }
+  }, [searchParams]);
 
   // Fallback images map for failed image loads
   const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});

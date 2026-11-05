@@ -19,6 +19,22 @@ SWMS employs a decoupled multi-tier architecture connecting mobile citizen repor
   <img src="docs/diagrams/c4-architecture.svg" alt="C4 Container Architecture" width="100%" />
 </p>
 
+---
+
+## 🗄️ Database Schema & Entity-Relationship Diagram (ERD)
+
+As required by the **Bilcode Technology Technical Assessment (Deliverable #5 & Database Design 5% rubric)**, SWMS implements a normalized, high-integrity PostgreSQL 16 relational model with strict referential constraints, optimized indexing, and an append-only audit trail:
+
+<p align="center">
+  <img src="docs/diagrams/erd-database.svg" alt="Entity Relationship Diagram (ERD) & Database Schema" width="100%" />
+</p>
+
+### Key Database Design Decisions:
+- **Referential Integrity:** `users` (1:N) `waste_reports` with `ON DELETE CASCADE`; `categories` (1:N) `waste_reports` with `ON DELETE RESTRICT` (preventing orphaned records).
+- **Immutable Audit Trail (`report_logs`):** Append-only table logging every status change (`previous_status` ➔ `new_status`), actor identity, supervisor remarks, and timestamps.
+- **Performance Indexing:** B-Tree indexes on `idx_reports_status`, `idx_reports_created_at DESC`, `idx_reports_user_id`, `idx_reports_category_id`, and `idx_users_email`.
+- **Full DDL Script & Migration:** Full PostgreSQL schema script is documented in [**`docs/ERD.md`**](docs/ERD.md).
+
 > 💡 **Interactive Architecture & Diagrams Hub:**  
 > Jelajahi seluruh diagram visual beresolusi tinggi (C4, ERD, State Machine, Sequence, Cloud Deployment) secara interaktif di [**`docs/diagrams/index.html`**](docs/diagrams/index.html) atau tinjau langsung versi visual mandiri:
 > - 📐 [**C4 Container Architecture (HTML)**](docs/diagrams/c4-architecture.html) · [*(Raw SVG)*](docs/diagrams/c4-architecture.svg)
@@ -147,7 +163,7 @@ flutter build apk --release
 | **2** | **Live Demo Web Link** | ✅ Complete | Next.js 14 Web Portal (`web/`) with Vercel deploy compatibility |
 | **3** | **Standalone Android Release APK** | ✅ Complete | [`docs/apk/swms_citizen_release.apk`](docs/apk/swms_citizen_release.apk) |
 | **4** | **Interactive API Documentation** | ✅ Complete | Swagger UI (`/docs`), ReDoc (`/redoc`), and [`docs/openapi.json`](docs/openapi.json) |
-| **5** | **Database Schema & ERD** | ✅ Complete | [`docs/ERD.md`](docs/ERD.md) with Mermaid visual diagram & DDL |
+| **5** | **Database Schema & ERD** | ✅ Complete | [Visual ERD Diagram (SVG)](#️-database-schema--entity-relationship-diagram-erd) & [`docs/ERD.md`](docs/ERD.md) with PostgreSQL DDL |
 | **6** | **Source Code & ML Model** | ✅ Complete | [`waste_model.pth`](waste_model.pth) (9.15 MB PyTorch MobileNetV2) |
 | **7** | **Dataset (150+ Images Across 3 Classes)** | ✅ Complete | 210 photographic images (70 Organic, 70 Plastic, 70 Paper) with [`ml_pipeline/dataset/CITATIONS.md`](ml_pipeline/dataset/CITATIONS.md) |
 | **8** | **Model Evaluation Artifacts** | ✅ Complete | [`confusion_matrix.png`](confusion_matrix.png), [`accuracy_curve.png`](accuracy_curve.png), [`classification_report.txt`](classification_report.txt) |

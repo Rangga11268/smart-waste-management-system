@@ -139,19 +139,27 @@ export default function Header({ onOpenSidebar, user, onLogout, className }: Hea
         {/* Live Backend Health Indicator */}
         <div
           className={cn(
-              'hidden sm:inline-flex items-center rounded-md border px-2 py-0.5 text-[10px] font-semibold tracking-wider font-mono uppercase transition-colors',
+            'hidden sm:inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-semibold tracking-wider font-mono transition-colors shadow-2xs',
             healthStatus === 'online' && 'border-emerald-200 bg-emerald-50 text-emerald-700',
             healthStatus === 'offline' && 'border-rose-200 bg-rose-50 text-rose-700',
             healthStatus === 'checking' && 'border-amber-200 bg-amber-50 text-amber-700'
           )}
           title={`Backend status: ${healthStatus}${lastCheck ? ` (Dicek ${lastCheck.toLocaleTimeString()})` : ''}`}
         >
-                    <span className="font-mono uppercase tracking-wider text-[11px]">
+          <span
+            className={cn(
+              'h-2 w-2 rounded-full shrink-0',
+              healthStatus === 'online' && 'bg-emerald-500 animate-pulse',
+              healthStatus === 'offline' && 'bg-rose-500',
+              healthStatus === 'checking' && 'bg-amber-500 animate-ping'
+            )}
+          />
+          <span className="uppercase text-[10px] font-bold">
             {healthStatus === 'online'
-              ? 'API Online'
+              ? 'API Aktif'
               : healthStatus === 'offline'
               ? 'API Offline'
-              : 'Checking API'}
+              : 'Memeriksa API'}
           </span>
         </div>
 

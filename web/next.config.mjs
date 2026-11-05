@@ -28,6 +28,14 @@ const nextConfig = {
         source: '/backend-uploads/:path*',
         destination: 'https://smart-waste-management-system-production.up.railway.app/uploads/:path*',
       },
+      {
+        source: '/docs',
+        destination: 'https://smart-waste-management-system-production.up.railway.app/docs',
+      },
+      {
+        source: '/openapi.json',
+        destination: 'https://smart-waste-management-system-production.up.railway.app/openapi.json',
+      },
     ];
   },
 };
