@@ -18,6 +18,18 @@ const nextConfig = {
       },
     ],
   },
+  async rewrites() {
+    return [
+      {
+        source: '/backend-api/:path*',
+        destination: 'https://smart-waste-management-system-production.up.railway.app/api/v1/:path*',
+      },
+      {
+        source: '/backend-uploads/:path*',
+        destination: 'https://smart-waste-management-system-production.up.railway.app/uploads/:path*',
+      },
+    ];
+  },
 };
 
 export default nextConfig;

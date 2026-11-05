@@ -16,6 +16,16 @@ const DEFAULT_API_BASE = 'http://localhost:8000/api/v1';
 
 export function getBaseApiUrl(): string {
   const envUrl = process.env.NEXT_PUBLIC_API_URL;
+
+  // In the browser, if NEXT_PUBLIC_API_URL points to Railway (*.up.railway.app),
+  // route through Next.js reverse-proxy (/backend-api) to bypass Indonesian ISP
+  // connection timeouts (ERR_CONNECTION_TIMED_OUT on IndiHome/Telkomsel).
+  if (typeof window !== 'undefined') {
+    if (envUrl && envUrl.includes('railway.app')) {
+      return '/backend-api';
+    }
+  }
+
   if (!envUrl) return DEFAULT_API_BASE;
   const clean = envUrl.trim().replace(/\/+$/, '');
   return clean.endsWith('/api/v1') ? clean : `${clean}/api/v1`;
@@ -60,7 +70,7 @@ apiClient.interceptors.response.use(
 
 /**
  * Resolves static media relative paths (e.g. /uploads/reports/...)
- * to full browser image URLs using the backend origin.
+ * to full browser image URLs using the backend origin or proxy.
  */
 export function getFullImageUrl(path?: string | null, baseUrl?: string): string {
   if (!path) {
@@ -70,6 +80,10 @@ export function getFullImageUrl(path?: string | null, baseUrl?: string): string 
     return path;
   }
   const base = baseUrl || getBaseApiUrl();
+  if (base.startsWith('/')) {
+    const cleanUploadPath = path.startsWith('/') ? path : `/${path}`;
+    return `/backend-uploads${cleanUploadPath.replace(/^\/uploads/, '')}`;
+  }
   const origin = base.replace(/\/api\/v1\/?$/, '');
   const cleanPath = path.startsWith('/') ? path : `/${path}`;
   return `${origin}${cleanPath}`;
