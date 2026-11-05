@@ -24,7 +24,7 @@ SWMS bridges civic participation and municipal waste management by enabling citi
 Identitas visual SWMS dirancang secara khusus dengan simbol **Tri-Radial Botanical Loop** yang menggabungkan motif daun botani dengan siklus Möbius ekonomi sirkular:
 
 <p align="center">
-  <img src="docs/assets/logo-philosophy.svg" alt="Filosofi & Anatomi Desain Logo SWMS" width="100%" />
+  <img src="docs/assets/logo_philosophy.png" alt="Filosofi & Anatomi Desain Logo SWMS" width="100%" />
 </p>
 
 ### Anatomi & Makna Filosofis Logo:
