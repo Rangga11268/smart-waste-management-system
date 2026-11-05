@@ -482,7 +482,12 @@ export default function ReportsPage() {
                   <div className="flex items-center justify-between pt-1 border-t border-slate-100 text-[11px] text-slate-500">
                     <div className="flex items-center gap-1 truncate max-w-[65%]">
                       <MapPin className="h-3 w-3 text-emerald-600 shrink-0" />
-                      <span className="truncate">{report.address_note || `${report.latitude.toFixed(4)}, ${report.longitude.toFixed(4)}`}</span>
+                      <span className="truncate">
+                        {report.address_note ||
+                          (typeof report.latitude === 'number' && typeof report.longitude === 'number'
+                            ? `${report.latitude.toFixed(4)}, ${report.longitude.toFixed(4)}`
+                            : 'Lokasi GPS')}
+                      </span>
                     </div>
                     <span className="text-slate-400 font-medium shrink-0">
                       {formatRelativeTime(report.created_at)}
@@ -623,7 +628,10 @@ export default function ReportsPage() {
                         <div className="flex items-center gap-1.5 min-w-0" title={report.address_note || 'Titik Koordinat GPS'}>
                           <MapPin className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
                           <span className="text-xs text-slate-700 truncate font-medium">
-                            {report.address_note || `${report.latitude.toFixed(4)}, ${report.longitude.toFixed(4)}`}
+                            {report.address_note ||
+                              (typeof report.latitude === 'number' && typeof report.longitude === 'number'
+                                ? `${report.latitude.toFixed(4)}, ${report.longitude.toFixed(4)}`
+                                : 'Lokasi GPS')}
                           </span>
                         </div>
                       </td>

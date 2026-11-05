@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils';
 import type { CategoryBrief } from '@/types/api';
 
 interface CategoryBadgeProps {
-  category: CategoryBrief | string;
+  category?: CategoryBrief | string | null;
   size?: 'sm' | 'md' | 'lg';
   className?: string;
   showDot?: boolean;
@@ -48,8 +48,12 @@ export default function CategoryBadge({
   className,
   showDot = false,
 }: CategoryBadgeProps) {
-  const categoryName = typeof category === 'string' ? category : category.name;
-  const customBadgeColor = typeof category === 'object' ? category.badge_color : undefined;
+  const categoryName =
+    typeof category === 'string'
+      ? category
+      : category?.name || 'Uncategorized';
+  const customBadgeColor =
+    typeof category === 'object' && category !== null ? category.badge_color : undefined;
 
   const styleConfig = defaultCategoryStyles[categoryName] || {
     bgClass: 'bg-slate-50',

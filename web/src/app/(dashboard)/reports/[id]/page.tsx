@@ -338,7 +338,7 @@ export default function ReportDetailPage() {
                   Kategori Terdeteksi
                 </span>
                 <span className="font-sans text-sm font-bold text-slate-900">
-                  {report.detected_category || report.category.name}
+                  {report.detected_category || report.category?.name || 'Belum Terklasifikasi'}
                 </span>
               </div>
 
@@ -400,9 +400,9 @@ export default function ReportDetailPage() {
                   </span>
                 </div>
                 <div className="flex items-center gap-2 pt-1 font-mono text-xs text-slate-600">
-                  <span>Lat: {report.latitude.toFixed(6)}</span>
+                  <span>Lat: {typeof report.latitude === 'number' ? report.latitude.toFixed(6) : '-'}</span>
                   <span>•</span>
-                  <span>Lng: {report.longitude.toFixed(6)}</span>
+                  <span>Lng: {typeof report.longitude === 'number' ? report.longitude.toFixed(6) : '-'}</span>
                 </div>
               </div>
             </div>

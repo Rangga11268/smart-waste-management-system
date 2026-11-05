@@ -66,7 +66,7 @@ export default function CreateReportModal({
   const handleSelectCategory = (catId: number) => {
     setSelectedCategoryId(catId);
     const cat = categories.find((c) => c.id === catId);
-    if (cat && (!title.trim() || title.startsWith('Tumpukan Sampah'))) {
+    if (cat && cat.name && (!title.trim() || title.startsWith('Tumpukan Sampah'))) {
       setTitle(`Tumpukan Sampah ${cat.name}`);
     }
   };
@@ -89,22 +89,24 @@ export default function CreateReportModal({
       setAiPrediction(res.data);
 
       // Auto-match category from AI prediction
-      const predictedCategory = res.data.category.toLowerCase();
+      const predictedCategory = (res.data.category || '').toLowerCase();
       const matched = categories.find(
         (c) =>
-          c.name.toLowerCase().includes(predictedCategory) ||
-          predictedCategory.includes(c.name.toLowerCase()) ||
-          (c.slug && predictedCategory.includes(c.slug.toLowerCase()))
+          (c?.name && (
+            c.name.toLowerCase().includes(predictedCategory) ||
+            predictedCategory.includes(c.name.toLowerCase())
+          )) ||
+          (c?.slug && predictedCategory.includes(c.slug.toLowerCase()))
       );
 
-      if (matched) {
+      if (matched && matched.name) {
         setSelectedCategoryId(matched.id);
         if (!title.trim() || title.startsWith('Tumpukan Sampah')) {
           setTitle(`Tumpukan Sampah ${matched.name}`);
         }
       } else {
         if (!title.trim() || title.startsWith('Tumpukan Sampah')) {
-          setTitle(`Tumpukan Sampah ${res.data.category}`);
+          setTitle(`Tumpukan Sampah ${res.data.category || 'Baru'}`);
         }
       }
     } catch (err: unknown) {
@@ -386,7 +388,7 @@ export default function CreateReportModal({
                         )}
                       >
                         {isSelected && <CheckCircle2 className="h-3 w-3" />}
-                        <span>{cat.name}</span>
+                        <span>{cat?.name || 'Kategori'}</span>
                       </button>
                     );
                   })}
@@ -456,7 +458,7 @@ export default function CreateReportModal({
             >
               {categories.map((c) => (
                 <option key={c.id} value={c.id}>
-                  {c.name}
+                  {c?.name || 'Kategori'}
                 </option>
               ))}
             </select>
