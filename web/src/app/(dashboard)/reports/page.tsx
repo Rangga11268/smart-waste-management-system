@@ -538,15 +538,15 @@ export default function ReportsPage() {
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="border-b border-slate-200/80 bg-slate-50/75 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
-                <th className="py-3.5 pl-5 pr-3">ID</th>
-                <th className="py-3.5 px-3">Thumbnail</th>
-                <th className="py-3.5 px-3 min-w-[180px]">Judul Laporan</th>
-                <th className="py-3.5 px-3">Kategori</th>
-                <th className="py-3.5 px-3">Pelapor</th>
-                <th className="py-3.5 px-3 min-w-[200px]">Lokasi & Alamat</th>
-                <th className="py-3.5 px-3">Waktu</th>
-                <th className="py-3.5 px-3">Status</th>
-                <th className="py-3.5 pl-3 pr-5 text-right">Aksi</th>
+                <th className="py-3.5 pl-5 pr-3 w-24">ID</th>
+                <th className="py-3.5 px-3 w-16">Thumbnail</th>
+                <th className="py-3.5 px-3 max-w-[200px]">Judul Laporan</th>
+                <th className="py-3.5 px-3 w-32">Kategori</th>
+                <th className="py-3.5 px-3 max-w-[130px]">Pelapor</th>
+                <th className="py-3.5 px-3 w-[220px] max-w-[220px]">Lokasi & Alamat</th>
+                <th className="py-3.5 px-3 w-28">Waktu</th>
+                <th className="py-3.5 px-3 w-36">Status</th>
+                <th className="py-3.5 pl-3 pr-5 text-right w-20">Aksi</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 font-sans text-xs">
@@ -652,45 +652,46 @@ export default function ReportsPage() {
                       </td>
 
                       {/* 3. Judul & Catatan */}
-                      <td className="py-3.5 px-3">
-                        <div className="font-medium text-slate-900 line-clamp-1">
+                      <td className="py-3.5 px-3 max-w-[200px]">
+                        <div className="font-semibold text-slate-900 truncate" title={report.title}>
                           {report.title}
                         </div>
-                        <div className="text-xs text-slate-500 line-clamp-1 mt-0.5">
-                          {/* In list items, address_note or reporter is shown */}
-                          {report.reporter?.full_name ? `Pelapor: ${report.reporter.full_name}` : '-'}
+                        <div className="text-[11px] text-slate-400 truncate mt-0.5">
+                          {report.reporter?.full_name ? `Oleh: ${report.reporter.full_name}` : '-'}
                         </div>
                       </td>
 
                       {/* 4. Kategori */}
-                      <td className="py-3.5 px-3">
+                      <td className="py-3.5 px-3 whitespace-nowrap">
                         <CategoryBadge category={report.category} size="sm" />
                       </td>
 
                       {/* 5. Pelapor */}
-                      <td className="py-3.5 px-3 text-slate-700 font-medium whitespace-nowrap">
+                      <td className="py-3.5 px-3 max-w-[130px] text-slate-700 font-medium truncate" title={report.reporter?.full_name || report.reporter?.email || 'Warga'}>
                         {report.reporter?.full_name || report.reporter?.email || 'Warga'}
                       </td>
 
                       {/* 6. Lokasi & Alamat */}
-                      <td className="py-3.5 px-3 min-w-[200px]">
-                        <div className="flex flex-col gap-1">
+                      <td className="py-3.5 px-3 w-[220px] max-w-[220px]">
+                        <div className="flex flex-col gap-1 w-full max-w-[220px]">
                           {report.address_note ? (
-                            <span
-                              className="font-semibold text-slate-800 line-clamp-1 flex items-center gap-1.5"
+                            <div
+                              className="flex items-center gap-1.5 min-w-0"
                               title={report.address_note}
                             >
                               <MapPin className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
-                              <span className="truncate">{report.address_note}</span>
-                            </span>
+                              <span className="font-semibold text-slate-800 text-xs truncate block">
+                                {report.address_note}
+                              </span>
+                            </div>
                           ) : (
                             <span className="text-slate-400 italic text-[11px] flex items-center gap-1">
-                              <MapPin className="h-3 w-3 text-slate-300" />
-                              Alamat tersimpan di GPS
+                              <MapPin className="h-3 w-3 text-slate-300 shrink-0" />
+                              <span>Alamat GPS</span>
                             </span>
                           )}
-                          <div className="flex items-center gap-1.5">
-                            <span className="font-mono text-[11px] font-medium text-slate-600 bg-slate-100 border border-slate-200/80 px-1.5 py-0.5 rounded">
+                          <div className="flex items-center gap-1.5 shrink-0">
+                            <span className="font-mono text-[10px] font-medium text-slate-600 bg-slate-100 border border-slate-200/80 px-1.5 py-0.5 rounded">
                               {report.latitude.toFixed(4)}, {report.longitude.toFixed(4)}
                             </span>
                             <a
