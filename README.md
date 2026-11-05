@@ -160,15 +160,33 @@ flutter build apk --release
 | No | Deliverable Item | Status | Location / Artifact |
 |:---:|---|:---:|---|
 | **1** | **GitHub Repository (Monorepo)** | ✅ Complete | [Rangga11268/smart-waste-management-system](https://github.com/Rangga11268/smart-waste-management-system) |
-| **2** | **Live Demo Web Link** | ✅ Complete | Next.js 14 Web Portal (`web/`) with Vercel deploy compatibility |
+| **2** | **Live Demo Web Link** | ✅ Complete | [https://web-ruby-omega-37.vercel.app](https://web-ruby-omega-37.vercel.app) (Next.js 14 on Vercel + Railway Backend) |
 | **3** | **Standalone Android Release APK** | ✅ Complete | [`docs/apk/swms_citizen_release.apk`](docs/apk/swms_citizen_release.apk) |
-| **4** | **Interactive API Documentation** | ✅ Complete | Swagger UI (`/docs`), ReDoc (`/redoc`), and [`docs/openapi.json`](docs/openapi.json) |
+| **4** | **Interactive API Documentation** | ✅ Complete | [Live Swagger UI (/docs)](https://web-ruby-omega-37.vercel.app/docs), ReDoc (`/redoc`), and [`docs/openapi.json`](docs/openapi.json) |
 | **5** | **Database Schema & ERD** | ✅ Complete | [Visual ERD Diagram (SVG)](#️-database-schema--entity-relationship-diagram-erd) & [`docs/ERD.md`](docs/ERD.md) with PostgreSQL DDL |
 | **6** | **Source Code & ML Model** | ✅ Complete | [`waste_model.pth`](waste_model.pth) (9.15 MB PyTorch MobileNetV2) |
 | **7** | **Dataset (150+ Images Across 3 Classes)** | ✅ Complete | 210 photographic images (70 Organic, 70 Plastic, 70 Paper) with [`ml_pipeline/dataset/CITATIONS.md`](ml_pipeline/dataset/CITATIONS.md) |
 | **8** | **Model Evaluation Artifacts** | ✅ Complete | [`confusion_matrix.png`](confusion_matrix.png), [`accuracy_curve.png`](accuracy_curve.png), [`classification_report.txt`](classification_report.txt) |
 | **9** | **Comprehensive README Setup Guide** | ✅ Complete | This documentation with architecture, run instructions, and credentials |
-| **10** | **Demo Video ($\le 10$ Minutes)** | ✅ Complete | [Demo Presentation & Walkthrough Script](docs/VIDEO_SCRIPT.md) |
+| **10** | **Demo Video ($\le 10$ Minutes)** | ✅ Complete | [Demo Preparation & Walkthrough Script](docs/DEMO_PREPARATION_AND_SCRIPT.md) |
+
+### 📊 Model Evaluation Artifacts (PyTorch MobileNetV2)
+
+| Confusion Matrix (3 Classes) | Training & Validation Accuracy / Loss Curve |
+|:---:|:---:|
+| <img src="confusion_matrix.png" alt="Confusion Matrix" width="420" /> | <img src="accuracy_curve.png" alt="Accuracy Curve" width="420" /> |
+
+```
+Classification Report Summary (MobileNetV2 Transfer Learning):
+              precision    recall  f1-score   support
+     Organic       0.91      0.91      0.91        11
+       Paper       0.91      0.91      0.91        11
+     Plastic       0.82      0.82      0.82        11
+
+    accuracy                           0.88        33
+   macro avg       0.88      0.88      0.88        33
+weighted avg       0.88      0.88      0.88        33
+```
 
 ---
 
