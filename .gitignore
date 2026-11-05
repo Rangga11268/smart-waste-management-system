@@ -1,13 +1,47 @@
-# Byte-compiled / optimized / DLL files
+# ==========================================
+# SWMS Master Gitignore Configuration
+# Smart Waste Management System (SWMS)
+# ==========================================
+
+# ------------------------------------------
+# Byte-compiled / Python Cache
+# ------------------------------------------
 __pycache__/
 *.py[cod]
 *$py.class
-
-# C extensions
-*.so
-
-# Distribution / packaging
+*.pyo
+*.pyd
 .Python
+
+# ------------------------------------------
+# Virtual Environments
+# ------------------------------------------
+venv/
+.venv/
+ENV/
+env/
+env.bak/
+venv.bak/
+
+# ------------------------------------------
+# Python Testing, Caching & Coverage
+# ------------------------------------------
+.cache
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+*.cover
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+
+# ------------------------------------------
+# Python Packaging & Distribution
+# ------------------------------------------
 build/
 develop-eggs/
 dist/
@@ -24,42 +58,23 @@ wheels/
 .installed.cfg
 *.egg
 
-# Whitelist Flutter mobile/lib and Web lib
-!mobile/lib/
-!mobile/lib/**
-!web/src/lib/
-!web/src/lib/**
-
-# Virtual Environments
-venv/
-.venv/
-ENV/
-env/
-env.bak/
-venv.bak/
-
-# Pytest / Coverage
-.cache
-.pytest_cache/
-.coverage
-.coverage.*
-htmlcov/
-.tox/
-.nox/
-coverage.xml
-*.cover
-
-# Node / Web
+# ------------------------------------------
+# Node.js / Next.js Web App
+# ------------------------------------------
 node_modules/
+.next/
+out/
+.vercel/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
-.next/
-out/
-.vercel
+*.tsbuildinfo
+next-env.d.ts.bak
 
-# Flutter / Dart
+# ------------------------------------------
+# Flutter / Dart Mobile App
+# ------------------------------------------
 .dart_tool/
 .packages
 .flutter-plugins
@@ -68,41 +83,69 @@ mobile/build/
 ephemeral/
 *.apk
 *.aab
+*.iml
+.metadata
+
+# Whitelist release APKs stored in documentation
 !docs/**/*.apk
 
+# ------------------------------------------
 # Environment Variables & Secrets
+# ------------------------------------------
 .env
 .env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.*.local
 *.pem
 *.key
+*.cert
+*.crt
 
-# SQLite Databases
+# ------------------------------------------
+# Databases (Local Development Fallbacks)
+# ------------------------------------------
 *.db
 *.sqlite
 *.sqlite3
 
-# IDEs & Editors
+# ------------------------------------------
+# IDEs, Editors & Workspaces
+# ------------------------------------------
 .idea/
 .vscode/
 *.swp
 *.swo
 *~
+*.sublime-project
+*.sublime-workspace
 
-# Operating System Files
+# ------------------------------------------
+# Operating System Garbage
+# ------------------------------------------
 .DS_Store
-Thumbs.db
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
 ehthumbs.db
+Thumbs.db
 [Dd]esktop.ini
 
-# Static Uploads in Backend (preserve .gitkeep)
+# ------------------------------------------
+# Static Media Uploads (Preserve structure)
+# ------------------------------------------
 backend/uploads/*
 !backend/uploads/.gitkeep
 
-# ML Checkpoints (preserve final exported model)
+# ------------------------------------------
+# ML Checkpoints & Models
+# ------------------------------------------
 ml_pipeline/checkpoints/
 *.ckpt
+
+# Explicitly whitelist core library directories & production models
+!mobile/lib/
+!mobile/lib/**
+!web/src/lib/
+!web/src/lib/**
 !waste_model.pth
 !ml_pipeline/saved_models/waste_model.pth
