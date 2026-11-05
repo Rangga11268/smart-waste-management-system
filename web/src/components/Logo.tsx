@@ -18,37 +18,72 @@ export default function Logo({
 
   return (
     <div className={cn('inline-flex items-center gap-2.5 sm:gap-3 select-none shrink-0', className)}>
-      {/* High-Contrast Bold Eco Emblem Tile matching Image 4 */}
-      <div
-        className={cn(
-          'flex items-center justify-center rounded-xl shrink-0 transition-transform duration-200 hover:scale-105 shadow-xs',
-          isInverted
-            ? 'bg-gradient-to-br from-emerald-500 to-teal-700 text-white border border-emerald-400/30'
-            : 'bg-gradient-to-br from-emerald-600 via-emerald-600 to-teal-700 text-white shadow-emerald-700/20'
-        )}
-        style={{ width: size, height: size }}
+      {/* Authentic SWMS Botanical 3-Leaf Cycle Mark */}
+      <svg
+        width={size}
+        height={size}
+        viewBox="0 0 256 256"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className="shrink-0 transition-transform duration-200 hover:scale-105"
+        aria-hidden="true"
       >
-        <svg
-          width={Math.round(size * 0.62)}
-          height={Math.round(size * 0.62)}
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-        >
+        <defs>
+          <linearGradient id="swmsLeafA" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#4ADE80" />
+            <stop offset="100%" stopColor="#16A34A" />
+          </linearGradient>
+          <linearGradient id="swmsLeafB" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#10B981" />
+            <stop offset="100%" stopColor="#059669" />
+          </linearGradient>
+          <linearGradient id="swmsLeafC" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#059669" />
+            <stop offset="100%" stopColor="#047857" />
+          </linearGradient>
+        </defs>
+        <g transform="translate(128,128)">
+          {/* Leaf 1 (Top) */}
           <path
-            d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.5 10-10 10Z"
-            fill="white"
-            fillOpacity="0.95"
+            d="M 0,-104 C 42,-104 84,-72 84,-24 C 84,16 54,48 16,62 C 34,36 38,10 32,-16 C 26,-42 12,-74 0,-104 Z"
+            fill="url(#swmsLeafA)"
           />
           <path
-            d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"
-            stroke="white"
-            strokeWidth="2.2"
-            strokeLinecap="round"
+            d="M 0,-104 C 18,-70 24,-40 20,-10 C 18,12 8,34 -4,50 C 8,36 14,18 14,-4 C 14,-28 8,-66 0,-104 Z"
+            fill="#15803D"
+            opacity="0.3"
           />
-        </svg>
-      </div>
+
+          {/* Leaf 2 (Bottom Right, 120deg) */}
+          <g transform="rotate(120)">
+            <path
+              d="M 0,-104 C 42,-104 84,-72 84,-24 C 84,16 54,48 16,62 C 34,36 38,10 32,-16 C 26,-42 12,-74 0,-104 Z"
+              fill="url(#swmsLeafB)"
+            />
+            <path
+              d="M 0,-104 C 18,-70 24,-40 20,-10 C 18,12 8,34 -4,50 C 8,36 14,18 14,-4 C 14,-28 8,-66 0,-104 Z"
+              fill="#065F46"
+              opacity="0.3"
+            />
+          </g>
+
+          {/* Leaf 3 (Bottom Left, 240deg) */}
+          <g transform="rotate(240)">
+            <path
+              d="M 0,-104 C 42,-104 84,-72 84,-24 C 84,16 54,48 16,62 C 34,36 38,10 32,-16 C 26,-42 12,-74 0,-104 Z"
+              fill="url(#swmsLeafC)"
+            />
+            <path
+              d="M 0,-104 C 18,-70 24,-40 20,-10 C 18,12 8,34 -4,50 C 8,36 14,18 14,-4 C 14,-28 8,-66 0,-104 Z"
+              fill="#047857"
+              opacity="0.4"
+            />
+          </g>
+
+          {/* Center Seed */}
+          <circle cx="0" cy="0" r="10" fill="#10B981" />
+        </g>
+      </svg>
 
       {showText && (
         <div className="flex flex-col whitespace-nowrap min-w-0">
